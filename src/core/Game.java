@@ -3,7 +3,13 @@ package core;
 import java.awt.Graphics;
 
 import controller.InputController;
+import controller.PlayerController;
+import controller.WorldController;
+import model.CameraModel;
+import model.MapModel;
+import model.entity.PlayerModel;
 import view.GameWindow;
+import view.renderer.GameRenderer;
 import view.GamePanel;
 import static core.GameConfig.*;
 
@@ -13,10 +19,25 @@ public class Game implements Runnable {
     private boolean running;
     private Thread gameThread;
 
-    private InputController input;
+    private final InputController input;
+    private final PlayerModel player;
+    private final MapModel map;
+    private final CameraModel camera;
+    // private final PlayerController playerController;
+    private final WorldController worldController;
+    private GameRenderer renderer;
 
     public Game() {
 
+        map = new MapModel();
+        camera = new CameraModel();
+        player = new PlayerModel(100, 100, (int) (32 * GameConfig.SCALE), (int) (32 * GameConfig.SCALE));
+
+        input = new InputController();
+        // playerController = new PlayerController(input, 2.0, -8.0);
+        worldController = new WorldController(map, camera);
+
+        renderer = new GameRenderer(map, player, camera);
         gamePanel = new GamePanel(this, input);
         gameWindow = new GameWindow(gamePanel);
 
@@ -30,11 +51,13 @@ public class Game implements Runnable {
     }
 
     public void update() {
-
+        // playerController.update(player);
+        worldController.update(player);
+        renderer.update();
     }
 
     public void render(Graphics g) {
-
+        renderer.render(g);
     }
 
     @Override

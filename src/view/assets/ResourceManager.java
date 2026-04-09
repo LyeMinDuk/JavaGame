@@ -6,9 +6,9 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class ResourceManager {
-    public BufferedImage loadImg(String path) {
+    public static BufferedImage loadImg(String path) {
         BufferedImage img = null;
-        InputStream is = getClass().getResourceAsStream(path);
+        InputStream is = ResourceManager.class.getResourceAsStream(path);
         if (is == null) {
             System.out.println("File not Found: " + path);
         } else {
