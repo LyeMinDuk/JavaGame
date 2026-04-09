@@ -1,0 +1,23 @@
+# Compiled Java files
+*.class
+
+# Build output
+bin/
+out/
+
+# Libraries (nếu không muốn commit thư viện ngoài)
+lib/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Temporary files
+*.tmp
+*.swp
