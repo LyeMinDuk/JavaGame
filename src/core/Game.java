@@ -3,8 +3,8 @@ package core;
 import java.awt.Graphics;
 
 import controller.InputController;
-import controller.PlayerController;
 import controller.WorldController;
+import controller.entity.PlayerController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
@@ -67,12 +67,12 @@ public class Game implements Runnable {
         long prevTime = System.nanoTime();
         double deltaFrame = 0;
 
-        while(running){
+        while (running) {
             long curTime = System.nanoTime();
             deltaFrame += (curTime - prevTime) / timePerFrame;
             prevTime = curTime;
 
-            if(deltaFrame >= 1){
+            if (deltaFrame >= 1) {
                 update();
                 gamePanel.repaint();
                 deltaFrame--;

@@ -11,13 +11,12 @@ public class PlayerStateIndex {
     public static final int FALL = 4;
     public static final int ATTACK = 5;
 
-    HashMap<Integer, Integer> stateFrame = (HashMap<Integer, Integer>) Map.of(
-        IDLE, 5,
-        RUN, 6,
-        JUMP, 3,
-        HIT, 4,
-        FALL, 1,
-        ATTACK, 3
-    );
-    
+    public static final Map<Integer, Integer> STATE_FRAME = Map.of(
+            IDLE, 5,
+            RUN, 6,
+            JUMP, 3,
+            HIT, 4,
+            FALL, 1,
+            ATTACK, 3);
+
 }

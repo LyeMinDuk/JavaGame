@@ -11,7 +11,7 @@ public class MapModel {
     private BufferedImage levelImg;
     private int tileWide;
 
-    public MapModel(){
+    public MapModel() {
         initLevel();
         loadMapData();
     }
@@ -23,15 +23,15 @@ public class MapModel {
 
     private void loadMapData() {
         tileWide = map[0].length;
-        for(int i = 0; i < map.length; ++i){
-            for(int j = 0; j < tileWide; ++j){
+        for (int i = 0; i < map.length; ++i) {
+            for (int j = 0; j < tileWide; ++j) {
                 Color c = new Color(levelImg.getRGB(j, i));
                 map[i][j] = c.getRed();
             }
         }
     }
 
-    public int getTileWide(){
+    public int getTileWide() {
         return tileWide;
     }
 

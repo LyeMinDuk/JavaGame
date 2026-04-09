@@ -1,7 +1,5 @@
 package model.entity;
 
-import java.awt.Rectangle;
-
 import static util.PlayerStateIndex.*;
 
 public class PlayerModel extends EntityModel {

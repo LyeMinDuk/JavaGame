@@ -22,7 +22,7 @@ public class GameRenderer {
     private MapRenderer mapRenderer;
     private PlayerRenderer playerRenderer;
 
-    public GameRenderer(MapModel map, PlayerModel player, CameraModel camera){
+    public GameRenderer(MapModel map, PlayerModel player, CameraModel camera) {
         this.map = map;
         this.player = player;
         this.camera = camera;
@@ -38,12 +38,11 @@ public class GameRenderer {
         mapRenderer = new MapRenderer(tiles);
     }
 
-
-    public void update(){
+    public void update() {
         // playerRenderer.update(player);
     }
 
-    public void render(Graphics g){
+    public void render(Graphics g) {
         int xOffset = camera.getXOffset();
         mapRenderer.render(g, map, xOffset);
         // playerRenderer.render(g, player, xOffset);

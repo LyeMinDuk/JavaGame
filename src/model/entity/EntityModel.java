@@ -16,6 +16,13 @@ public abstract class EntityModel {
         hitbox = new Rectangle((int) x, (int) y, width, height);
     }
 
+    protected void syncHitbox() {
+        hitbox.x = (int) x;
+        hitbox.y = (int) y;
+        hitbox.width = width;
+        hitbox.height = height;
+    }
+
     public double getX() {
         return x;
     }
@@ -40,9 +47,10 @@ public abstract class EntityModel {
         return alive;
     }
 
-    public void move(int dx, int dy){
+    public void move(double dx, double dy) {
         this.x += dx;
         this.y += dy;
+        syncHitbox();
     }
 
     public void setAlive(boolean alive) {

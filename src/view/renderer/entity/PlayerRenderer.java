@@ -11,13 +11,17 @@ public class PlayerRenderer {
     private int lastState = -1;
 
     public PlayerRenderer(Animation idle, Animation run, Animation jump) {
-        this.idle = idle; this.run = run; this.jump = jump;
+        this.idle = idle;
+        this.run = run;
+        this.jump = jump;
     }
 
     public void update(PlayerModel player) {
         int state = player.getState();
         if (state != lastState) {
-            idle.reset(); run.reset(); jump.reset();
+            idle.reset();
+            run.reset();
+            jump.reset();
             lastState = state;
         }
 
@@ -27,13 +31,15 @@ public class PlayerRenderer {
             case JUMP -> jump.runAni();
         }
     }
-    public void render(Graphics g, PlayerModel player, int xOffset){
-        Animation a = switch(player.getState()){
+
+    public void render(Graphics g, PlayerModel player, int xOffset) {
+        Animation a = switch (player.getState()) {
             case RUN -> run;
             case JUMP -> jump;
             default -> idle;
         };
-        g.drawImage(a.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(), player.getHeight(), null);
+        g.drawImage(a.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(),
+                player.getHeight(), null);
     }
-    
+
 }
