@@ -38,8 +38,14 @@ public class PlayerRenderer {
             case JUMP -> jump;
             default -> idle;
         };
-        g.drawImage(a.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(),
-                player.getHeight(), null);
+        if (player.isFacingRight()) {
+            g.drawImage(a.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(),
+                    player.getHeight(), null);
+
+        } else {
+            g.drawImage(a.getCurFrame(), (int) player.getX() + player.getWidth() - xOffset, (int) player.getY(),
+                    -player.getWidth(), player.getHeight(), null);
+        }
     }
 
 }

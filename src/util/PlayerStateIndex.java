@@ -1,6 +1,5 @@
 package util;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerStateIndex {
@@ -11,7 +10,7 @@ public class PlayerStateIndex {
     public static final int FALL = 4;
     public static final int ATTACK = 5;
 
-    public static final Map<Integer, Integer> STATE_FRAME = Map.of(
+    public static final Map<Integer, Integer> PLAYER_FRAME = Map.of(
             IDLE, 5,
             RUN, 6,
             JUMP, 3,

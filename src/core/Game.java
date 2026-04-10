@@ -19,22 +19,22 @@ public class Game implements Runnable {
     private boolean running;
     private Thread gameThread;
 
-    private final InputController input;
-    private final PlayerModel player;
-    private final MapModel map;
-    private final CameraModel camera;
-    // private final PlayerController playerController;
-    private final WorldController worldController;
+    private InputController input;
+    private PlayerModel player;
+    private MapModel map;
+    private CameraModel camera;
+    private PlayerController playerController;
+    private WorldController worldController;
     private GameRenderer renderer;
 
     public Game() {
 
         map = new MapModel();
         camera = new CameraModel();
-        player = new PlayerModel(100, 100, (int) (32 * GameConfig.SCALE), (int) (32 * GameConfig.SCALE));
+        player = new PlayerModel(150, 150, (int) (64 * GameConfig.SCALE), (int) (40 * GameConfig.SCALE));
 
         input = new InputController();
-        // playerController = new PlayerController(input, 2.0, -8.0);
+        playerController = new PlayerController(input, 2.0, -1.0);
         worldController = new WorldController(map, camera);
 
         renderer = new GameRenderer(map, player, camera);
@@ -51,8 +51,9 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        // playerController.update(player);
+        playerController.update(player);
         worldController.update(player);
+        player.refreshState();
         renderer.update();
     }
 

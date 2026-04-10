@@ -4,6 +4,7 @@ import static util.PlayerStateIndex.*;
 
 public class PlayerModel extends EntityModel {
     private double dx, dy;
+    private boolean facingRight = true;
     private boolean moving = false;
     private boolean jumping = false;
     private boolean attacking = false;
@@ -17,30 +18,26 @@ public class PlayerModel extends EntityModel {
 
     }
 
-    public void requestJump() {
+    public void requestJump(double jumpPow) {
         if (!jumping) {
-            dy += 10;
+            dy += jumpPow;
             jumping = true;
         }
     }
 
     public void refreshState() {
-        if (hitting) {
+        if (hitting)
             state = HIT;
-        }
-        if (attacking) {
+        else if (attacking)
             state = ATTACK;
-        }
-        if (jumping) {
+        else if (jumping)
             state = JUMP;
-        } else if (falling) {
+        else if (falling)
             state = FALL;
-        }
-        if (moving) {
+        else if (moving)
             state = RUN;
-        } else {
+        else
             state = IDLE;
-        }
     }
 
     public double getDx() {
@@ -73,6 +70,14 @@ public class PlayerModel extends EntityModel {
 
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+
+    public void setFacingRight(boolean facingRight) {
+        this.facingRight = facingRight;
     }
 
     public int getState() {

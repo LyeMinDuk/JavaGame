@@ -12,6 +12,8 @@ import view.assets.Animation;
 import view.assets.ResourceManager;
 import view.renderer.entity.PlayerRenderer;
 import static util.AssetsPath.*;
+import static util.PlayerStateIndex.*;
+import static core.GameConfig.*;
 
 public class GameRenderer {
     private MapModel map;
@@ -27,6 +29,16 @@ public class GameRenderer {
         this.player = player;
         this.camera = camera;
 
+        loadMapTexture();
+
+        Animation idle = new Animation(ResourceManager.loadSprite(playerIdle, PLAYER_FRAME.get(IDLE), 64, 40), 24);
+        Animation run = new Animation(ResourceManager.loadSprite(playerRun, PLAYER_FRAME.get(RUN), 64, 40), 20);
+        Animation jump = new Animation(ResourceManager.loadSprite(playerJump, PLAYER_FRAME.get(JUMP), 64, 40), 40);
+
+        playerRenderer = new PlayerRenderer(idle, run, jump);
+    }
+
+    public void loadMapTexture() {
         BufferedImage outside = ResourceManager.loadImg("/outside_sprites.png");
 
         BufferedImage[] tiles = new BufferedImage[48];
@@ -39,12 +51,12 @@ public class GameRenderer {
     }
 
     public void update() {
-        // playerRenderer.update(player);
+        playerRenderer.update(player);
     }
 
     public void render(Graphics g) {
         int xOffset = camera.getXOffset();
         mapRenderer.render(g, map, xOffset);
-        // playerRenderer.render(g, player, xOffset);
+        playerRenderer.render(g, player, xOffset);
     }
 }
