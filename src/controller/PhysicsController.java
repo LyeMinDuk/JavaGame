@@ -3,12 +3,9 @@ package controller;
 import model.MapModel;
 import model.entity.PlayerModel;
 
-import static core.GameConfig.TILE_SIZE;
+import static core.GameConfig.*;
 
 public class PhysicsController {
-    private static final double GRAVITY = 0.05;
-    private static final double TERMINAL_VELOCITY = 3.5;
-
     public void update(PlayerModel player, MapModel map) {
         double startX = player.getX();
         double startY = player.getY();
