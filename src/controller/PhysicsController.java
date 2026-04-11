@@ -28,18 +28,21 @@ public class PhysicsController {
 
         player.move(resolvedDx, resolvedDy);
         player.setDx(resolvedDx);
-        player.setDy(resolvedDy);
 
-        if (onGround && player.getDy() >= 0) {
+        if (onGround && resolvedDy >= 0) {
             player.setDy(0);
             player.setJumping(false);
             player.setFalling(false);
-        } else if (player.getDy() < 0) {
+        } else if (resolvedDy < 0) {
+            player.setDy(resolvedDy);
             player.setJumping(true);
             player.setFalling(false);
-        } else if (player.getDy() > 0) {
+        } else if (resolvedDy > 0) {
+            player.setDy(resolvedDy);
             player.setJumping(false);
             player.setFalling(true);
+        } else {
+            player.setDy(resolvedDy);
         }
     }
 
