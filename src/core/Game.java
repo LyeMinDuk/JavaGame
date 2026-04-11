@@ -31,7 +31,7 @@ public class Game implements Runnable {
 
         map = new MapModel();
         camera = new CameraModel();
-        player = new PlayerModel(150, 150, (int) (64 * GameConfig.SCALE), (int) (40 * GameConfig.SCALE));
+        player = new PlayerModel(150, 150, (int) (64 * GameConfig.SCALE), (int) (40 * GameConfig.SCALE), 100);
 
         input = new InputController();
         playerController = new PlayerController(input, 2.0, -1.0);

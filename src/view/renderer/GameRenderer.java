@@ -1,7 +1,5 @@
 package view.renderer;
 
-import static util.AssetsPath.playerAttack;
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -11,6 +9,8 @@ import model.entity.PlayerModel;
 import view.assets.Animation;
 import view.assets.ResourceManager;
 import view.renderer.entity.PlayerRenderer;
+import view.renderer.hud.HealthBarRenderer;
+
 import static util.AssetsPath.*;
 import static util.PlayerStateIndex.*;
 import static core.GameConfig.*;
@@ -20,22 +20,35 @@ public class GameRenderer {
     private PlayerModel player;
     private CameraModel camera;
 
-    private ResourceManager assets = new ResourceManager();
     private MapRenderer mapRenderer;
     private PlayerRenderer playerRenderer;
+    private HealthBarRenderer healthBarRenderer;
 
     public GameRenderer(MapModel map, PlayerModel player, CameraModel camera) {
         this.map = map;
         this.player = player;
         this.camera = camera;
-
+        healthBarRenderer = new HealthBarRenderer();
         loadMapTexture();
 
-        Animation idle = new Animation(ResourceManager.loadSprite(playerIdle, PLAYER_FRAME.get(IDLE), 64, 40), 24);
-        Animation run = new Animation(ResourceManager.loadSprite(playerRun, PLAYER_FRAME.get(RUN), 64, 40), 20);
-        Animation jump = new Animation(ResourceManager.loadSprite(playerJump, PLAYER_FRAME.get(JUMP), 64, 40), 40);
+        loadPlayerAnimation();
+    }
 
-        playerRenderer = new PlayerRenderer(idle, run, jump);
+    private void loadPlayerAnimation() {
+        Animation[] playerAnimation = new Animation[MAX_STATE];
+        playerAnimation[IDLE] = new Animation(ResourceManager.loadSprite(playerIdle, PLAYER_FRAME.get(IDLE), 64, 40),
+                24);
+        playerAnimation[RUN] = new Animation(ResourceManager.loadSprite(playerRun, PLAYER_FRAME.get(RUN), 64, 40), 20);
+        playerAnimation[JUMP] = new Animation(ResourceManager.loadSprite(playerJump, PLAYER_FRAME.get(JUMP), 64, 40),
+                40);
+        playerAnimation[HURT] = new Animation(ResourceManager.loadSprite(playerHit, PLAYER_FRAME.get(HURT), 64, 40),
+                30);
+        playerAnimation[FALL] = new Animation(ResourceManager.loadSprite(playerFall, PLAYER_FRAME.get(FALL), 64, 40),
+                30);
+        playerAnimation[ATTACK] = new Animation(
+                ResourceManager.loadSprite(playerAttack, PLAYER_FRAME.get(ATTACK), 64, 40), 18);
+
+        playerRenderer = new PlayerRenderer(playerAnimation);
     }
 
     public void loadMapTexture() {
@@ -52,11 +65,13 @@ public class GameRenderer {
 
     public void update() {
         playerRenderer.update(player);
+        healthBarRenderer.update(player);
     }
 
     public void render(Graphics g) {
         int xOffset = camera.getXOffset();
         mapRenderer.render(g, map, xOffset);
         playerRenderer.render(g, player, xOffset);
+        healthBarRenderer.render(g, player);
     }
 }

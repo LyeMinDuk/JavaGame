@@ -7,43 +7,32 @@ import static util.PlayerStateIndex.*;
 import java.awt.Graphics;
 
 public class PlayerRenderer {
-    private Animation idle, run, jump;
+    private Animation[] aniState = new Animation[MAX_STATE];
     private int lastState = -1;
 
-    public PlayerRenderer(Animation idle, Animation run, Animation jump) {
-        this.idle = idle;
-        this.run = run;
-        this.jump = jump;
+    public PlayerRenderer(Animation[] aniState) {
+        this.aniState = aniState;
     }
 
     public void update(PlayerModel player) {
         int state = player.getState();
         if (state != lastState) {
-            idle.reset();
-            run.reset();
-            jump.reset();
+            aniState[state].reset();
             lastState = state;
         }
 
-        switch (state) {
-            case IDLE -> idle.runAni();
-            case RUN -> run.runAni();
-            case JUMP -> jump.runAni();
-        }
+        Animation curAnimation = aniState[state];
+        curAnimation.runAni();
     }
 
     public void render(Graphics g, PlayerModel player, int xOffset) {
-        Animation a = switch (player.getState()) {
-            case RUN -> run;
-            case JUMP -> jump;
-            default -> idle;
-        };
+        Animation curAnimation = aniState[player.getState()];
         if (player.isFacingRight()) {
-            g.drawImage(a.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(),
+            g.drawImage(curAnimation.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(), player.getWidth(),
                     player.getHeight(), null);
 
         } else {
-            g.drawImage(a.getCurFrame(), (int) player.getX() + player.getWidth() - xOffset, (int) player.getY(),
+            g.drawImage(curAnimation.getCurFrame(), (int) player.getX() + player.getWidth() - xOffset, (int) player.getY(),
                     -player.getWidth(), player.getHeight(), null);
         }
     }
