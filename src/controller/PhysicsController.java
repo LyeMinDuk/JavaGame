@@ -27,7 +27,7 @@ public class PhysicsController {
         boolean onGround = isSolidBelow(player, map, x, y);
 
         player.move(resolvedDx, resolvedDy);
-        player.setDx(intendedDx);
+        player.setDx(resolvedDx);
         player.setDy(resolvedDy);
 
         if (onGround && player.getDy() >= 0) {
