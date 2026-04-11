@@ -13,18 +13,22 @@ public class PhysicsController {
         double startX = player.getX();
         double startY = player.getY();
 
-        double dx = player.getDx();
-        double dy = player.getDy() + GRAVITY;
-        if (dy > TERMINAL_VELOCITY) {
-            dy = TERMINAL_VELOCITY;
+        double intendedDx = player.getDx();
+        double velocityY = player.getDy() + GRAVITY;
+        if (velocityY > TERMINAL_VELOCITY) {
+            velocityY = TERMINAL_VELOCITY;
         }
 
-        double x = resolveX(player, map, dx);
-        double y = resolveY(player, map, dy);
+        double resolvedDx = resolveX(player, map, intendedDx);
+        double resolvedDy = resolveY(player, map, startX + resolvedDx, velocityY);
 
+        double x = startX + resolvedDx;
+        double y = startY + resolvedDy;
         boolean onGround = isSolidBelow(player, map, x, y);
 
-        player.move(x - startX, y - startY);
+        player.move(resolvedDx, resolvedDy);
+        player.setDx(intendedDx);
+        player.setDy(resolvedDy);
 
         if (onGround && player.getDy() >= 0) {
             player.setDy(0);
@@ -61,12 +65,10 @@ public class PhysicsController {
             }
         }
 
-        player.setDx(dx);
-        return x + dx;
+        return dx;
     }
 
-    private double resolveY(PlayerModel player, MapModel map, double dy) {
-        double x = player.getX() + player.getDx();
+    private double resolveY(PlayerModel player, MapModel map, double x, double dy) {
         double y = player.getY();
 
         if (dy > 0) {
@@ -87,8 +89,7 @@ public class PhysicsController {
             }
         }
 
-        player.setDy(dy);
-        return y + dy;
+        return dy;
     }
 
     private boolean isSolidBelow(PlayerModel player, MapModel map, double x, double y) {

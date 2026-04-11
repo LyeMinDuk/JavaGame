@@ -8,6 +8,8 @@ import static core.GameConfig.*;
 import static util.AssetsPath.*;
 
 public class MapModel {
+    private static final int AIR_TILE = 11;
+
     private int[][] map;
     private BufferedImage levelImg;
     private int tileWide;
@@ -47,7 +49,7 @@ public class MapModel {
     }
 
     public boolean isSolidTile(int tileIdx) {
-        return tileIdx != 11;
+        return tileIdx != AIR_TILE;
     }
 
     public boolean isSolidAtWorld(double worldX, double worldY) {
