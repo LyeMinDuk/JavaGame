@@ -80,6 +80,14 @@ public class PlayerModel extends EntityModel {
         this.facingRight = facingRight;
     }
 
+    public boolean isFalling() {
+        return falling;
+    }
+
+    public void setFalling(boolean falling) {
+        this.falling = falling;
+    }
+
     public int getState() {
         return state;
     }
