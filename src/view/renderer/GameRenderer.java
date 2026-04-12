@@ -28,7 +28,7 @@ public class GameRenderer {
         this.map = map;
         this.player = player;
         this.camera = camera;
-        healthBarRenderer = new HealthBarRenderer();
+        // healthBarRenderer = new HealthBarRenderer();
         loadMapTexture();
 
         loadPlayerAnimation();
@@ -65,13 +65,12 @@ public class GameRenderer {
 
     public void update() {
         playerRenderer.update(player);
-        healthBarRenderer.update(player);
     }
 
     public void render(Graphics g) {
         int xOffset = camera.getXOffset();
         mapRenderer.render(g, map, xOffset);
         playerRenderer.render(g, player, xOffset);
-        healthBarRenderer.render(g, player);
+        // healthBarRenderer.render(g, player);
     }
 }

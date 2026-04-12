@@ -34,7 +34,7 @@ public class Game implements Runnable {
         player = new PlayerModel(150, 150, (int) (64 * GameConfig.SCALE), (int) (40 * GameConfig.SCALE), 100);
 
         input = new InputController();
-        playerController = new PlayerController(input, 2.0, -1.0);
+        playerController = new PlayerController(input, 3.0, -10.0);
         worldController = new WorldController(map, camera);
 
         renderer = new GameRenderer(map, player, camera);
@@ -53,7 +53,6 @@ public class Game implements Runnable {
     public void update() {
         playerController.update(player);
         worldController.update(player);
-        player.refreshState();
         renderer.update();
     }
 

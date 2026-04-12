@@ -15,12 +15,12 @@ public class PlayerModel extends EntityModel {
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
-        curHealth = curHealth - 500;
+
     }
 
     public void requestJump(double jumpPow) {
         if (!jumping) {
-            dy += jumpPow;
+            dy = jumpPow;
             jumping = true;
         }
     }

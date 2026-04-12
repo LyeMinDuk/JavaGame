@@ -7,14 +7,16 @@ import model.entity.PlayerModel;
 public class WorldController {
     private MapModel map;
     private CameraModel camera;
+    private final PhysicsController physics;
 
     public WorldController(MapModel map, CameraModel camera) {
         this.map = map;
         this.camera = camera;
+        this.physics = new PhysicsController(map);
     }
 
     public void update(PlayerModel player) {
-        player.move((int) player.getDx(), (int) player.getDy());
+        physics.updatePlayer(player);
         player.refreshState();
         camera.update((int) player.getX(), map.getTileWide());
     }

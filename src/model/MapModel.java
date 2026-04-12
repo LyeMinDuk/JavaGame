@@ -17,7 +17,7 @@ public class MapModel {
     }
 
     private void initLevel() {
-        levelImg = ResourceManager.loadImg(levelMap[0]);
+        levelImg = ResourceManager.loadImg(levelMap[1]);
         map = new int[levelImg.getHeight()][levelImg.getWidth()];
     }
 
@@ -33,6 +33,10 @@ public class MapModel {
 
     public int getTileWide() {
         return tileWide;
+    }
+
+    public int getTileHeight() {
+        return map.length;
     }
 
     public int getTile(int x, int y) {

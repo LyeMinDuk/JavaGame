@@ -27,6 +27,12 @@ public abstract class EntityModel {
         hitbox.height = height;
     }
 
+    public void move(double dx, double dy) {
+        this.x += dx;
+        this.y += dy;
+        syncHitbox();
+    }
+
     public int getCurHealth() {
         return curHealth;
     }
@@ -57,12 +63,6 @@ public abstract class EntityModel {
 
     public boolean isAlive() {
         return alive;
-    }
-
-    public void move(double dx, double dy) {
-        this.x += dx;
-        this.y += dy;
-        syncHitbox();
     }
 
     public void setAlive(boolean alive) {

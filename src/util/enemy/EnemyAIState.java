@@ -6,6 +6,6 @@ public class EnemyAIState {
     public static final int CHASE = 2;
     public static final int ATTACK = 3;
     public static final int HURT = 4;
-    public static final int DEAD = 5;
+    public static final int DIE = 5;
 
 }

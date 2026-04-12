@@ -7,7 +7,7 @@ import static core.GameConfig.SCALE;
 import static util.enemy.EnemyAIState.*;
 
 public abstract class EnemyModel extends EntityModel {
-    private int damage;
+    protected int damage;
     protected double dx, dy;
 
     protected boolean facingRight = true;
@@ -38,18 +38,9 @@ public abstract class EnemyModel extends EntityModel {
         curHealth = Math.max(0, health);
         if (curHealth == 0) {
             alive = false;
-            state = DEAD;
+            state = DIE;
             dx = dy = 0;
         }
-    }
-
-    public void setPatrolRange(double left, double right) {
-        patrolLeftX = Math.min(left, right);
-        patrolRightX = Math.max(left, right);
-    }
-
-    public void move() {
-        move(dx, dy);
     }
 
     public abstract void updateAI(PlayerModel player);
@@ -90,10 +81,6 @@ public abstract class EnemyModel extends EntityModel {
         return patrolRightX;
     }
 
-    public double getMoveSpeed() {
-        return moveSpeed;
-    }
-
     public void setDamage(int damage) {
         this.damage = Math.max(0, damage);
     }
@@ -114,7 +101,4 @@ public abstract class EnemyModel extends EntityModel {
         this.state = state;
     }
 
-    public void setMoveSpeed(double moveSpeed) {
-        this.moveSpeed = moveSpeed;
-    }
 }

@@ -22,18 +22,15 @@ public class HealthBarRenderer {
         bgImg = ResourceManager.loadImg(heathBarBG);
     }
 
-    public void update(PlayerModel player) {
-
-    }
-
     public void render(Graphics g, PlayerModel player) {
         double percent = (double) player.getCurHealth() / player.getMaxHealth();
         percent = Math.max(0, Math.min(1, percent));
-        int leftPad = 6;
-        int drawWidth = (int) (percent * (width - leftPad));
-
+        int pad = 4;
+        int drawPad = (int) Math.round(1 - percent) * pad;
+        int drawWidth = (int) (percent * width);
+        System.out.println(x + ' ' + drawPad);
         g.drawImage(bgImg, x, y, width, height, null);
-        g.drawImage(fillImg, x + leftPad, y, drawWidth, height, null);
+        g.drawImage(fillImg, x + drawPad, y, drawWidth, height, null);
         g.drawImage(frameImg, x, y, width, height, null);
     }
 }

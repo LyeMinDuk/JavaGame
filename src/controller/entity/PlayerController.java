@@ -6,12 +6,12 @@ import model.entity.PlayerModel;
 public class PlayerController {
     private final InputController input;
     private final double speed;
-    private final double jumpVel;
+    private final double jumpPow;
 
-    public PlayerController(InputController input, double speed, double jumpVel) {
+    public PlayerController(InputController input, double speed, double jumpPow) {
         this.input = input;
         this.speed = speed;
-        this.jumpVel = jumpVel;
+        this.jumpPow = jumpPow;
     }
 
     public void update(PlayerModel player) {
@@ -32,8 +32,8 @@ public class PlayerController {
         player.setDx(dx);
         player.setMoving(moving);
 
-        if (input.isJump()) {
-            player.requestJump(jumpVel);
+        if (input.isJump() && !player.isJumping() && !player.isFalling()) {
+            player.requestJump(jumpPow);
         }
     }
 }
