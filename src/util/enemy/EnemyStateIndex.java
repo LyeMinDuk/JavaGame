@@ -20,6 +20,7 @@ public final class EnemyStateIndex {
                 ATTACK2, 9,
                 HURT, 5,
                 DIE, 13);
+                
     }
 
 }
