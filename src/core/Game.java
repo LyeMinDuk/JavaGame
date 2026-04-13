@@ -37,7 +37,7 @@ public class Game implements Runnable {
         playerController = new PlayerController(input, 3.0, -10.0);
         worldController = new WorldController(map, camera);
 
-        renderer = new GameRenderer(map, player, camera);
+        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController());
         gamePanel = new GamePanel(this, input);
         gameWindow = new GameWindow(gamePanel);
 

@@ -32,7 +32,7 @@ public class PlayerController {
         player.setDx(dx);
         player.setMoving(moving);
 
-        if (input.isJump() && !player.isJumping() && !player.isFalling()) {
+        if (input.isJump() && !player.isJumping()) {
             player.requestJump(jumpPow);
         }
     }

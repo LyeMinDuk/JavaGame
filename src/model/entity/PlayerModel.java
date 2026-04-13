@@ -9,7 +9,6 @@ public class PlayerModel extends EntityModel {
     private boolean jumping = false;
     private boolean attacking = false;
     private boolean hitting = false;
-    private boolean falling = false;
 
     private int state = IDLE;
 
@@ -32,8 +31,6 @@ public class PlayerModel extends EntityModel {
             state = ATTACK;
         else if (jumping)
             state = JUMP;
-        else if (falling)
-            state = FALL;
         else if (moving)
             state = RUN;
         else
@@ -80,10 +77,6 @@ public class PlayerModel extends EntityModel {
         this.hitting = hitting;
     }
 
-    public void setFalling(boolean falling) {
-        this.falling = falling;
-    }
-
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
@@ -94,10 +87,6 @@ public class PlayerModel extends EntityModel {
 
     public boolean isHitting() {
         return hitting;
-    }
-
-    public boolean isFalling() {
-        return falling;
     }
 
     public boolean isJumping() {

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public final class EnemyStateIndex {
 
-    public class Skeleton {
+    public static class Skeleton {
         public static final int MAX_STATE = 6;
         public static final int IDLE = 0;
         public static final int WALK = 1;

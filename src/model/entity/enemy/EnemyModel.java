@@ -6,6 +6,8 @@ import model.entity.PlayerModel;
 import static core.GameConfig.SCALE;
 import static util.enemy.EnemyAIState.*;
 
+import java.awt.Graphics;
+
 public abstract class EnemyModel extends EntityModel {
     protected int damage;
     protected double dx, dy;

@@ -27,7 +27,6 @@ public class PhysicsController {
         moveY(player, player.getDy());
         boolean onGroundAfter = isOnGround(player);
 
-        player.setFalling(!onGroundAfter && player.getDy() > 0);
         if (onGroundAfter) {
             player.setJumping(false);
             player.setDy(0);

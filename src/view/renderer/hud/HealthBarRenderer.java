@@ -28,7 +28,6 @@ public class HealthBarRenderer {
         int pad = 4;
         int drawPad = (int) Math.round(1 - percent) * pad;
         int drawWidth = (int) (percent * width);
-        System.out.println(x + ' ' + drawPad);
         g.drawImage(bgImg, x, y, width, height, null);
         g.drawImage(fillImg, x + drawPad, y, drawWidth, height, null);
         g.drawImage(frameImg, x, y, width, height, null);

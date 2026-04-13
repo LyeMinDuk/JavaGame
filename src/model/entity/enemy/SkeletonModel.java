@@ -23,10 +23,10 @@ public class SkeletonModel extends EnemyModel {
             dx = dy = 0;
             return;
         }
-
+        
         double distX = player.getX() - x;
         double absX = Math.abs(distX);
-
+        
         if (distX >= 0) {
             facingRight = true;
         } else {
@@ -44,7 +44,6 @@ public class SkeletonModel extends EnemyModel {
         } else {
             patrol();
         }
-
         move(dx, dy);
     }
 
