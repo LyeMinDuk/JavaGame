@@ -1,33 +1,32 @@
 package model.entity;
 
 import static util.PlayerStateIndex.*;
+import static core.GameConfig.*;
 
 public class PlayerModel extends EntityModel {
-    private double dx, dy;
+    private int aniIndex = -1;
     private boolean facingRight = true;
     private boolean moving = false;
     private boolean jumping = false;
-    private boolean attacking = false;
-    private boolean hitting = false;
+    private boolean atking = false;
+    private boolean hitted = false;
 
     private int state = IDLE;
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
-
+        setHitBox((int) (20 * SCALE), (int) (3 * SCALE), (int) (21 * SCALE), (int) (29 * SCALE));
     }
 
     public void requestJump(double jumpPow) {
-        if (!jumping) {
+        if (!jumping && onGround) {
             dy = jumpPow;
             jumping = true;
         }
     }
 
     public void refreshState() {
-        if (hitting)
-            state = HURT;
-        else if (attacking)
+        if (atking)
             state = ATTACK;
         else if (jumping)
             state = JUMP;
@@ -37,56 +36,46 @@ public class PlayerModel extends EntityModel {
             state = IDLE;
     }
 
-    public void takeDamage(int amount){
-        if(amount <= 0 || !alive){
+    public void takeDamage(int amount) {
+        if (amount <= 0 || !alive) {
             return;
         }
         curHealth = Math.max(curHealth - amount, 0);
-        if(curHealth == 0){
+        if (curHealth == 0) {
             alive = false;
         }
-        hitting = true;
-
     }
 
-    public double getDx() {
-        return dx;
+    public int getAniIndex() {
+        return aniIndex;
     }
 
-    public double getDy() {
-        return dy;
-    }
-
-    public void setDx(double dx) {
-        this.dx = dx;
-    }
-
-    public void setDy(double dy) {
-        this.dy = dy;
+    public void setAniIndex(int aniIndex) {
+        this.aniIndex = aniIndex;
     }
 
     public boolean isMoving() {
         return moving;
     }
 
-    public void setAttacking(boolean attacking) {
-        this.attacking = attacking;
-    }
-
-    public void setHitting(boolean hitting) {
-        this.hitting = hitting;
-    }
-
     public void setMoving(boolean moving) {
         this.moving = moving;
     }
 
-    public boolean isAttacking() {
-        return attacking;
+    public boolean isHitted() {
+        return hitted;
     }
 
-    public boolean isHitting() {
-        return hitting;
+    public void setHitted(boolean hitted) {
+        this.hitted = hitted;
+    }
+
+    public boolean isAtking() {
+        return atking;
+    }
+
+    public void setAtking(boolean atking) {
+        this.atking = atking;
     }
 
     public boolean isJumping() {

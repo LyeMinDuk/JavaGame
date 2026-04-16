@@ -10,6 +10,7 @@ import model.entity.PlayerModel;
 import view.assets.ResourceManager;
 import view.renderer.entity.EnemyRenderer;
 import view.renderer.entity.PlayerRenderer;
+import view.renderer.entity.enemy.SharkRenderer;
 import view.renderer.entity.enemy.SkeletonRenderer;
 import view.renderer.hud.HealthBarRenderer;
 
@@ -34,7 +35,7 @@ public class GameRenderer {
 
         loadPlayerAnimation();
 
-        enemyRenderer = new SkeletonRenderer();
+        enemyRenderer = new SharkRenderer();
     }
 
     private void loadPlayerAnimation() {
@@ -55,6 +56,7 @@ public class GameRenderer {
 
     public void update() {
         playerRenderer.update(player);
+        enemyRenderer.updateAll(enemyController.getListEnemy());
     }
 
     public void render(Graphics g) {

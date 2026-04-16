@@ -6,73 +6,77 @@ import model.entity.PlayerModel;
 import static core.GameConfig.SCALE;
 import static util.enemy.EnemyAIState.*;
 
-import java.awt.Graphics;
-
 public abstract class EnemyModel extends EntityModel {
     protected int damage;
-    protected double dx, dy;
 
     protected boolean facingRight = true;
-    protected int state = PATROL;
+    protected int aiState = PATROL;
+    protected int aniState = IDLE;
+    protected int lastState = -1;
+    protected long hurtUntil = 0;
+    protected long dieUntil = 0;
+    private static final long HURT_DURATION = 800; // ms, chỉnh theo tốc độ animation HURT của bạn
+    private static final long DIE_DURATION = 1000;
 
     protected double patrolLeftX;
     protected double patrolRightX;
-    protected double moveSpeed = 1.0;
+    protected double moveSpeed = 1.0 * SCALE;
 
     public EnemyModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth);
         this.damage = damage;
-        this.patrolLeftX = x - (100 * SCALE);
-        this.patrolRightX = x + (100 * SCALE);
     }
 
     public void takeDamage(int amount) {
-        if (!alive) {
+        if (curHealth <= 0) {
             return;
         }
-        setHealth(curHealth - amount);
-        if (alive) {
-            state = HURT;
-        }
-    }
-
-    public void setHealth(int health) {
-        curHealth = Math.max(0, health);
+        curHealth = Math.max(0, curHealth - amount);
         if (curHealth == 0) {
-            alive = false;
-            state = DIE;
-            dx = dy = 0;
+            dieUntil = System.currentTimeMillis() + DIE_DURATION;
+
+            aiState = DIE;
+        } else {
+            aiState = HURT;
+            hurtUntil = System.currentTimeMillis() + HURT_DURATION;
         }
     }
 
-    public abstract void updateAI(PlayerModel player);
+    public abstract void updateAi(PlayerModel player);
 
-    public int getHealth() {
-        return curHealth;
+    public abstract void refreshState();
+
+    public boolean canRemove() {
+        return curHealth == 0 && System.currentTimeMillis() > dieUntil;
     }
 
-    public int getMaxHealth() {
-        return maxHealth;
+    @Override
+    public boolean isAlive() {
+        return getCurHealth() > 0 || System.currentTimeMillis() <= dieUntil;
     }
 
     public int getDamage() {
         return damage;
     }
 
-    public double getDx() {
-        return dx;
-    }
-
-    public double getDy() {
-        return dy;
-    }
-
     public boolean isFacingRight() {
         return facingRight;
     }
 
-    public int getState() {
-        return state;
+    public void setLastState(int lastState) {
+        this.lastState = lastState;
+    }
+
+    public int getLastState() {
+        return lastState;
+    }
+
+    public int getAiState() {
+        return aiState;
+    }
+
+    public int getAniState() {
+        return aniState;
     }
 
     public double getPatrolLeftX() {
@@ -87,20 +91,16 @@ public abstract class EnemyModel extends EntityModel {
         this.damage = Math.max(0, damage);
     }
 
-    public void setDx(double dx) {
-        this.dx = dx;
-    }
-
-    public void setDy(double dy) {
-        this.dy = dy;
-    }
-
     public void setFacingRight(boolean facingRight) {
         this.facingRight = facingRight;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setAiState(int aiState) {
+        this.aiState = aiState;
+    }
+
+    public void setAniState(int aniState) {
+        this.aniState = aniState;
     }
 
 }

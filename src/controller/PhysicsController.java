@@ -1,93 +1,146 @@
 package controller;
 
-import java.awt.Rectangle;
-
 import model.MapModel;
+import model.entity.EntityModel;
 import model.entity.PlayerModel;
+import model.entity.enemy.SharkModel;
+
 import static core.GameConfig.*;
 
+import java.awt.Rectangle;
+
 public class PhysicsController {
-    private MapModel map;
-    private double gravity = 0.2 * SCALE;
-    private double maxFallSpeed = 3.0 * SCALE;
+    private final MapModel map;
 
     public PhysicsController(MapModel map) {
         this.map = map;
     }
 
-    public void updatePlayer(PlayerModel player) {
-        double dy = player.getDy() + gravity;
-        if (dy > maxFallSpeed) {
-            dy = maxFallSpeed;
-        }
+    public void apply(EntityModel entity) {
+        applyGravity(entity);
+        moveY(entity); // Y trước để rơi/nhảy ổn định kiểu platformer
+        moveX(entity);
+        updateOnGround(entity);
+        
+    }
 
-        player.setDy(dy);
-        moveX(player, player.getDx());
-        boolean onGroundBefore = isOnGround(player);
-        moveY(player, player.getDy());
-        boolean onGroundAfter = isOnGround(player);
-
-        if (onGroundAfter) {
-            player.setJumping(false);
-            player.setDy(0);
-        } else if (!onGroundBefore && player.getDy() < 0) {
-            player.setJumping(true);
+    private void applyGravity(EntityModel entity) {
+        if (!entity.isOnGround()) {
+            double dy = entity.getDy() + GRAVITY;
+            if (dy > MAX_FALL_SPEED)
+                dy = MAX_FALL_SPEED;
+            entity.setDy(dy);
         }
     }
 
-    private void moveX(PlayerModel player, double dx) {
+    private void moveX(EntityModel e) {
+        double dx = e.getDx();
         if (dx == 0)
             return;
-        Rectangle hitBox = player.getHitbox();
 
-        Rectangle next = new Rectangle((int) (player.getX() + dx), hitBox.y, hitBox.width, hitBox.height);
-        if (!collide(next)) {
-            player.move(dx, 0);
+        Rectangle hb = e.getHitbox();
+        int nextX = (int) (hb.x + dx);
+
+        if (canMove(nextX, hb.y, hb.width, hb.height, map)) {
+            e.move(dx, 0);
             return;
         }
-        player.setDx(0);
+
+        // snap sát tường gần nhất, không đẩy xa
+        int newHitboxX = getEntityXNextToWall(hb, dx);
+        e.setPosition(newHitboxX - e.getHbOffsetX(), e.getY());
+        e.setDx(0);
+
     }
 
-    private void moveY(PlayerModel player, double dy) {
+    private void moveY(EntityModel e) {
+        double dy = e.getDy();
         if (dy == 0)
             return;
-        Rectangle hitBox = player.getHitbox();
 
-        Rectangle next = new Rectangle(hitBox.x, (int) (player.getY() + dy), hitBox.width, hitBox.height);
-        if (!collide(next)) {
-            player.move(0, dy);
+        Rectangle hb = e.getHitbox();
+        int nextY = (int) (hb.y + dy);
+
+        if (canMove(hb.x, nextY, hb.width, hb.height, map)) {
+            e.move(0, dy);
             return;
         }
-        player.setDy(0);
-    }
 
-    private boolean isOnGround(PlayerModel player) {
-        Rectangle hitBox = player.getHitbox();
-        Rectangle temp = new Rectangle(hitBox.x, hitBox.y + hitBox.height, hitBox.width, 1);
-        return collide(temp);
-    }
+        // snap sát trần/sàn gần nhất
+        int newHitboxY = getEntityYAboveFloor(hb, dy);
+        e.setPosition(e.getX(), newHitboxY - e.getHbOffsetY());
 
-    private boolean collide(Rectangle hitBox) {
-        int leftTile = hitBox.x / TILE_SIZE;
-        int rightTile = (hitBox.x + hitBox.width - 1) / TILE_SIZE;
-        int topTile = hitBox.y / TILE_SIZE;
-        int bottomTile = (hitBox.y + hitBox.height - 1) / TILE_SIZE;
-
-        for (int i = topTile; i <= bottomTile; i++) {
-            for (int j = leftTile; j <= rightTile; j++) {
-                if (isSolid(j, i))
-                    return true;
-            }
+        if (dy > 0) { // rơi xuống sàn
+            e.setDy(0);
         }
-        return false;
     }
 
-    private boolean isSolid(int x, int y) {
-        if (x < 0 || y < 0 || x >= map.getTileWide() || y >= map.getTileHeight()) {
+    private void updateOnGround(EntityModel entity) {
+        boolean onGround = isOnGround(entity);
+        entity.setOnGround(onGround);
+
+        if (onGround && entity.getDy() > 0) {
+            entity.setDy(0);
+
+        }
+        if (entity instanceof PlayerModel p) {
+            p.setJumping(!onGround);
+        }
+        // System.out.println("onGround: " + onGround + ", currentY: " + entity.getY());
+    }
+
+    private boolean isOnGround(EntityModel e) {
+        Rectangle hb = e.getHitbox();
+        int inset = 2;
+        return !canMove(hb.x + inset, hb.y + hb.height, hb.width, 1, map);
+    }
+
+    // ===== Snap helpers (mượt, sát mép tile) =====
+    private int getEntityXNextToWall(Rectangle hb, double xSpeed) {
+        int currentTile = hb.x / TILE_SIZE;
+
+        if (xSpeed > 0) { // sang phải: đặt cạnh phải hb sát cạnh trái tile cản
+            int tileXPos = (currentTile + 1) * TILE_SIZE;
+            return tileXPos - hb.width;
+        } else { // sang trái: đặt cạnh trái hb sát cạnh phải tile cản
+            return currentTile * TILE_SIZE;
+        }
+    }
+
+    private int getEntityYAboveFloor(Rectangle hb, double airSpeed) {
+        int currentTile = hb.y / TILE_SIZE;
+
+        if (airSpeed > 0) { // rơi: đặt đáy hb sát đỉnh tile sàn
+            int tileYPos = (currentTile + 1) * TILE_SIZE;
+            return tileYPos - hb.height;
+        } else { // nhảy: đặt đỉnh hb sát đáy tile trần
+            return currentTile * TILE_SIZE;
+        }
+    }
+
+    public static boolean canMove(int x, int y, int width, int height, MapModel map) {
+        return !isSolid(x, y, map)
+                && !isSolid(x + width - 1, y, map)
+                && !isSolid(x + width - 1, y + height - 1, map)
+                && !isSolid(x, y + height - 1, map);
+    }
+
+    private static boolean isSolid(int x, int y, MapModel map) {
+        int maxX = map.getTileWide() * TILE_SIZE;
+        int maxY = map.getTileHeight() * TILE_SIZE;
+
+        if (x < 0 || x >= maxX)
             return true;
-        }
+        if (y < 0 || y >= maxY)
+            return true;
 
-        int tileIndex = map.getTile(x, y);
-        return tileIndex != 11;
+        int tileX = x / TILE_SIZE;
+        int tileY = y / TILE_SIZE;
+        return isTileSolid(tileX, tileY, map);
+    }
+
+    public static boolean isTileSolid(int x, int y, MapModel map) {
+        int idx = map.getTile(x, y);
+        return idx != 11;
     }
 }

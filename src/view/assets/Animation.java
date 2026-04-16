@@ -7,10 +7,12 @@ public class Animation {
     private int speed;
     private int tick;
     private int index;
+    private boolean loop;
 
-    public Animation(BufferedImage[] frames, int speed) {
+    public Animation(BufferedImage[] frames, int speed, boolean loop) {
         this.frames = frames;
         this.speed = speed;
+        this.loop = loop;
     }
 
     public void reset() {
@@ -23,12 +25,28 @@ public class Animation {
             tick = 0;
             index++;
             if (index >= frames.length) {
-                index = 0;
+                if (loop) {
+                    index = 0;
+                } else {
+                    index = frames.length - 1;
+                }
             }
         }
     }
 
     public BufferedImage getCurFrame() {
         return frames[index];
+    }
+
+    public int getFrameIdx() {
+        return index;
+    }
+
+    public boolean isLastFrame() {
+        return index == frames.length - 1;
+    }
+
+    public boolean isFinished() {
+        return !loop && index == frames.length - 1;
     }
 }

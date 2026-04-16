@@ -8,7 +8,8 @@ import view.assets.Animation;
 import view.assets.ResourceManager;
 import view.renderer.entity.EnemyRenderer;
 
-import static util.enemy.EnemyStateIndex.Skeleton.*;
+import static util.enemy.EnemyStateIndex.Shark.*;
+import static view.renderer.entity.EntityRenderer.drawHB;
 import static util.AssetsPath.*;
 import static core.GameConfig.*;
 
@@ -21,21 +22,22 @@ public class SkeletonRenderer extends EnemyRenderer {
     }
 
     private void loadAnimation() {
-        aniState[IDLE] = new Animation(ResourceManager.loadSprite(whiteSkeletonIdle, SKELETON_FRAME.get(IDLE), 96, 64),
-                24);
-        aniState[HURT] = new Animation(ResourceManager.loadSprite(whiteSkeletonHurt, SKELETON_FRAME.get(HURT), 96, 64),
-                24);
-        aniState[WALK] = new Animation(ResourceManager.loadSprite(whiteSkeletonWalk, SKELETON_FRAME.get(WALK), 96, 64),
-                24);
-        aniState[DIE] = new Animation(ResourceManager.loadSprite(whiteSkeletonDie, SKELETON_FRAME.get(DIE), 96, 64),
-                24);
-        aniState[ATTACK1] = new Animation(
-                ResourceManager.loadSprite(whiteSkeletonAttack1, SKELETON_FRAME.get(ATTACK1), 96, 64),
-                24);
+        aniState[IDLE] = new Animation(ResourceManager.loadSprite(whiteSkeletonIdle, SHARK_FRAME.get(IDLE), 34, 30),
+                24, true);
+        aniState[HURT] = new Animation(ResourceManager.loadSprite(whiteSkeletonHurt, SHARK_FRAME.get(HURT), 34, 30),
+                24, false);
+        aniState[RUN] = new Animation(ResourceManager.loadSprite(whiteSkeletonRun, SHARK_FRAME.get(RUN), 34, 30),
+                24, true);
+        aniState[DIE] = new Animation(ResourceManager.loadSprite(whiteSkeletonDie, SHARK_FRAME.get(DIE), 34, 30),
+                24, false);
+        aniState[ATTACK] = new Animation(
+                ResourceManager.loadSprite(whiteSkeletonAttack1, SHARK_FRAME.get(ATTACK), 34, 30),
+                24, false);
     }
 
-    public void update(SkeletonModel skeleton) {
-        int state = skeleton.getState();
+    @Override
+    protected void update(EnemyModel enemy) {
+        int state = enemy.getAniState();
         if (state != lastState) {
             aniState[state].reset();
             lastState = state;
@@ -47,15 +49,17 @@ public class SkeletonRenderer extends EnemyRenderer {
 
     @Override
     protected void render(Graphics g, EnemyModel enemy, int x, int y) {
+        if (!(enemy instanceof SkeletonModel skeleton))
+            return;
         y -= 2 * TILE_SIZE;
-        Animation curAnimation = aniState[enemy.getState()];
-        if (enemy.isFacingRight()) {
-            g.drawImage(curAnimation.getCurFrame(), x, y, enemy.getWidth(),
-                    enemy.getHeight(), null);
-
+        drawHB(g, skeleton, x);
+        Animation curAnimation = aniState[skeleton.getAniState()];
+        if (skeleton.isFacingRight()) {
+            g.drawImage(curAnimation.getCurFrame(), x, y, skeleton.getWidth(), skeleton.getHeight(), null);
         } else {
-            g.drawImage(curAnimation.getCurFrame(), (int) x + enemy.getWidth(), y,
-                    -enemy.getWidth(), enemy.getHeight(), null);
+            g.drawImage(curAnimation.getCurFrame(), x + skeleton.getWidth(), y,
+                    -skeleton.getWidth(), skeleton.getHeight(), null);
         }
     }
+
 }

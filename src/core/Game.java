@@ -31,11 +31,11 @@ public class Game implements Runnable {
 
         map = new MapModel();
         camera = new CameraModel();
-        player = new PlayerModel(150, 150, (int) (64 * GameConfig.SCALE), (int) (40 * GameConfig.SCALE), 100);
+        player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (40 * SCALE), 100);
 
         input = new InputController();
-        playerController = new PlayerController(input, 3.0, -10.0);
-        worldController = new WorldController(map, camera);
+        playerController = new PlayerController(input);
+        worldController = new WorldController(map, camera, playerController);
 
         renderer = new GameRenderer(map, player, camera, worldController.getEnemyController());
         gamePanel = new GamePanel(this, input);
@@ -51,7 +51,6 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        playerController.update(player);
         worldController.update(player);
         renderer.update();
     }

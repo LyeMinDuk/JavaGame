@@ -7,43 +7,59 @@ import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
 import static util.enemy.EnemyStateIndex.*;
 
-public class SkeletonModel extends EnemyModel {
+public class SharkModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 3;
-    private final double attackRange = TILE_SIZE * 1;
-    private final long attackCD = 900;
+    private final double attackRange = TILE_SIZE * 1.5;
+    private final long attackCD = 2000;
     private long lastAttackTime = 0;
 
-    public SkeletonModel(double x, double y, int width, int height, int maxHealth, int damage) {
+    public SharkModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
-        this.moveSpeed = 0.8;
+        this.moveSpeed = 0.5 * SCALE;
+        this.patrolLeftX = x - (100 * SCALE);
+        this.patrolRightX = x + (100 * SCALE);
     }
 
     @Override
     public void updateAi(PlayerModel player) {
-        if (!alive) {
+        long now = System.currentTimeMillis();
+        if (aiState == DIE) {
+            dx = dy = 0;
+            refreshState();
+            return;
+        }
+        if (aiState == HURT && now < hurtUntil) {
+            dx = 0;
+            refreshState();
+            return;
+        }
+        if (curHealth <= 0) {
             aiState = DIE;
             dx = dy = 0;
             return;
         }
-
         double distX = player.getX() - x;
         double absX = Math.abs(distX);
-
-        if (distX >= 0) {
-            facingRight = true;
-        } else {
-            facingRight = false;
-        }
-
         if (absX <= attackRange) {
             aiState = ATTACK;
             dx = 0;
-            tryAttack(player);
+            if (aiState == ATTACK && aiState != HURT && aiState != DIE) {
+                tryAttack(player);
+            }
         } else if (absX <= detectRange) {
             aiState = CHASE;
-            dx = distX > 0 ? moveSpeed : -moveSpeed;
+            double nextDx = distX > 0 ? moveSpeed : -moveSpeed;
+            double nextX = x + nextDx;
+            if (nextX < patrolLeftX || nextX > patrolRightX) {
+                patrol();
+            } else {
+                dx = nextDx;
+            }
         } else {
             patrol();
+        }
+        if (dx != 0) {
+            facingRight = dx > 0;
         }
         refreshState();
     }
@@ -51,23 +67,24 @@ public class SkeletonModel extends EnemyModel {
     @Override
     public void refreshState() {
         switch (aiState) {
-            case PATROL, CHASE -> aniState = Skeleton.RUN;
-            case ATTACK -> aniState = Skeleton.ATTACK1;
-            case HURT -> aniState = Skeleton.HURT;
-            case DIE -> aniState = Skeleton.DIE;
-            default -> aniState = Skeleton.IDLE;
+            case PATROL, CHASE -> aniState = Shark.RUN;
+            case ATTACK -> aniState = Shark.ATTACK;
+            case HURT -> aniState = Shark.HURT;
+            case DIE -> aniState = Shark.DIE;
+            default -> aniState = Shark.IDLE;
         }
     }
 
     private void patrol() {
         aiState = PATROL;
         if (x <= patrolLeftX) {
-            setFacingRight(true);
+            dx = moveSpeed;
         } else if (x >= patrolRightX) {
-            setFacingRight(false);
+            dx = -moveSpeed;
         }
-        dx = isFacingRight() ? moveSpeed : -moveSpeed;
-        dy = 0;
+        if (dx == 0) {
+            dx = moveSpeed;
+        }
     }
 
     private void tryAttack(PlayerModel player) {
@@ -81,11 +98,11 @@ public class SkeletonModel extends EnemyModel {
         }
     }
 
-    private Rectangle getAttackBox() {
+    public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
         int atkW = 28, atkH = 40, atkOffset = 15;
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y;
+        int y = hb.y + hb.height / 2 - atkH / 2;
         return new Rectangle(x, y, atkW, atkH);
     }
 
