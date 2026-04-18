@@ -1,6 +1,7 @@
 package controller.state;
 
 import controller.InputController;
+import core.Game;
 import model.state.GameState;
 import model.state.GameStateModel;
 import view.renderer.state.MenuRenderer;
@@ -9,9 +10,10 @@ public class MenuController {
     private InputController input;
     private GameStateModel gameState;
     private MenuRenderer menuRenderer;
-    private boolean preMousePressed = false;
+    private Game game;
 
-    public MenuController(InputController input, GameStateModel gameState, MenuRenderer menuRenderer) {
+    public MenuController(Game game, InputController input, GameStateModel gameState, MenuRenderer menuRenderer) {
+        this.game = game;
         this.input = input;
         this.gameState = gameState;
         this.menuRenderer = menuRenderer;

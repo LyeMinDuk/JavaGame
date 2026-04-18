@@ -7,6 +7,7 @@ import controller.WorldController;
 import controller.entity.PlayerController;
 import controller.state.GameOverController;
 import controller.state.MenuController;
+import controller.state.OptionController;
 import controller.state.PlayingController;
 import controller.state.VictoryController;
 import model.CameraModel;
@@ -30,6 +31,7 @@ public class Game implements Runnable {
     private PlayingController playingController;
     private VictoryController victoryController;
     private GameOverController gameOverController;
+    private OptionController optionController;
 
     private InputController input;
     private PlayerModel player;
@@ -59,10 +61,11 @@ public class Game implements Runnable {
     }
 
     private void initGameStateController() {
-        menuController = new MenuController(input, gameState, renderer.getMenuRenderer());
+        menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
-        victoryController = new VictoryController(input, gameState);
-        gameOverController = new GameOverController(input, gameState);
+        victoryController = new VictoryController(this, input, gameState);
+        gameOverController = new GameOverController(this, input, gameState);
+        optionController = new OptionController(input, gameState, renderer.getOptionRenderer());
     }
 
     private void startGame() {
@@ -77,7 +80,7 @@ public class Game implements Runnable {
             case GameState.PLAYING -> playingController.update();
             // case GameState.PAUSED -> ;
             case GameState.GAME_OVER -> gameOverController.update();
-            // case GameState.OPTIONS -> ;
+            case GameState.OPTIONS -> optionController.update();
             case GameState.VICTORY -> victoryController.update();
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }
@@ -85,6 +88,16 @@ public class Game implements Runnable {
 
     public void render(Graphics g) {
         renderer.render(g);
+    }
+
+    public void resetPlaying() {
+        map = new MapModel();
+        camera = new CameraModel();
+        player = new PlayerModel(100, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        playerController = new PlayerController(input);
+        worldController = new WorldController(map, camera, playerController, gameState);
+        renderer.reloadForNewGame(map, player, camera, worldController.getEnemyController());
+        playingController = new PlayingController(input, gameState, worldController, player, renderer);
     }
 
     @Override

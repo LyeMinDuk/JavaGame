@@ -15,6 +15,7 @@ import view.assets.ResourceManager;
 import view.renderer.MapRenderer;
 import view.renderer.entity.EnemyRenderer;
 import view.renderer.entity.PlayerRenderer;
+import view.renderer.entity.enemy.SharkRenderer;
 import view.renderer.hud.HealthBarRenderer;
 
 public class PlayingRenderer {
@@ -28,22 +29,46 @@ public class PlayingRenderer {
     private EnemyController enemyController;
     private HealthBarRenderer healthBarRenderer;
 
-    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, MapRenderer mapRenderer,
-            PlayerRenderer playerRenderer, EnemyRenderer enemyRenderer, EnemyController enemyController,
-            HealthBarRenderer healthBarRenderer) {
+    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, EnemyController enemyController) {
         this.camera = camera;
         this.map = map;
         this.player = player;
-        this.mapRenderer = mapRenderer;
-        this.playerRenderer = playerRenderer;
-        this.enemyRenderer = enemyRenderer;
         this.enemyController = enemyController;
-        this.healthBarRenderer = healthBarRenderer;
+        loadMapTexture();
+
+        loadPlayerAnimation();
+        initEnemyRenderer();
+        healthBarRenderer = new HealthBarRenderer();
         loadResource();
     }
 
     private void loadResource() {
         backgroundImg = ResourceManager.loadImg(playingBG);
+    }
+
+    public void loadMapTexture() {
+        BufferedImage outside = ResourceManager.loadImg("/outside_sprites.png");
+
+        BufferedImage[] tiles = new BufferedImage[48];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 12; j++) {
+                tiles[i * 12 + j] = outside.getSubimage(j * 32, i * 32, 32, 32);
+            }
+        }
+        mapRenderer = new MapRenderer(tiles);
+    }
+
+    private void initEnemyRenderer() {
+        enemyRenderer = new SharkRenderer();
+    }
+
+    private void loadPlayerAnimation() {
+        playerRenderer = new PlayerRenderer();
+    }
+
+    public void update() {
+        playerRenderer.update(player);
+        enemyRenderer.updateAll(enemyController.getListEnemy());
     }
 
     public void render(Graphics g) {

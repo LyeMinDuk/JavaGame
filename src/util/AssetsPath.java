@@ -48,7 +48,20 @@ public class AssetsPath {
     public static final String menuOptionButton = "/menu/option_button.png";
     public static final String menuQuitButton = "/menu/quit_button.png";
 
+    //282x405
+    public static final String optionBoard = "/menu/option/option.png";
+
+    //42x42
+    public static final String soundButton = "/menu/option/sound_button.png";
+    public static final String muteButton = "/menu/option/mute_button.png";
+
+    //56x56
+    public static final String resumeButton = "/menu/option/resume_button.png";
+    public static final String backButton = "/menu/option/back_button.png";
+    public static final String homeButton = "/menu/option/home_button.png";
+    
     public static final String menuBG = "/menu/bg.png";
+    public static final String optionBG = "/menu/option/bg.png";
     public static final String playingBG = "/playing/bg1.png";
 
     public static final String[] levelMap = {

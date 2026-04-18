@@ -1,14 +1,17 @@
 package controller.state;
 
 import controller.InputController;
+import core.Game;
 import model.state.GameState;
 import model.state.GameStateModel;
 
 public class VictoryController {
     private InputController input;
     private GameStateModel gameState;
+    private Game game;
 
-    public VictoryController(InputController input, GameStateModel gameState) {
+    public VictoryController(Game game, InputController input, GameStateModel gameState) {
+        this.game = game;
         this.input = input;
         this.gameState = gameState;
     }
@@ -18,6 +21,7 @@ public class VictoryController {
             gameState.setGameState(GameState.MENU);
         }
         if (input.isEnter()) {
+            game.resetPlaying();
             gameState.setGameState(GameState.PLAYING);
             input.resetKeys();
         }

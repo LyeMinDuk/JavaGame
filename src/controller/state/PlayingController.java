@@ -14,6 +14,7 @@ public class PlayingController {
     private PlayerModel player;
     private GameRenderer renderer;
 
+
     public PlayingController(InputController input, GameStateModel gameState, WorldController worldController,
             PlayerModel player, GameRenderer renderer) {
         this.input = input;
@@ -24,16 +25,18 @@ public class PlayingController {
     }
 
     public void update() {
-        if(input.isEsc()){
+        if (input.isEsc()) {
             gameState.setGameState(GameState.MENU);
         }
-        if(worldController.getEnemyController().getListEnemy().size() == 0){
+        if (worldController.getEnemyController().getListEnemy().size() == 0) {
             gameState.setGameState(GameState.VICTORY);
         }
-        if(!player.isAlive()){
+        if (!player.isAlive()) {
             gameState.setGameState(GameState.GAME_OVER);
         }
-        worldController.update(player);
-        renderer.update();
+        if (gameState.getGameState() == GameState.PLAYING) {
+            worldController.update(player);
+            renderer.getPlayingRenderer().update();;
+        }
     }
 }
