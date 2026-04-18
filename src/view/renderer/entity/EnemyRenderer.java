@@ -25,11 +25,11 @@ public abstract class EnemyRenderer {
             Rectangle hitbox = enemy.getHitbox();
             int x = (int) Math.round(hitbox.x - xOffset);
             int y = (int) Math.round(hitbox.y);
-            if (enemy instanceof SharkModel shark) {
-                Rectangle atkBox = shark.getAttackBox();
-                g.drawRect(atkBox.x - xOffset, atkBox.y, atkBox.width, atkBox.height);
-            }
-            drawHB(g, enemy, xOffset);
+            // if (enemy instanceof SharkModel shark) {
+            //     Rectangle atkBox = shark.getAttackBox();
+            //     g.drawRect(atkBox.x - xOffset, atkBox.y, atkBox.width, atkBox.height);
+            // }
+            // drawHB(g, enemy, xOffset);
             render(g, enemy, x, y);
             renderHealthBar(g, enemy, x, y);
         }

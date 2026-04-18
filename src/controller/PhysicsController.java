@@ -3,7 +3,6 @@ package controller;
 import model.MapModel;
 import model.entity.EntityModel;
 import model.entity.PlayerModel;
-import model.entity.enemy.SharkModel;
 
 import static core.GameConfig.*;
 

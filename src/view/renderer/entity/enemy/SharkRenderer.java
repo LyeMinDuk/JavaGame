@@ -1,19 +1,15 @@
 package view.renderer.entity.enemy;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
 
 import model.entity.enemy.EnemyModel;
 import model.entity.enemy.SharkModel;
-import util.enemy.EnemyStateIndex.Shark;
 import view.assets.Animation;
 import view.assets.ResourceManager;
 import view.renderer.entity.EnemyRenderer;
 
 import static util.enemy.EnemyStateIndex.Shark.*;
-import static view.renderer.entity.EntityRenderer.drawHB;
 import static util.AssetsPath.*;
-import static core.GameConfig.*;
 
 public class SharkRenderer extends EnemyRenderer {
     private Animation[] aniState = new Animation[MAX_STATE];
@@ -44,9 +40,9 @@ public class SharkRenderer extends EnemyRenderer {
             aniState[state].reset();
             shark.setLastState(state);
         }
-
         Animation curAnimation = aniState[state];
         curAnimation.runAni();
+        enemy.setAniIndex(curAnimation.getFrameIdx());
     }
 
     @Override

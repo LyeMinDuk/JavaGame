@@ -8,7 +8,7 @@ import static util.enemy.EnemyAIState.*;
 
 public abstract class EnemyModel extends EntityModel {
     protected int damage;
-
+    protected int aniIndex = -1;
     protected boolean facingRight = true;
     protected int aiState = PATROL;
     protected int aniState = IDLE;
@@ -43,7 +43,6 @@ public abstract class EnemyModel extends EntityModel {
     }
 
     public abstract void updateAi(PlayerModel player);
-
     public abstract void refreshState();
 
     public boolean canRemove() {
@@ -57,6 +56,14 @@ public abstract class EnemyModel extends EntityModel {
 
     public int getDamage() {
         return damage;
+    }
+
+    public int getAniIndex() {
+        return aniIndex;
+    }
+
+    public void setAniIndex(int aniIndex) {
+        this.aniIndex = aniIndex;
     }
 
     public boolean isFacingRight() {

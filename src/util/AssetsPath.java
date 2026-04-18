@@ -4,7 +4,7 @@ public class AssetsPath {
     public static final String mapTexture = "/outside_sprites.png";
 
     //64x40
-    public static final String playerHit = "/player/HIT.png";
+    public static final String playerHurt = "/player/HURT.png";
     public static final String playerFall = "/player/FALL.png";
     public static final String playerAttack = "/player/ATTACK.png";
     public static final String playerJump = "/player/JUMP.png";
@@ -37,6 +37,20 @@ public class AssetsPath {
     public static final String sharkAttack = "/enemy/shark/ATTACK.png"; 
     public static final String sharkHurt = "/enemy/shark/HURT.png"; 
     public static final String sharkDie = "/enemy/shark/DIE.png"; 
+
+    //72x24
+    public static final String cloud = "/playing/cloud.png";
+
+    //282x350
+    public static final String menuBoard = "/menu/menu_background.png";
+
+    //140x56
+    public static final String menuPlayButton = "/menu/play_button.png";
+    public static final String menuOptionButton = "/menu/option_button.png";
+    public static final String menuQuitButton = "/menu/quit_button.png";
+
+    public static final String menuBG = "/menu/bg.png";
+    public static final String playingBG = "/playing/bg1.png";
 
     public static final String[] levelMap = {
             "/level/1.png",

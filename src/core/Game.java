@@ -5,9 +5,15 @@ import java.awt.Graphics;
 import controller.InputController;
 import controller.WorldController;
 import controller.entity.PlayerController;
+import controller.state.GameOverController;
+import controller.state.MenuController;
+import controller.state.PlayingController;
+import controller.state.VictoryController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
+import model.state.GameState;
+import model.state.GameStateModel;
 import view.GameWindow;
 import view.renderer.GameRenderer;
 import view.GamePanel;
@@ -19,6 +25,12 @@ public class Game implements Runnable {
     private boolean running;
     private Thread gameThread;
 
+    private GameStateModel gameState;
+    private MenuController menuController;
+    private PlayingController playingController;
+    private VictoryController victoryController;
+    private GameOverController gameOverController;
+
     private InputController input;
     private PlayerModel player;
     private MapModel map;
@@ -28,31 +40,47 @@ public class Game implements Runnable {
     private GameRenderer renderer;
 
     public Game() {
-
         map = new MapModel();
         camera = new CameraModel();
         player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (40 * SCALE), 100);
 
+        gameState = new GameStateModel();
         input = new InputController();
         playerController = new PlayerController(input);
-        worldController = new WorldController(map, camera, playerController);
+        worldController = new WorldController(map, camera, playerController, gameState);
 
-        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController());
+        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState);
         gamePanel = new GamePanel(this, input);
         gameWindow = new GameWindow(gamePanel);
 
-        running = true;
+        initGameStateController();
+
         startGame();
     }
 
+    private void initGameStateController() {
+        menuController = new MenuController(input, gameState, renderer.getMenuRenderer());
+        playingController = new PlayingController(input, gameState, worldController, player, renderer);
+        victoryController = new VictoryController(input, gameState);
+        gameOverController = new GameOverController(input, gameState);
+    }
+
     private void startGame() {
+        running = true;
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void update() {
-        worldController.update(player);
-        renderer.update();
+        switch (gameState.getGameState()) {
+            case GameState.MENU -> menuController.update();
+            case GameState.PLAYING -> playingController.update();
+            // case GameState.PAUSED -> ;
+            case GameState.GAME_OVER -> gameOverController.update();
+            // case GameState.OPTIONS -> ;
+            case GameState.VICTORY -> victoryController.update();
+            default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
+        }
     }
 
     public void render(Graphics g) {

@@ -1,6 +1,9 @@
 package model.entity;
 
 import static util.PlayerStateIndex.*;
+
+import java.awt.Rectangle;
+
 import static core.GameConfig.*;
 
 public class PlayerModel extends EntityModel {
@@ -9,9 +12,11 @@ public class PlayerModel extends EntityModel {
     private boolean moving = false;
     private boolean jumping = false;
     private boolean atking = false;
+    private boolean hurted = false;
     private boolean hitted = false;
-
     private int state = IDLE;
+
+    private Rectangle atkbox;
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
@@ -44,6 +49,14 @@ public class PlayerModel extends EntityModel {
         if (curHealth == 0) {
             alive = false;
         }
+    }
+
+    public Rectangle getAttackBox() {
+        return atkbox;
+    }
+
+    public void setAttackBox(Rectangle atkbox) {
+        this.atkbox = atkbox;
     }
 
     public int getAniIndex() {

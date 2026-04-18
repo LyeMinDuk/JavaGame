@@ -15,6 +15,8 @@ public class GamePanel extends JPanel {
     public GamePanel(Game game, InputController input) {
         this.game = game;
         this.addKeyListener(input);
+        this.addMouseListener(input);
+        this.addMouseMotionListener(input);
         this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
         this.setDoubleBuffered(true);
         this.setFocusable(true);
