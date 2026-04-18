@@ -14,21 +14,22 @@ import static view.renderer.entity.EntityRenderer.*;
 public class PlayerRenderer {
     private Animation[] aniState = new Animation[MAX_STATE];
     private int lastState = -1;
+    private boolean debug = false;
 
     public PlayerRenderer() {
         loadAnimation();
     }
 
     private void loadAnimation() {
-        aniState[IDLE] = new Animation(ResourceManager.loadSprite(playerIdle, PLAYER_FRAME.get(IDLE), 64, 40),
-                24, true);
-        aniState[RUN] = new Animation(ResourceManager.loadSprite(playerRun, PLAYER_FRAME.get(RUN), 64, 40), 20, true);
-        aniState[JUMP] = new Animation(ResourceManager.loadSprite(playerJump, PLAYER_FRAME.get(JUMP), 64, 40),
-                40, false);
-        aniState[HURT] = new Animation(ResourceManager.loadSprite(playerHurt, PLAYER_FRAME.get(HURT), 64, 40),
+        aniState[IDLE] = new Animation(ResourceManager.loadSprite(playerIdle, PLAYER_FRAME.get(IDLE), 64, 42),
+                25, true);
+        aniState[RUN] = new Animation(ResourceManager.loadSprite(playerRun, PLAYER_FRAME.get(RUN), 64, 42), 15, true);
+        aniState[JUMP] = new Animation(ResourceManager.loadSprite(playerJump, PLAYER_FRAME.get(JUMP), 64, 42),
+                24, false);
+        aniState[HURT] = new Animation(ResourceManager.loadSprite(playerHurt, PLAYER_FRAME.get(HURT), 64, 42),
                 30, false);
         aniState[ATTACK] = new Animation(
-                ResourceManager.loadSprite(playerAttack, PLAYER_FRAME.get(ATTACK), 64, 40), 18, false);
+                ResourceManager.loadSprite(playerAttack, PLAYER_FRAME.get(ATTACK), 64, 40), 15, false);
     }
 
     public void update(PlayerModel player) {
@@ -48,8 +49,10 @@ public class PlayerRenderer {
     }
 
     public void render(Graphics g, PlayerModel player, int xOffset) {
-        // drawHB(g, player, xOffset);
-        // drawAttackBox(g, player, xOffset);
+        if (debug) {
+            drawHB(g, player, xOffset);
+            drawAttackBox(g, player, xOffset);
+        }
         Animation curAnimation = aniState[player.getState()];
         if (player.isFacingRight()) {
             g.drawImage(curAnimation.getCurFrame(), (int) player.getX() - xOffset, (int) player.getY(),

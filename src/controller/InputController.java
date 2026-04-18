@@ -58,6 +58,7 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
     @Override
     public void mousePressed(MouseEvent e) {
         mousePress = true;
+        mouseRelease = false;
     }
 
     @Override
@@ -116,7 +117,7 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
     }
 
     public void resetMouse() {
-        mousePress = mouseRelease = false;
+        mouseRelease = false;
     }
 
 }

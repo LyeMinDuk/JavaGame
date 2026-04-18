@@ -12,7 +12,7 @@ import static util.enemy.EnemyAIState.*;
 
 public class PlayerController {
     private final InputController input;
-    private final double speed = 3.0 * SCALE;
+    private final double speed = 2.0 * SCALE;
     private final double jumpForce = -4 * SCALE;
 
     private final int attackDamage = 10;
@@ -21,7 +21,7 @@ public class PlayerController {
     private final int attackOffset = 6;
     private long lastAttackMs = 0;
     private final long attackCdMs = 1000;
-    private final int atkHitFrame = 2;
+    private final int atkHitFrame = 3;
 
     public PlayerController(InputController input) {
         this.input = input;
@@ -69,7 +69,7 @@ public class PlayerController {
         int ay = p.y + (p.height - attackH) / 2;
         Rectangle atkBox = new Rectangle(ax, ay, attackW, attackH);
         player.setAttackBox(atkBox);
-        if (frame >= atkHitFrame && !player.isHitted()) {
+        if (frame == atkHitFrame && !player.isHitted()) {
             for (EnemyModel e : enemies) {
                 if (e.isAlive() && e.getAiState() != HURT && atkBox.intersects(e.getHitbox())) {
                     e.takeDamage(attackDamage);

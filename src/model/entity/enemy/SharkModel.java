@@ -13,7 +13,8 @@ public class SharkModel extends EnemyModel {
     private final double attackRange = TILE_SIZE * 1.5;
     private final long attackCD = 1000;
     private long lastAttackTime = 0;
-    private final int atkHitFrame = 2;
+    private final int atkStartFrame = 3;
+    private final int atkEndFrame = 4;
 
     public SharkModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
@@ -96,7 +97,7 @@ public class SharkModel extends EnemyModel {
         int frame = aniIndex;
         if (now - lastAttackTime >= attackCD) {
             Rectangle atkBox = getAttackBox();
-            if (frame >= atkHitFrame && atkBox.intersects(player.getHitbox())) {
+            if (frame >= atkStartFrame && frame <= atkEndFrame && atkBox.intersects(player.getHitbox())) {
                 player.takeDamage(damage);
             }
             lastAttackTime = now;

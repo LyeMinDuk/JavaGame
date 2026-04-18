@@ -85,13 +85,12 @@ public class PhysicsController {
         if (entity instanceof PlayerModel p) {
             p.setJumping(!onGround);
         }
-        // System.out.println("onGround: " + onGround + ", currentY: " + entity.getY());
     }
 
     private boolean isOnGround(EntityModel e) {
         Rectangle hb = e.getHitbox();
         int inset = 2;
-        return !canMove(hb.x + inset, hb.y + hb.height, hb.width, 1, map);
+        return !canMove(hb.x + inset, hb.y + hb.height + 2, hb.width, 2, map);
     }
 
     // ===== Snap helpers (mượt, sát mép tile) =====

@@ -20,7 +20,7 @@ public class PlayerModel extends EntityModel {
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
-        setHitBox((int) (20 * SCALE), (int) (3 * SCALE), (int) (21 * SCALE), (int) (29 * SCALE));
+        setHitBox((int) (18 * SCALE), (int) (6 * SCALE), (int) (27 * SCALE), (int) (35 * SCALE));
     }
 
     public void requestJump(double jumpPow) {
@@ -50,6 +50,20 @@ public class PlayerModel extends EntityModel {
             alive = false;
         }
     }
+
+    // @Override
+    // public int getWidth() {
+    //     if (state == JUMP)
+    //         return (int) (36 * SCALE);
+    //     return width;
+    // }
+
+    // @Override
+    // public int getHeight() {
+    //     if (state == JUMP)
+    //         return (int) (44 * SCALE);
+    //     return height;
+    // }
 
     public Rectangle getAttackBox() {
         return atkbox;

@@ -5,7 +5,6 @@ public class AssetsPath {
 
     //64x40
     public static final String playerHurt = "/player/HURT.png";
-    public static final String playerFall = "/player/FALL.png";
     public static final String playerAttack = "/player/ATTACK.png";
     public static final String playerJump = "/player/JUMP.png";
     public static final String playerRun = "/player/RUN.png";

@@ -28,14 +28,13 @@ public class MenuController {
         if (input.isMouseRelease()) {
             int releasedIdx = menuRenderer.getButtonIndexAt(mouseX, mouseY);
 
-            if (releasedIdx != -1 && releasedIdx == menuRenderer.getPressed()) {
+            if (releasedIdx != -1) {
                 switch (releasedIdx) {
                     case 0 -> gameState.setGameState(GameState.PLAYING);
                     case 1 -> gameState.setGameState(GameState.OPTIONS);
                     case 2 -> System.exit(0);
                 }
             }
-
             menuRenderer.resetButtonStates();
             input.resetMouse();
         }

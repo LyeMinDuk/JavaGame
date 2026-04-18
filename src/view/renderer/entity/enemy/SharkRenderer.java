@@ -29,7 +29,7 @@ public class SharkRenderer extends EnemyRenderer {
                 24, false);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(sharkAttack, SHARK_FRAME.get(ATTACK), 34, 30),
-                24, true);
+                15, true);
     }
 
     @Override
