@@ -4,6 +4,7 @@ import controller.InputController;
 import core.Game;
 import model.state.GameState;
 import model.state.GameStateModel;
+import util.AssetsPath;
 
 public class VictoryController {
     private InputController input;
@@ -17,6 +18,14 @@ public class VictoryController {
     }
 
     public void update() {
+        int index = game.getCurMapIdx();
+        game.setCurMapIdx(++index);
+        if (index >= AssetsPath.levelMap.length) {
+
+        } else {
+            game.resetPlaying();
+            gameState.setGameState(GameState.PLAYING);
+        }
         if (input.isEsc()) {
             gameState.setGameState(GameState.MENU);
         }

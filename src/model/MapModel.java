@@ -15,13 +15,13 @@ public class MapModel {
     private int tileWide;
     private List<Point> enemyLocation = new ArrayList<>();
 
-    public MapModel() {
-        initLevel();
+    public MapModel(String path) {
+        initLevel(path);
         loadMapData();
     }
 
-    private void initLevel() {
-        levelImg = ResourceManager.loadImg(levelMap[0]);
+    private void initLevel(String path) {
+        levelImg = ResourceManager.loadImg(path);
         map = new int[levelImg.getHeight()][levelImg.getWidth()];
     }
 

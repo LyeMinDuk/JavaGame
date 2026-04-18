@@ -15,6 +15,7 @@ import model.MapModel;
 import model.entity.PlayerModel;
 import model.state.GameState;
 import model.state.GameStateModel;
+import util.AssetsPath;
 import view.GameWindow;
 import view.renderer.GameRenderer;
 import view.GamePanel;
@@ -41,8 +42,10 @@ public class Game implements Runnable {
     private WorldController worldController;
     private GameRenderer renderer;
 
+    private int curMapIdx = 0;
+
     public Game() {
-        map = new MapModel();
+        map = new MapModel(AssetsPath.levelMap[curMapIdx]);
         camera = new CameraModel();
         player = new PlayerModel(100, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
 
@@ -91,13 +94,21 @@ public class Game implements Runnable {
     }
 
     public void resetPlaying() {
-        map = new MapModel();
+        map = new MapModel(AssetsPath.levelMap[curMapIdx]);
         camera = new CameraModel();
         player = new PlayerModel(100, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
         playerController = new PlayerController(input);
         worldController = new WorldController(map, camera, playerController, gameState);
         renderer.reloadForNewGame(map, player, camera, worldController.getEnemyController());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
+    }
+
+    public void setCurMapIdx(int curMapIdx) {
+        this.curMapIdx = curMapIdx;
+    }
+
+    public int getCurMapIdx() {
+        return curMapIdx;
     }
 
     @Override

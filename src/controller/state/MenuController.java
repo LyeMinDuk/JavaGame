@@ -32,7 +32,10 @@ public class MenuController {
 
             if (releasedIdx != -1) {
                 switch (releasedIdx) {
-                    case 0 -> gameState.setGameState(GameState.PLAYING);
+                    case 0 ->{
+                        game.resetPlaying();
+                        gameState.setGameState(GameState.PLAYING);
+                    } 
                     case 1 -> gameState.setGameState(GameState.OPTIONS);
                     case 2 -> System.exit(0);
                 }
