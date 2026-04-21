@@ -9,21 +9,21 @@ import view.assets.ResourceManager;
 import static core.GameConfig.*;
 import static util.AssetsPath.*;
 
-public class HealthBarRenderer {
-    private final int x = 32, y = 32, width = 200, height = 25;
+public class ManaBarRenderer {
+    private final int x = 32, y = 64, width = 200, height = 25;
 
     private BufferedImage fillImg;
     private BufferedImage frameImg;
     private BufferedImage bgImg;
 
-    public HealthBarRenderer() {
-        fillImg = ResourceManager.loadImg(heathBarFill);
+    public ManaBarRenderer() {
+        fillImg = ResourceManager.loadImg(manaBarFill);
         frameImg = ResourceManager.loadImg(heathBarFrame);
         bgImg = ResourceManager.loadImg(heathBarBG);
     }
 
     public void render(Graphics g, PlayerModel player) {
-        double percent = (double) player.getCurHealth() / player.getMaxHealth();
+        double percent = (double) player.getCurMana() / player.getMaxMana();
         percent = Math.max(0, Math.min(1, percent));
         int pad = 4;
         int drawPad = (int) Math.round(1 - percent) * pad;

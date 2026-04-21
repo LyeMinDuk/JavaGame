@@ -22,6 +22,7 @@ public class VictoryController {
         game.setCurMapIdx(++index);
         if (index >= AssetsPath.levelMap.length) {
 
+            
         } else {
             game.resetPlaying();
             gameState.setGameState(GameState.PLAYING);

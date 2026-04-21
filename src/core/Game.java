@@ -13,6 +13,7 @@ import controller.state.VictoryController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
+import model.state.SettingsModel;
 import model.state.GameState;
 import model.state.GameStateModel;
 import util.AssetsPath;
@@ -33,6 +34,7 @@ public class Game implements Runnable {
     private VictoryController victoryController;
     private GameOverController gameOverController;
     private OptionController optionController;
+    private SettingsModel settingsModel;
 
     private InputController input;
     private PlayerModel player;
@@ -47,14 +49,16 @@ public class Game implements Runnable {
     public Game() {
         map = new MapModel(AssetsPath.levelMap[curMapIdx]);
         camera = new CameraModel();
-        player = new PlayerModel(100, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
-
+        settingsModel = new SettingsModel();
+        player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        player.applyDifficult(settingsModel.getDifficult());
         gameState = new GameStateModel();
         input = new InputController();
         playerController = new PlayerController(input);
-        worldController = new WorldController(map, camera, playerController, gameState);
+        worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
 
-        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState);
+        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState,
+                settingsModel);
         gamePanel = new GamePanel(this, input);
         gameWindow = new GameWindow(gamePanel);
 
@@ -68,7 +72,7 @@ public class Game implements Runnable {
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
         victoryController = new VictoryController(this, input, gameState);
         gameOverController = new GameOverController(this, input, gameState);
-        optionController = new OptionController(input, gameState, renderer.getOptionRenderer());
+        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel);
     }
 
     private void startGame() {
@@ -96,9 +100,10 @@ public class Game implements Runnable {
     public void resetPlaying() {
         map = new MapModel(AssetsPath.levelMap[curMapIdx]);
         camera = new CameraModel();
-        player = new PlayerModel(100, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        player.applyDifficult(settingsModel.getDifficult());
         playerController = new PlayerController(input);
-        worldController = new WorldController(map, camera, playerController, gameState);
+        worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
         renderer.reloadForNewGame(map, player, camera, worldController.getEnemyController());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
     }

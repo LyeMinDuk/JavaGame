@@ -2,115 +2,122 @@ package view.renderer.state;
 
 import static core.GameConfig.GAME_HEIGHT;
 import static core.GameConfig.GAME_WIDTH;
-import static core.GameConfig.SCALE;
-import static util.AssetsPath.muteButton;
-import static util.AssetsPath.optionBG;
-import static util.AssetsPath.optionBoard;
-import static util.AssetsPath.soundButton;
+import static core.GameConfig.UI_SCALE;
+import static util.AssetsPath.*; 
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import model.state.SettingsModel;
 import view.assets.ResourceManager;
+import view.renderer.state.ui.AudioButton;
+import view.renderer.state.ui.MenuButton;
 
 public class OptionRenderer {
     private BufferedImage backgroundImg;
     private BufferedImage optionBoardImg;
-    private BufferedImage[][] buttonImg = new BufferedImage[3][2];
-    private BufferedImage[] homeButtonImg = new BufferedImage[3];
-    private int pressed = -1;
-    private int hovered = -1;
-    private final int boardWidth = (int) (282 * SCALE), boardHeight = (int) (405 * SCALE);
-    private final int butWidth = 50, butHeight = 50;
-    private int boardX, boardY, butX;
-    private int[] butY = new int[2];
-    private boolean isMusicMuted = false;
-    private boolean isSFXMuted = false;
+
+    // Mảng ảnh cho các nút
+    private BufferedImage[][] audioImgs = new BufferedImage[2][3];
+    private BufferedImage[][] easyImgs = new BufferedImage[1][3];
+    private BufferedImage[][] mediumImgs = new BufferedImage[1][3];
+    private BufferedImage[][] hardImgs = new BufferedImage[1][3];
+    private BufferedImage[][] homeImgs = new BufferedImage[1][3];
+
+    // Các object nút UI
+    private AudioButton[] audioButtons = new AudioButton[2];
+    private MenuButton[] diffButtons = new MenuButton[3];
+    private MenuButton homeBtn;
+
+    private int boardWidth, boardHeight;
+    private int boardX, boardY;
 
     public OptionRenderer() {
         loadResource();
-        initCordinate();
+        initCoordinate();
     }
 
     private void loadResource() {
         backgroundImg = ResourceManager.loadImg(optionBG);
         optionBoardImg = ResourceManager.loadImg(optionBoard);
-        buttonImg[0] = ResourceManager.loadSprite(soundButton, 3, 42, 42);
-        buttonImg[1] = ResourceManager.loadSprite(muteButton, 3, 42, 42);
 
+        audioImgs[0] = ResourceManager.loadSprite(soundButton, 3, 42, 42);
+        audioImgs[1] = ResourceManager.loadSprite(muteButton, 3, 42, 42);
+
+        // Các nút độ khó và home
+        easyImgs[0] = ResourceManager.loadSprite(easyButton, 3, 56, 56);
+        mediumImgs[0] = ResourceManager.loadSprite(mediumButton, 3, 56, 56);
+        hardImgs[0] = ResourceManager.loadSprite(hardButton, 3, 56, 56);
+        homeImgs[0] = ResourceManager.loadSprite(homeButton, 3, 56, 56);
     }
 
-    private void initCordinate() {
+    private void initCoordinate() {
+        boardWidth = (int) (282 * UI_SCALE);
+        boardHeight = (int) (405 * UI_SCALE);
         boardX = GAME_WIDTH / 2 - boardWidth / 2;
         boardY = GAME_HEIGHT / 2 - boardHeight / 2;
-        butX = GAME_WIDTH / 2 + 60;
-        int startY = 203;
-        for (int i = 0; i < 2; ++i) {
-            butY[i] = startY + i * (butHeight + 15);
-        }
+
+        // Tách riêng 2 loại kích thước nút
+        int audioSize = (int) (42 * UI_SCALE);  // Cho nút âm thanh
+        int normalSize = (int) (56 * UI_SCALE); // Cho nút độ khó và nút home
+
+        // 1. Tọa độ 2 nút Audio (Music, SFX)
+        int audioX = GAME_WIDTH / 2 + (int) (40 * UI_SCALE); 
+        int audioStartY = boardY + (int) (110 * UI_SCALE);
+        int audioGap = (int) (5 * UI_SCALE);
+
+        // Dùng audioSize (42x42)
+        audioButtons[0] = new AudioButton(audioX, audioStartY, audioSize, audioSize, audioImgs);
+        audioButtons[1] = new AudioButton(audioX, audioStartY + audioSize + audioGap, audioSize, audioSize, audioImgs);
+
+        // 2. Tọa độ 3 nút Độ Khó (Nằm ngang ở giữa bảng)
+        int diffY = boardY + (int) (235 * UI_SCALE); 
+        int diffGap = (int) (15 * UI_SCALE);
+        // Tính tổng chiều rộng dựa trên normalSize
+        int totalDiffWidth = 3 * normalSize + 2 * diffGap; 
+        int diffStartX = GAME_WIDTH / 2 - totalDiffWidth / 2; 
+
+        // Dùng normalSize (56x56)
+        diffButtons[0] = new MenuButton(diffStartX, diffY, normalSize, normalSize, 0, easyImgs);
+        diffButtons[1] = new MenuButton(diffStartX + normalSize + diffGap, diffY, normalSize, normalSize, 0, mediumImgs);
+        diffButtons[2] = new MenuButton(diffStartX + 2 * (normalSize + diffGap), diffY, normalSize, normalSize, 0, hardImgs);
+
+        // 3. Tọa độ nút Home (Nằm căn giữa ở đáy)
+        // Đẩy lên một chút xíu để vừa với nút 56x56
+        int homeY = boardY + boardHeight - (int) (95 * UI_SCALE); 
+        int homeX = GAME_WIDTH / 2 - normalSize / 2;
+        
+        // Dùng normalSize (56x56)
+        homeBtn = new MenuButton(homeX, homeY, normalSize, normalSize, 0, homeImgs);
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, SettingsModel settingsModel) {
         g.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
         g.drawImage(optionBoardImg, boardX, boardY, boardWidth, boardHeight, null);
-        
-        for (int i = 0; i < 2; ++i) {
-            int butState = 0;
-            if (i == pressed) {
-                butState = 2;
-            } else if (i == hovered) {
-                butState = 1;
-            }
-            int imgIdx = 0;
-            if (i == 0) {
-                imgIdx = isMusicMuted ? 1 : 0;
-            } else if (i == 1) {
-                imgIdx = isSFXMuted ? 1 : 0;
-            }
-            g.drawImage(buttonImg[imgIdx][butState], butX, butY[i], butWidth, butHeight, null);
+
+        // Render Audio Buttons
+        audioButtons[0].setMuted(settingsModel.isMusicMuted());
+        audioButtons[1].setMuted(settingsModel.isSFXMuted());
+        for (AudioButton btn : audioButtons) {
+            btn.draw(g);
         }
-    }
 
-    public int getButtonIndexAt(int x, int y) {
-        for (int i = 0; i < 2; i++) {
-            if (x >= butX && x <= butX + butWidth &&
-                    y >= butY[i] && y <= butY[i] + butHeight) {
-                return i;
+        // Render Difficulty Buttons
+        for (int i = 0; i < 3; i++) {
+            if (settingsModel.getDifficult() == i) {
+                diffButtons[i].setPressed(true);
+            } else if (!diffButtons[i].isHovered()) {
+                diffButtons[i].setPressed(false);
             }
+            diffButtons[i].draw(g);
         }
-        return -1;
+
+        // Render Home Button
+        homeBtn.draw(g);
     }
 
-    public void setHoveredButton(int idx) {
-        hovered = idx;
-    }
-
-    public int getPressed() {
-        return pressed;
-    }
-
-    public void setPressedButton(int idx) {
-        pressed = idx;
-    }
-
-    public void resetButtonStates() {
-        hovered = pressed = -1;
-    }
-
-    public boolean isMusicMuted() {
-        return isMusicMuted;
-    }
-
-    public boolean isSFXMuted() {
-        return isSFXMuted;
-    }
-
-    public void setMusicMuted(boolean isMusicMuted) {
-        this.isMusicMuted = isMusicMuted;
-    }
-
-    public void setSFXMuted(boolean isSFXMuted) {
-        this.isSFXMuted = isSFXMuted;
-    }
-
+    // Getters cho Controller
+    public AudioButton[] getAudioButtons() { return audioButtons; }
+    public MenuButton[] getDiffButtons() { return diffButtons; }
+    public MenuButton getHomeButton() { return homeBtn; }
 }

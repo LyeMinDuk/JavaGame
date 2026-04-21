@@ -1,5 +1,6 @@
 package controller.entity.enemy;
 
+import static core.GameConfig.SCALE;
 import static core.GameConfig.TILE_SIZE;
 
 import java.awt.Point;
@@ -15,16 +16,33 @@ import model.entity.enemy.SkeletonModel;
 public class EnemyController {
     private List<EnemyModel> listEnemy = new ArrayList<>();
 
-    public EnemyController(MapModel map) {
-        spawnEnemy(map);
+    public EnemyController(MapModel map, int difficult) {
+        spawnEnemy(map, difficult);
     }
 
-    private void spawnEnemy(MapModel map) {
+    private void spawnEnemy(MapModel map, int difficult) {
+        int enemyHp = 10;
+        int enemyDamage = 1;
+
+        switch (difficult) {
+            case 0 -> { // Easy
+                enemyHp = 10;
+                enemyDamage = 1;
+            }
+            case 1 -> { // Medium
+                enemyHp = 60;
+                enemyDamage = 10;
+            }
+            case 2 -> { // Hard
+                enemyHp = 100;
+                enemyDamage = 100;
+            }
+        }
         for (Point point : map.getEnemyLocation()) {
             double enemyX = point.x * TILE_SIZE;
             double enemyY = (point.y - 1) * TILE_SIZE;
 
-            listEnemy.add(new SharkModel(enemyX, enemyY, 34, 40, 50, 10));
+            listEnemy.add(new SharkModel(enemyX, enemyY, (int) (34 * SCALE), (int) (30 * SCALE), enemyHp, enemyDamage));
         }
     }
 

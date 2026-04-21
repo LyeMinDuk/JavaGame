@@ -3,14 +3,19 @@ package util;
 public class AssetsPath {
     public static final String mapTexture = "/outside_sprites.png";
 
-    //64x40
+    //64x42
     public static final String playerHurt = "/player/HURT.png";
     public static final String playerAttack = "/player/ATTACK.png";
     public static final String playerJump = "/player/JUMP.png";
     public static final String playerRun = "/player/RUN.png";
     public static final String playerIdle = "/player/IDLE.png";
 
-    public static final String heathBarFill = "/hud/fill.png";
+    //64x64
+    public static final String playerUltimate = "/player/ULTIMATE.png";
+    public static final String ultimateSlash = "/player/SLASH.png";
+
+    public static final String heathBarFill = "/hud/hp.png";
+    public static final String manaBarFill = "/hud/mana.png";
     public static final String heathBarFrame = "/hud/frame.png";
     public static final String heathBarBG = "/hud/bg.png";
 
@@ -59,10 +64,13 @@ public class AssetsPath {
     public static final String resumeButton = "/menu/option/resume_button.png";
     public static final String backButton = "/menu/option/back_button.png";
     public static final String homeButton = "/menu/option/home_button.png";
+    public static final String easyButton = "/menu/option/easy_button.png";
+    public static final String mediumButton = "/menu/option/medium_button.png";
+    public static final String hardButton = "/menu/option/hard_button.png";
     
     public static final String menuBG = "/menu/bg.png";
     public static final String optionBG = "/menu/option/bg.png";
-    public static final String playingBG = "/playing/bg1.png";
+    public static final String playingBG = "/playing/";
 
     public static final String[] levelMap = {
             "/level/1.png",

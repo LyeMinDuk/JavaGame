@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import view.assets.ResourceManager;
+import view.renderer.state.ui.MenuButton;
+
 import static util.AssetsPath.*;
 import static core.GameConfig.*;
 
@@ -11,16 +13,16 @@ public class MenuRenderer {
     private BufferedImage backgroundImg;
     private BufferedImage menuBoardImg;
     private BufferedImage[][] buttonImgs = new BufferedImage[3][3];
-    private int pressed = -1;
-    private int hovered = -1;
-    private final int boardWidth = (int) (282 * SCALE), boardHeight = (int) (350 * SCALE);
-    private final int butWidth = (int) (140 * SCALE), butHeight = (int) (56 * SCALE);
-    private int boardX, boardY, butX;
-    private int[] butY = new int[3];
+
+    // Quản lý mảng object Nút thay vì các biến tọa độ rời rạc
+    private MenuButton[] buttons = new MenuButton[3];
+
+    private int boardWidth, boardHeight;
+    private int boardX, boardY;
 
     public MenuRenderer() {
         loadResource();
-        initCordinate();
+        initCoordinate();
     }
 
     private void loadResource() {
@@ -31,53 +33,50 @@ public class MenuRenderer {
         buttonImgs[2] = ResourceManager.loadSprite(menuQuitButton, 3, 140, 56);
     }
 
-    private void initCordinate() {
+    private void initCoordinate() {
+        // 1. Khởi tạo kích thước bảng
+        boardWidth = (int) (282 * UI_SCALE);
+        boardHeight = (int) (350 * UI_SCALE);
+
+        // 2. Căn giữa bảng
         boardX = GAME_WIDTH / 2 - boardWidth / 2;
         boardY = GAME_HEIGHT / 2 - boardHeight / 2;
-        butX = GAME_WIDTH / 2 - butWidth / 2;
-        int startY = 225;
-        for (int i = 0; i < 3; ++i) {
-            butY[i] = startY + i * (butHeight + 30);
+
+        // 3. Khởi tạo kích thước nút
+        int butWidth = (int) (140 * UI_SCALE);
+        int butHeight = (int) (56 * UI_SCALE);
+        int butX = GAME_WIDTH / 2 - butWidth / 2;
+
+        // 4. Chia tỷ lệ và khoảng cách động (tránh lỗi lệch nút khi scale = 1)
+        int headerHeight = (int) (90 * UI_SCALE);
+        int paddingBottom = (int) (20 * UI_SCALE);
+
+        int availableHeight = boardHeight - headerHeight - paddingBottom;
+        int totalButtonHeight = 3 * butHeight;
+        int gap = (availableHeight - totalButtonHeight) / 4;
+
+        int startY = boardY + headerHeight + gap;
+
+        // 5. Sinh ra các object Button
+        for (int i = 0; i < buttons.length; ++i) {
+            int yPos = startY + i * (butHeight + gap);
+            // Truyền mảng ảnh buttonImgs vào cho nút tự quản lý việc vẽ
+            buttons[i] = new MenuButton(butX, yPos, butWidth, butHeight, i, buttonImgs);
         }
     }
 
     public void render(Graphics g) {
         g.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
         g.drawImage(menuBoardImg, boardX, boardY, boardWidth, boardHeight, null);
-        for (int i = 0; i < 3; ++i) {
-            int butState = 0;
-            if (i == pressed) {
-                butState = 2;
-            } else if (i == hovered) {
-                butState = 1;
-            }
-            g.drawImage(buttonImgs[i][butState], butX, butY[i], butWidth, butHeight, null);
+
+        // Chỉ cần bảo các nút tự vẽ chính nó
+        for (MenuButton mb : buttons) {
+            mb.draw(g);
         }
     }
 
-    public int getButtonIndexAt(int x, int y) {
-        for (int i = 0; i < 3; i++) {
-            if (x >= butX && x <= butX + butWidth &&
-                    y >= butY[i] && y <= butY[i] + butHeight) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void setHoveredButton(int idx) {
-        hovered = idx;
-    }
-
-    public int getPressed() {
-        return pressed;
-    }
-
-    public void setPressedButton(int idx) {
-        pressed = idx;
-    }
-
-    public void resetButtonStates() {
-        hovered = pressed = -1;
+    // Controller sẽ dùng hàm này để lấy danh sách nút và xét va chạm chuột
+    public MenuButton[] getButtons() {
+        return buttons;
     }
 }

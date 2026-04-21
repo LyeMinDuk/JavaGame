@@ -8,6 +8,7 @@ import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
 import model.state.GameState;
 import model.state.GameStateModel;
+import model.state.SettingsModel;
 
 public class WorldController {
     private MapModel map;
@@ -18,13 +19,13 @@ public class WorldController {
     private GameStateModel gameState;
 
     public WorldController(MapModel map, CameraModel camera, PlayerController playerController,
-            GameStateModel gameState) {
+            GameStateModel gameState, SettingsModel settingsModel) {
         this.map = map;
         this.camera = camera;
         this.playerController = playerController;
-        this.physics = new PhysicsController(map);
-        this.enemyController = new EnemyController(map);
         this.gameState = gameState;
+        this.physics = new PhysicsController(map);
+        this.enemyController = new EnemyController(map, settingsModel.getDifficult());
     }
 
     public void update(PlayerModel player) {

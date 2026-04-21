@@ -19,6 +19,7 @@ import view.renderer.state.MenuRenderer;
 import view.renderer.state.OptionRenderer;
 import view.renderer.state.PlayingRenderer;
 import view.renderer.state.VictoryRenderer;
+import model.state.SettingsModel;
 import model.state.GameState;
 
 public class GameRenderer {
@@ -26,6 +27,8 @@ public class GameRenderer {
     private PlayerModel player;
     private CameraModel camera;
     private GameStateModel gameState;
+    private SettingsModel settingsModel;
+
     private MenuRenderer menuRenderer;
     private PlayingRenderer playingRenderer;
     private VictoryRenderer victoryRenderer;
@@ -35,12 +38,13 @@ public class GameRenderer {
     private EnemyController enemyController;
 
     public GameRenderer(MapModel map, PlayerModel player, CameraModel camera, EnemyController enemyController,
-            GameStateModel gameState) {
+            GameStateModel gameState, SettingsModel settingsModel) {
         this.map = map;
         this.player = player;
         this.camera = camera;
         this.enemyController = enemyController;
         this.gameState = gameState;
+        this.settingsModel = settingsModel;
 
         initGameStateRenderer();
     }
@@ -59,7 +63,7 @@ public class GameRenderer {
             case GameState.PLAYING -> playingRenderer.render(g);
             // case GameState.PAUSED ->
             case GameState.GAME_OVER -> gameOverRenderer.render(g);
-            case GameState.OPTIONS -> optionRenderer.render(g);
+            case GameState.OPTIONS -> optionRenderer.render(g, settingsModel);
             case GameState.VICTORY -> victoryRenderer.render(g);
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }
