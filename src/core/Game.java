@@ -2,12 +2,14 @@ package core;
 
 import java.awt.Graphics;
 
+import controller.AudioController;
 import controller.InputController;
 import controller.WorldController;
 import controller.entity.PlayerController;
 import controller.state.GameOverController;
 import controller.state.MenuController;
 import controller.state.OptionController;
+import controller.state.PausedController;
 import controller.state.PlayingController;
 import controller.state.VictoryController;
 import model.CameraModel;
@@ -34,6 +36,7 @@ public class Game implements Runnable {
     private VictoryController victoryController;
     private GameOverController gameOverController;
     private OptionController optionController;
+    private PausedController pausedController;
     private SettingsModel settingsModel;
 
     private InputController input;
@@ -42,37 +45,69 @@ public class Game implements Runnable {
     private CameraModel camera;
     private PlayerController playerController;
     private WorldController worldController;
+    private AudioController audioController;
+
     private GameRenderer renderer;
 
     private int curMapIdx = 0;
 
     public Game() {
-        map = new MapModel(AssetsPath.levelMap[curMapIdx]);
-        camera = new CameraModel();
-        settingsModel = new SettingsModel();
-        player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
-        player.applyDifficult(settingsModel.getDifficult());
+        initInput();
+        loadSaveFile();
+
         gameState = new GameStateModel();
-        input = new InputController();
-        playerController = new PlayerController(input);
-        worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
-
-        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState,
-                settingsModel);
-        gamePanel = new GamePanel(this, input);
-        gameWindow = new GameWindow(gamePanel);
-
+        initModel();
+        initController();
+        audioController.playMusic("/audio/t.wav");
+        initRenderer();
         initGameStateController();
 
+        initWindow();
+
         startGame();
+    }
+
+    private void initInput() {
+        input = new InputController();
+    }
+
+    private void loadSaveFile() {
+        settingsModel = new SettingsModel();
+    }
+
+    private void initModel() {
+        map = new MapModel(AssetsPath.levelMap[curMapIdx]);
+        camera = new CameraModel();
+
+        int x = map.getPlayerLocation().x * TILE_SIZE;
+        int y = map.getPlayerLocation().y * TILE_SIZE;
+        player = new PlayerModel(x, y, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        player.applyDifficult(settingsModel.getDifficult());
+    }
+
+    private void initController() {
+        playerController = new PlayerController(input);
+        worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
+        audioController = new AudioController(settingsModel.isMusicMuted(), settingsModel.isSFXMuted());
+    }
+
+    private void initRenderer() {
+        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState,
+                settingsModel);
     }
 
     private void initGameStateController() {
         menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
-        victoryController = new VictoryController(this, input, gameState);
+        victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
         gameOverController = new GameOverController(this, input, gameState);
-        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel);
+        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel, audioController);
+        pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel, audioController);
+    }
+
+    private void initWindow() {
+        gamePanel = new GamePanel(this, input);
+        gameWindow = new GameWindow(gamePanel);
     }
 
     private void startGame() {
@@ -85,7 +120,7 @@ public class Game implements Runnable {
         switch (gameState.getGameState()) {
             case GameState.MENU -> menuController.update();
             case GameState.PLAYING -> playingController.update();
-            // case GameState.PAUSED -> ;
+            case GameState.PAUSED -> pausedController.update();
             case GameState.GAME_OVER -> gameOverController.update();
             case GameState.OPTIONS -> optionController.update();
             case GameState.VICTORY -> victoryController.update();
@@ -94,18 +129,14 @@ public class Game implements Runnable {
     }
 
     public void render(Graphics g) {
-        renderer.render(g);
+        renderer.render(g, curMapIdx);
     }
 
     public void resetPlaying() {
-        map = new MapModel(AssetsPath.levelMap[curMapIdx]);
-        camera = new CameraModel();
-        player = new PlayerModel(170, 150, (int) (64 * SCALE), (int) (42 * SCALE), 100);
-        player.applyDifficult(settingsModel.getDifficult());
-        playerController = new PlayerController(input);
-        worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
-        renderer.reloadForNewGame(map, player, camera, worldController.getEnemyController());
-        playingController = new PlayingController(input, gameState, worldController, player, renderer);
+        initModel();
+        initController();
+        initRenderer();
+        initGameStateController();
     }
 
     public void setCurMapIdx(int curMapIdx) {

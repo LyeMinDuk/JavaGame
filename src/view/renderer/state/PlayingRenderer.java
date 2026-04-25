@@ -80,11 +80,12 @@ public class PlayingRenderer {
     }
 
     public void render(Graphics g) {
-        int xOffset = camera.getXOffset();
+        int xOffset = camera.getOffsetX();
+        int yOffset = camera.getOffsetY();
         drawBackground(g, xOffset);
-        mapRenderer.render(g, map, xOffset);
-        playerRenderer.render(g, player, xOffset);
-        enemyRenderer.renderAll(g, enemyController.getListEnemy(), xOffset);
+        mapRenderer.render(g, map, xOffset, yOffset);
+        playerRenderer.render(g, player, xOffset, yOffset);
+        enemyRenderer.renderAll(g, enemyController.getListEnemy(), xOffset, yOffset);
         healthBarRenderer.render(g, player);
         manaBarRenderer.render(g, player);
     }

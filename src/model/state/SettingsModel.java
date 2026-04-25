@@ -25,7 +25,7 @@ public class SettingsModel {
         return difficult;
     }
 
-    public void setDifficulty(int difficult) {
+    public void setDifficult(int difficult) {
         this.difficult = difficult;
     }
 }

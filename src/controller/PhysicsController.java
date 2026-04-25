@@ -8,15 +8,18 @@ import static core.GameConfig.*;
 
 import java.awt.Rectangle;
 
-public class PhysicsController {
-    private final MapModel map;
+import controller.entity.enemy.EnemyController;
 
-    public PhysicsController(MapModel map) {
+public class PhysicsController {
+    private MapModel map;
+    private EnemyController enemyController;
+
+    public PhysicsController(MapModel map, EnemyController enemyController) {
         this.map = map;
+        this.enemyController = enemyController;
     }
 
     public void apply(EntityModel entity) {
-        updateOnGround(entity);
         applyGravity(entity);
         moveY(entity);
         moveX(entity);
@@ -38,10 +41,30 @@ public class PhysicsController {
             return;
         Rectangle hb = e.getHitbox();
         int nextX = (int) (hb.x + dx);
+        if (e instanceof PlayerModel && map.getBossCheckpoint() != -1) {
+            int barrierPixX = map.getBossCheckpoint() * TILE_SIZE;
+            int enemyNum = enemyController.getListEnemy().size();
+
+            if (enemyNum > 0) {
+                if (hb.x + hb.width <= barrierPixX && nextX + hb.width > barrierPixX) {
+                    e.setPosition(barrierPixX - hb.width - e.getHbOffsetX(), e.getY());
+                    e.setDx(0);
+                    return;
+                }
+            } else {
+                if (hb.x >= barrierPixX && nextX < barrierPixX) {
+                    
+                    e.setPosition(barrierPixX - e.getHbOffsetX(), e.getY());
+                    e.setDx(0);
+                    return;
+                }
+            }
+        }
         if (canMove(nextX, hb.y, hb.width, hb.height, map)) {
             e.move(dx, 0);
             return;
         }
+
         int newHitboxX = getEntityXNextToWall(hb, dx);
         e.setPosition(newHitboxX - e.getHbOffsetX(), e.getY());
         e.setDx(0);
@@ -100,7 +123,7 @@ public class PhysicsController {
 
     private int getEntityXNextToWall(Rectangle hb, double dx) {
         int nextX = (int) (hb.x + dx);
-        if (dx > 0) { 
+        if (dx > 0) {
             int rightX = nextX + hb.width;
             int tileX = rightX / TILE_SIZE;
             return tileX * TILE_SIZE - hb.width;
@@ -119,7 +142,7 @@ public class PhysicsController {
 
     private static boolean isSolid(int x, int y, MapModel map) {
         int maxX = map.getTileWide() * TILE_SIZE;
-        int maxY = map.getTileHeight() * TILE_SIZE;
+        int maxY = map.getTileHigh() * TILE_SIZE;
         if (x < 0 || x >= maxX)
             return true;
         if (y < 0 || y >= maxY)

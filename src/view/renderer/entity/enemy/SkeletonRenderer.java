@@ -52,7 +52,7 @@ public class SkeletonRenderer extends EnemyRenderer {
         if (!(enemy instanceof SkeletonModel skeleton))
             return;
         y -= 2 * TILE_SIZE;
-        drawHB(g, skeleton, x);
+        drawHB(g, skeleton, x, y);
         Animation curAnimation = aniState[skeleton.getAniState()];
         if (skeleton.isFacingRight()) {
             g.drawImage(curAnimation.getCurFrame(), x, y, skeleton.getWidth(), skeleton.getHeight(), null);

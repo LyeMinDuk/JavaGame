@@ -56,6 +56,15 @@ public class AssetsPath {
     //282x405
     public static final String optionBoard = "/menu/option/option.png";
 
+    //224x204
+    public static final String lvCompletedBoard = "/menu/victory/completed_sprite.png";
+
+    //258x258
+    public static final String gameCompletedBoard = "/menu/victory/game_completed.png";
+
+    //258x389
+    public static final String pausedBoard = "/menu/pause/pause_menu.png";
+
     //42x42
     public static final String soundButton = "/menu/option/sound_button.png";
     public static final String muteButton = "/menu/option/mute_button.png";

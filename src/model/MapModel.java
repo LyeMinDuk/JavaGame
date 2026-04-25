@@ -13,6 +13,9 @@ public class MapModel {
     private int[][] map;
     private BufferedImage levelImg;
     private int tileWide;
+    private Point playerLocation;
+    private Point bossLocation;
+    private int bossCheckpoint = -1;
     private List<Point> enemyLocation = new ArrayList<>();
 
     public MapModel(String path) {
@@ -31,8 +34,13 @@ public class MapModel {
             for (int j = 0; j < tileWide; ++j) {
                 Color c = new Color(levelImg.getRGB(j, i));
                 map[i][j] = c.getRed();
-                if(c.getGreen() == 50){
+                if (c.getGreen() == 150)
+                    playerLocation = new Point(j, i);
+                if (c.getGreen() == 50) {
                     enemyLocation.add(new Point(j, i));
+                }
+                if (c.getGreen() == 200) {
+                    bossCheckpoint = j;
                 }
             }
         }
@@ -42,7 +50,7 @@ public class MapModel {
         return tileWide;
     }
 
-    public int getTileHeight() {
+    public int getTileHigh() {
         return map.length;
     }
 
@@ -50,7 +58,20 @@ public class MapModel {
         return map[y][x];
     }
 
-    public List<Point> getEnemyLocation(){
+    public Point getPlayerLocation() {
+        return playerLocation;
+    }
+
+    public List<Point> getEnemyLocation() {
         return enemyLocation;
     }
+
+    public Point getBossLocation() {
+        return bossLocation;
+    }
+
+    public int getBossCheckpoint() {
+        return bossCheckpoint;
+    }
+
 }

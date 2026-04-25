@@ -71,9 +71,9 @@ public class PlayerRenderer {
         }
     }
 
-    public void render(Graphics g, PlayerModel player, int xOffset) {
+    public void render(Graphics g, PlayerModel player, int xOffset, int yOffset) {
         if (debug) {
-            drawHB(g, player, xOffset);
+            drawHB(g, player, xOffset, yOffset);
             drawAttackBox(g, player, xOffset);
         }
         
@@ -87,7 +87,7 @@ public class PlayerRenderer {
         
         int drawX = (int) player.getX() - xOffset;
         // Đẩy tọa độ Y lên trên một đoạn bù trừ để gót chân luôn chạm đất
-        int drawY = (int) player.getY() - (drawH - player.getHeight()); 
+        int drawY = (int) player.getY() - (drawH - player.getHeight()) - yOffset; 
 
         if (player.isFacingRight()) {
             // Vẽ Player

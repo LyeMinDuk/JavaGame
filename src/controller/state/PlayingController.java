@@ -14,7 +14,6 @@ public class PlayingController {
     private PlayerModel player;
     private GameRenderer renderer;
 
-
     public PlayingController(InputController input, GameStateModel gameState, WorldController worldController,
             PlayerModel player, GameRenderer renderer) {
         this.input = input;
@@ -28,6 +27,10 @@ public class PlayingController {
         if (input.isEsc()) {
             gameState.setGameState(GameState.MENU);
         }
+        if (input.isP() || input.isEsc()) {
+            gameState.setGameState(GameState.PAUSED);
+            input.resetKeys(); // Xóa trạng thái phím để không bị kẹt
+        }
         if (worldController.getEnemyController().getListEnemy().size() == 0) {
             gameState.setGameState(GameState.VICTORY);
         }
@@ -36,7 +39,8 @@ public class PlayingController {
         }
         if (gameState.getGameState() == GameState.PLAYING) {
             worldController.update(player);
-            renderer.getPlayingRenderer().update();;
+            renderer.getPlayingRenderer().update();
+            ;
         }
     }
 }

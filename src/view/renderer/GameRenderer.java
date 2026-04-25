@@ -1,26 +1,22 @@
 package view.renderer;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 import controller.entity.enemy.EnemyController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
 import model.state.GameStateModel;
-import view.assets.ResourceManager;
-import view.renderer.entity.EnemyRenderer;
-import view.renderer.entity.PlayerRenderer;
-import view.renderer.entity.enemy.SharkRenderer;
-import view.renderer.entity.enemy.SkeletonRenderer;
-import view.renderer.hud.HealthBarRenderer;
 import view.renderer.state.GameOverRenderer;
 import view.renderer.state.MenuRenderer;
 import view.renderer.state.OptionRenderer;
+import view.renderer.state.PausedRenderer;
 import view.renderer.state.PlayingRenderer;
 import view.renderer.state.VictoryRenderer;
 import model.state.SettingsModel;
 import model.state.GameState;
+
+import static util.AssetsPath.*;
 
 public class GameRenderer {
     private MapModel map;
@@ -34,6 +30,7 @@ public class GameRenderer {
     private VictoryRenderer victoryRenderer;
     private GameOverRenderer gameOverRenderer;
     private OptionRenderer optionRenderer;
+    private PausedRenderer pausedRenderer;
 
     private EnemyController enemyController;
 
@@ -55,16 +52,24 @@ public class GameRenderer {
         victoryRenderer = new VictoryRenderer();
         gameOverRenderer = new GameOverRenderer();
         optionRenderer = new OptionRenderer();
+        pausedRenderer = new PausedRenderer();
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g, int curMapIdx) {
         switch (gameState.getGameState()) {
             case GameState.MENU -> menuRenderer.render(g);
             case GameState.PLAYING -> playingRenderer.render(g);
-            // case GameState.PAUSED ->
+            case GameState.PAUSED -> {
+                playingRenderer.render(g); // Vẽ cảnh game đóng băng
+                pausedRenderer.render(g, settingsModel);
+            }
             case GameState.GAME_OVER -> gameOverRenderer.render(g);
             case GameState.OPTIONS -> optionRenderer.render(g, settingsModel);
-            case GameState.VICTORY -> victoryRenderer.render(g);
+            case GameState.VICTORY -> {
+                playingRenderer.render(g); // Vẽ cảnh game đóng băng ở nền
+                boolean isGameCompleted = curMapIdx >= levelMap.length - 1;
+                victoryRenderer.render(g, isGameCompleted); // Vẽ Overlay đè lên
+            }
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }
     }
@@ -91,4 +96,11 @@ public class GameRenderer {
         return playingRenderer;
     }
 
+    public VictoryRenderer getVictoryRenderer() {
+        return victoryRenderer;
+    }
+
+    public PausedRenderer getPausedRenderer() {
+        return pausedRenderer;
+    }
 }

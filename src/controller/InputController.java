@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class InputController implements KeyListener, MouseListener, MouseMotionListener {
     private boolean left, right, jump, attack, ultimate;
-    private boolean enter, esc;
+    private boolean enter, esc, p;
 
     private int mouseX, mouseY;
     private boolean mousePress;
@@ -22,6 +22,7 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
             case KeyEvent.VK_SPACE -> jump = true;
             case KeyEvent.VK_J -> attack = true;
             case KeyEvent.VK_K -> ultimate = true;
+            case KeyEvent.VK_P -> p = true;
             case KeyEvent.VK_ENTER -> enter = true;
             case KeyEvent.VK_ESCAPE -> esc = true;
         }
@@ -35,13 +36,14 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
             case KeyEvent.VK_SPACE -> jump = false;
             case KeyEvent.VK_J -> attack = false;
             case KeyEvent.VK_K -> ultimate = false;
+            case KeyEvent.VK_P -> p = false;
             case KeyEvent.VK_ENTER -> enter = false;
             case KeyEvent.VK_ESCAPE -> esc = false;
         }
     }
 
     public void resetKeys() {
-        enter = false;
+        enter = esc = p = false;
     }
 
     @Override
@@ -105,6 +107,10 @@ public class InputController implements KeyListener, MouseListener, MouseMotionL
 
     public boolean isEsc() {
         return esc;
+    }
+
+    public boolean isP() {
+        return p;
     }
 
     public int getMouseX() {

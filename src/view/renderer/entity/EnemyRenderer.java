@@ -20,11 +20,11 @@ public abstract class EnemyRenderer {
 
     protected abstract void update(EnemyModel enemy);
 
-    public void renderAll(Graphics g, List<EnemyModel> listEnemy, int xOffset) {
+    public void renderAll(Graphics g, List<EnemyModel> listEnemy, int xOffset, int yOffset) {
         for (EnemyModel enemy : listEnemy) {
-            Rectangle hitbox = enemy.getHitbox();
-            int x = (int) Math.round(hitbox.x - xOffset);
-            int y = (int) Math.round(hitbox.y);
+            // Rectangle hitbox = enemy.getHitbox();
+            int x = (int) Math.round(enemy.getX() - xOffset);
+            int y = (int) Math.round(enemy.getY() - yOffset);
             // if (enemy instanceof SharkModel shark) {
             //     Rectangle atkBox = shark.getAttackBox();
             //     g.drawRect(atkBox.x - xOffset, atkBox.y, atkBox.width, atkBox.height);

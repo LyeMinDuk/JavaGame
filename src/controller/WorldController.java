@@ -24,8 +24,8 @@ public class WorldController {
         this.camera = camera;
         this.playerController = playerController;
         this.gameState = gameState;
-        this.physics = new PhysicsController(map);
         this.enemyController = new EnemyController(map, settingsModel.getDifficult());
+        this.physics = new PhysicsController(map, enemyController);
     }
 
     public void update(PlayerModel player) {
@@ -38,7 +38,25 @@ public class WorldController {
                 physics.apply(enemy);
             }
             player.refreshState();
-            camera.update((int) player.getX(), map.getTileWide());
+
+            // --- THÊM LOGIC KHÓA CAMERA Ở ĐÂY ---
+            if (map.getBossCheckpoint() != -1) {
+                int barrierPixX = map.getBossCheckpoint() * core.GameConfig.TILE_SIZE;
+
+                // Kiểm tra: Đã hết quái thường VÀ Player đã bước qua chốt chặn
+                // Lưu ý: Nếu trong listEnemy của bạn có cả Boss, thì phải tự viết hàm
+                // areNormalEnemiesCleared()
+                // thay cho lệnh kiểm tra size() == 0 nhé!
+                if (enemyController.getListEnemy().size() == 0 && player.getX() >= barrierPixX + core.GameConfig.GAME_WIDTH) {
+                    // Khóa biên trái của Camera đúng bằng tọa độ của bức tường tàng hình
+                    // Tùy vào thẩm mỹ, bạn có thể trừ đi một chút (ví dụ: barrierPixX - 100)
+                    // để người chơi không bị đứng sát mép màn hình bên trái.
+                    camera.setMinOffsetX(barrierPixX);
+                }
+            }
+
+            // Camera update (nó sẽ tự động bị chặn bởi minOffsetX mới)
+            camera.update((int) player.getX(), (int) player.getY(), map.getTileWide(), map.getTileHigh());
         }
     }
 

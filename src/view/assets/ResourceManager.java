@@ -3,7 +3,12 @@ package view.assets;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class ResourceManager {
     public static BufferedImage loadImg(String path) {
@@ -30,5 +35,26 @@ public class ResourceManager {
         }
 
         return sprite;
+    }
+
+    public static Clip loadClip(String path) {
+        Clip clip = null;
+        // Với âm thanh, ta dùng getResource (trả về URL) sẽ an toàn hơn
+        // getResourceAsStream
+        URL url = ResourceManager.class.getResource(path);
+
+        if (url == null) {
+            System.out.println("Audio file not Found: " + path);
+        } else {
+            try {
+                AudioInputStream audioInput = AudioSystem.getAudioInputStream(url);
+                clip = AudioSystem.getClip();
+                clip.open(audioInput);
+            } catch (Exception e) {
+                System.out.println("Error loading audio: " + path);
+                e.printStackTrace();
+            }
+        }
+        return clip;
     }
 }
