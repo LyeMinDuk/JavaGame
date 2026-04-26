@@ -63,7 +63,10 @@ public class GameRenderer {
                 playingRenderer.render(g); // Vẽ cảnh game đóng băng
                 pausedRenderer.render(g, settingsModel);
             }
-            case GameState.GAME_OVER -> gameOverRenderer.render(g);
+            case GameState.GAME_OVER -> {
+                playingRenderer.render(g);
+                gameOverRenderer.render(g);
+            }
             case GameState.OPTIONS -> optionRenderer.render(g, settingsModel);
             case GameState.VICTORY -> {
                 playingRenderer.render(g); // Vẽ cảnh game đóng băng ở nền
@@ -102,5 +105,9 @@ public class GameRenderer {
 
     public PausedRenderer getPausedRenderer() {
         return pausedRenderer;
+    }
+
+    public GameOverRenderer getGameOverRenderer() {
+        return gameOverRenderer;
     }
 }

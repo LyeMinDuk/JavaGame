@@ -70,9 +70,9 @@ public class PausedController {
             else if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
                 boolean isMuted = !settingsModel.isMusicMuted();
                 settingsModel.setMusicMuted(isMuted);
-                audioController.toggleMusic(isMuted, "/audio/bgm_playing.wav"); // Tùy chỉnh nhạc map
+                audioController.toggleMusic(isMuted); // Tùy chỉnh nhạc map
                 // saveLoad.saveGame();
-                audioController.playSFX("/audio/click.wav");
+                audioController.playSFX(AudioController.BGM_MENU);
             }
             // Xử lý bật tắt SFX
             else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
@@ -80,7 +80,7 @@ public class PausedController {
                 settingsModel.setSFXMuted(isMuted);
                 audioController.toggleSFX(isMuted);
                 // saveLoad.saveGame();
-                audioController.playSFX("/audio/click.wav");
+                audioController.playSFX(AudioController.SFX_CLICK);
             }
 
             // Reset UI

@@ -31,7 +31,7 @@ public class SharkRenderer extends EnemyRenderer {
                 ResourceManager.loadSprite(sharkAttack, SHARK_FRAME.get(ATTACK), 34, 30),
                 15, true);
     }
-
+    
     @Override
     protected void update(EnemyModel enemy) {
         int state = enemy.getAniState();

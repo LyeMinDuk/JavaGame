@@ -40,7 +40,14 @@ public class AssetsPath {
     public static final String sharkRun = "/enemy/shark/RUN.png"; 
     public static final String sharkAttack = "/enemy/shark/ATTACK.png"; 
     public static final String sharkHurt = "/enemy/shark/HURT.png"; 
-    public static final String sharkDie = "/enemy/shark/DIE.png"; 
+    public static final String sharkDie = "/enemy/shark/DIE.png";
+
+    //256x128, 81/52/70/75
+    public static final String demonSlimeIdle = "/enemy/boss/demon_slime/IDLE.png"; 
+    public static final String demonSlimeRun = "/enemy/boss/demon_slime/RUN.png"; 
+    public static final String demonSlimeAttack = "/enemy/boss/demon_slime/ATTACK.png"; 
+    public static final String demonSlimeHurt = "/enemy/boss/demon_slime/HURT.png"; 
+    public static final String demonSlimeDie = "/enemy/boss/demon_slime/DIE.png";
 
     //72x24
     public static final String cloud = "/playing/cloud.png";
@@ -64,6 +71,9 @@ public class AssetsPath {
 
     //258x389
     public static final String pausedBoard = "/menu/pause/pause_menu.png";
+
+    //235x225
+    public static final String dieBoard = "/menu/game_over/death_screen.png";
 
     //42x42
     public static final String soundButton = "/menu/option/sound_button.png";

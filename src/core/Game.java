@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import controller.AudioController;
 import controller.InputController;
+import controller.SaveLoadController;
 import controller.WorldController;
 import controller.entity.PlayerController;
 import controller.state.GameOverController;
@@ -46,6 +47,7 @@ public class Game implements Runnable {
     private PlayerController playerController;
     private WorldController worldController;
     private AudioController audioController;
+    private SaveLoadController saveLoad;
 
     private GameRenderer renderer;
 
@@ -58,7 +60,7 @@ public class Game implements Runnable {
         gameState = new GameStateModel();
         initModel();
         initController();
-        audioController.playMusic("/audio/t.wav");
+        audioController.playMusic(AudioController.BGM_MENU);
         initRenderer();
         initGameStateController();
 
@@ -73,6 +75,8 @@ public class Game implements Runnable {
 
     private void loadSaveFile() {
         settingsModel = new SettingsModel();
+        saveLoad = new SaveLoadController(settingsModel, this);
+        saveLoad.loadGame();
     }
 
     private void initModel() {
@@ -89,6 +93,8 @@ public class Game implements Runnable {
         playerController = new PlayerController(input);
         worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
         audioController = new AudioController(settingsModel.isMusicMuted(), settingsModel.isSFXMuted());
+        audioController.toggleMusic(settingsModel.isMusicMuted());
+        audioController.toggleSFX(settingsModel.isSFXMuted());
     }
 
     private void initRenderer() {
@@ -100,7 +106,7 @@ public class Game implements Runnable {
         menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
         victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
-        gameOverController = new GameOverController(this, input, gameState);
+        gameOverController = new GameOverController(this, input, gameState, renderer.getGameOverRenderer());
         optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel, audioController);
         pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel, audioController);
     }

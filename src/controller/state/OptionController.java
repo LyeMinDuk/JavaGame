@@ -52,7 +52,7 @@ public class OptionController {
             if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
                 boolean isMuted = !settingsModel.isMusicMuted(); 
                 settingsModel.setMusicMuted(isMuted);            
-                audioController.toggleMusic(isMuted, "/audio/t.wav"); 
+                audioController.toggleMusic(isMuted); 
                 // saveLoad.saveGame();                             
                 // audioController.playSFX("/audio/click.wav");         
             }

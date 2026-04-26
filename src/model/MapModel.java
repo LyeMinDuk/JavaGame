@@ -42,6 +42,9 @@ public class MapModel {
                 if (c.getGreen() == 200) {
                     bossCheckpoint = j;
                 }
+                if (c.getGreen() == 250) {
+                    bossLocation = new Point(j, i);
+                }
             }
         }
     }

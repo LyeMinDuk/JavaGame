@@ -47,7 +47,7 @@ public class WorldController {
                 // Lưu ý: Nếu trong listEnemy của bạn có cả Boss, thì phải tự viết hàm
                 // areNormalEnemiesCleared()
                 // thay cho lệnh kiểm tra size() == 0 nhé!
-                if (enemyController.getListEnemy().size() == 0 && player.getX() >= barrierPixX + core.GameConfig.GAME_WIDTH) {
+                if (enemyController.getListEnemy().size() == 1 && player.getX() >= barrierPixX + core.GameConfig.GAME_WIDTH) {
                     // Khóa biên trái của Camera đúng bằng tọa độ của bức tường tàng hình
                     // Tùy vào thẩm mỹ, bạn có thể trừ đi một chút (ví dụ: barrierPixX - 100)
                     // để người chơi không bị đứng sát mép màn hình bên trái.

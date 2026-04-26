@@ -45,7 +45,7 @@ public class PhysicsController {
             int barrierPixX = map.getBossCheckpoint() * TILE_SIZE;
             int enemyNum = enemyController.getListEnemy().size();
 
-            if (enemyNum > 0) {
+            if (enemyNum > 1) {
                 if (hb.x + hb.width <= barrierPixX && nextX + hb.width > barrierPixX) {
                     e.setPosition(barrierPixX - hb.width - e.getHbOffsetX(), e.getY());
                     e.setDx(0);

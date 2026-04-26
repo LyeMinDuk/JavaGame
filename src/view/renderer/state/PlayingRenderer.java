@@ -1,6 +1,7 @@
 package view.renderer.state;
 
 import static core.GameConfig.*;
+import static util.AssetsPath.mapTexture;
 import static util.AssetsPath.playingBG;
 
 import java.awt.Color;
@@ -14,6 +15,7 @@ import model.entity.PlayerModel;
 import view.assets.ResourceManager;
 import view.renderer.MapRenderer;
 import view.renderer.entity.EnemyRenderer;
+import view.renderer.entity.enemy.EnemyManager;
 import view.renderer.entity.PlayerRenderer;
 import view.renderer.entity.enemy.SharkRenderer;
 import view.renderer.hud.HealthBarRenderer;
@@ -55,7 +57,7 @@ public class PlayingRenderer {
     }
 
     public void loadMapTexture() {
-        BufferedImage outside = ResourceManager.loadImg("/outside_sprites.png");
+        BufferedImage outside = ResourceManager.loadImg(mapTexture);
 
         BufferedImage[] tiles = new BufferedImage[48];
         for (int i = 0; i < 4; i++) {
@@ -67,7 +69,7 @@ public class PlayingRenderer {
     }
 
     private void initEnemyRenderer() {
-        enemyRenderer = new SharkRenderer();
+        enemyRenderer = new EnemyManager();
     }
 
     private void loadPlayerAnimation() {
