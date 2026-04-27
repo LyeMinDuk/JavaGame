@@ -9,6 +9,7 @@ public class AssetsPath {
     public static final String playerJump = "/player/JUMP.png";
     public static final String playerRun = "/player/RUN.png";
     public static final String playerIdle = "/player/IDLE.png";
+    public static final String playerDie = "/player/DIE.png";
 
     //64x64
     public static final String playerUltimate = "/player/ULTIMATE.png";

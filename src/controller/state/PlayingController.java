@@ -24,23 +24,26 @@ public class PlayingController {
     }
 
     public void update() {
-        if (input.isEsc()) {
-            gameState.setGameState(GameState.MENU);
-        }
-        if (input.isP() || input.isEsc()) {
+        // Pause (chỉ khi player còn sống)
+        if (player.isAlive() && (input.isP() || input.isEsc())) {
             gameState.setGameState(GameState.PAUSED);
-            input.resetKeys(); // Xóa trạng thái phím để không bị kẹt
+            input.resetKeys();
+            return;
         }
-        if (worldController.getEnemyController().getListEnemy().size() == 0) {
-            gameState.setGameState(GameState.VICTORY);
-        }
-        if (!player.isAlive()) {
+
+        // Chờ animation DEATH chạy xong mới chuyển GAME_OVER
+        if (player.isDeathAnimDone()) {
             gameState.setGameState(GameState.GAME_OVER);
+            return;
         }
-        if (gameState.getGameState() == GameState.PLAYING) {
-            worldController.update(player);
-            renderer.getPlayingRenderer().update();
-            ;
+
+        // Chờ animation DIE của tất cả enemy xong (list rỗng) mới VICTORY
+        if (player.isAlive() && worldController.getEnemyController().getListEnemy().isEmpty()) {
+            gameState.setGameState(GameState.VICTORY);
+            return;
         }
+
+        worldController.update(player);
+        renderer.getPlayingRenderer().update();
     }
 }

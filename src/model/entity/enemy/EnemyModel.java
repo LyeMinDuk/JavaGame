@@ -1,5 +1,7 @@
 package model.entity.enemy;
 
+import java.awt.Rectangle;
+
 import model.entity.EntityModel;
 import model.entity.PlayerModel;
 
@@ -7,7 +9,6 @@ import static core.GameConfig.SCALE;
 import static util.enemy.EnemyAIState.*;
 
 public abstract class EnemyModel extends EntityModel {
-    protected int damage;
     protected int aniIndex = -1;
     protected boolean facingRight = true;
     protected int aiState = PATROL;
@@ -15,7 +16,7 @@ public abstract class EnemyModel extends EntityModel {
     protected int lastState = -1;
     protected long hurtUntil = 0;
     protected long dieUntil = 0;
-    private static final long HURT_DURATION = 800; // ms, chỉnh theo tốc độ animation HURT của bạn
+    private static final long HURT_DURATION = 800;
     private static final long DIE_DURATION = 1000;
 
     protected double patrolLeftX;
@@ -33,16 +34,18 @@ public abstract class EnemyModel extends EntityModel {
         }
         curHealth = Math.max(0, curHealth - amount);
         if (curHealth == 0) {
-            dieUntil = System.currentTimeMillis() + DIE_DURATION;
-
             aiState = DIE;
+            dieUntil = System.currentTimeMillis() + DIE_DURATION;
         } else {
             aiState = HURT;
             hurtUntil = System.currentTimeMillis() + HURT_DURATION;
         }
     }
 
+    public abstract Rectangle getAttackBox();
+
     public abstract void updateAi(PlayerModel player);
+
     public abstract void refreshState();
 
     public boolean canRemove() {
@@ -52,10 +55,6 @@ public abstract class EnemyModel extends EntityModel {
     @Override
     public boolean isAlive() {
         return getCurHealth() > 0 || System.currentTimeMillis() <= dieUntil;
-    }
-
-    public int getDamage() {
-        return damage;
     }
 
     public int getAniIndex() {
@@ -92,10 +91,6 @@ public abstract class EnemyModel extends EntityModel {
 
     public double getPatrolRightX() {
         return patrolRightX;
-    }
-
-    public void setDamage(int damage) {
-        this.damage = Math.max(0, damage);
     }
 
     public void setFacingRight(boolean facingRight) {

@@ -107,8 +107,8 @@ public class Game implements Runnable {
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
         victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
         gameOverController = new GameOverController(this, input, gameState, renderer.getGameOverRenderer());
-        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel, audioController);
-        pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel, audioController);
+        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel, audioController, saveLoad);
+        pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel, audioController, saveLoad);
     }
 
     private void initWindow() {

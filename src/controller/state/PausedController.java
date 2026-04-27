@@ -19,17 +19,17 @@ public class PausedController {
     private PausedRenderer renderer;
     private SettingsModel settingsModel;
     private AudioController audioController;
-    // private SaveLoadController saveLoad;
+    private SaveLoadController saveLoad;
 
     public PausedController(Game game, InputController input, GameStateModel gameState, PausedRenderer renderer,
-            SettingsModel settingsModel, AudioController audioController) {
+            SettingsModel settingsModel, AudioController audioController, SaveLoadController saveLoad) {
         this.game = game;
         this.input = input;
         this.gameState = gameState;
         this.renderer = renderer;
         this.settingsModel = settingsModel;
         this.audioController = audioController;
-        // this.saveLoad = saveLoad;
+        this.saveLoad = saveLoad;
     }
 
     public void update() {
@@ -71,7 +71,7 @@ public class PausedController {
                 boolean isMuted = !settingsModel.isMusicMuted();
                 settingsModel.setMusicMuted(isMuted);
                 audioController.toggleMusic(isMuted); // Tùy chỉnh nhạc map
-                // saveLoad.saveGame();
+                saveLoad.saveGame();
                 audioController.playSFX(AudioController.BGM_MENU);
             }
             // Xử lý bật tắt SFX
@@ -79,7 +79,7 @@ public class PausedController {
                 boolean isMuted = !settingsModel.isSFXMuted();
                 settingsModel.setSFXMuted(isMuted);
                 audioController.toggleSFX(isMuted);
-                // saveLoad.saveGame();
+                saveLoad.saveGame();
                 audioController.playSFX(AudioController.SFX_CLICK);
             }
 

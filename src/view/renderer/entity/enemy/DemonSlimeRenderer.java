@@ -1,4 +1,3 @@
-// DemonSlimeRenderer.java
 package view.renderer.entity.enemy;
 
 import java.awt.Graphics;
@@ -21,29 +20,35 @@ public class DemonSlimeRenderer extends EnemyRenderer {
 
     private void loadAnimation() {
         aniState[IDLE] = new Animation(
-                ResourceManager.loadSprite(demonSlimeIdle, DEMON_SLIME_FRAME.get(IDLE), 256, 128), 24, true);
-        aniState[RUN] = new Animation(ResourceManager.loadSprite(demonSlimeRun, DEMON_SLIME_FRAME.get(RUN), 256, 128),
-                24, true);
+                ResourceManager.loadSprite(demonSlimeIdle, DEMON_SLIME_FRAME.get(IDLE), 256, 128),
+                20, true);
+        aniState[RUN] = new Animation(
+                ResourceManager.loadSprite(demonSlimeRun, DEMON_SLIME_FRAME.get(RUN), 256, 128),
+                15, true);
+        // FIX: loop=false để animation ATTACK chạy 1 lần rồi dừng
         aniState[ATTACK] = new Animation(
-                ResourceManager.loadSprite(demonSlimeAttack, DEMON_SLIME_FRAME.get(ATTACK), 256, 128), 24, true);
+                ResourceManager.loadSprite(demonSlimeAttack, DEMON_SLIME_FRAME.get(ATTACK), 256, 128),
+                7, false);
         aniState[HURT] = new Animation(
-                ResourceManager.loadSprite(demonSlimeHurt, DEMON_SLIME_FRAME.get(HURT), 256, 128), 24, true);
-        aniState[DIE] = new Animation(ResourceManager.loadSprite(demonSlimeDie, DEMON_SLIME_FRAME.get(DIE), 256, 128),
-                24, false); // Lưu ý: Animation DIE thường để lặp là false để quái chết hẳn
+                ResourceManager.loadSprite(demonSlimeHurt, DEMON_SLIME_FRAME.get(HURT), 256, 128),
+                20, false);
+        aniState[DIE] = new Animation(
+                ResourceManager.loadSprite(demonSlimeDie, DEMON_SLIME_FRAME.get(DIE), 256, 128),
+                15, false);
     }
 
     @Override
     protected void update(EnemyModel enemy) {
-        // KIỂM TRA BẢO VỆ VÀ ÉP KIỂU ĐÚNG LOẠI BOSS
-        if (!(enemy instanceof DemonSlimeModel boss)) return;
+        if (!(enemy instanceof DemonSlimeModel boss))
+            return;
 
         int state = boss.getAniState();
-        
+
         if (boss.getLastState() == -1 || state != boss.getLastState()) {
             aniState[state].reset();
             boss.setLastState(state);
         }
-        
+
         Animation curAnimation = aniState[state];
         curAnimation.runAni();
         boss.setAniIndex(curAnimation.getFrameIdx());
@@ -51,13 +56,18 @@ public class DemonSlimeRenderer extends EnemyRenderer {
 
     @Override
     protected void render(Graphics g, EnemyModel enemy, int x, int y) {
-        if (!(enemy instanceof DemonSlimeModel boss)) return;
+        if (!(enemy instanceof DemonSlimeModel boss))
+            return;
 
         Animation curAnimation = aniState[boss.getAniState()];
+        int w = boss.getWidth();
+        int h = boss.getHeight();
+
+        // Slime assets quay mặt trái → facingLeft vẽ thẳng, facingRight lật
         if (!boss.isFacingRight()) {
-            g.drawImage(curAnimation.getCurFrame(), x, y, boss.getWidth(), boss.getHeight(), null);
+            g.drawImage(curAnimation.getCurFrame(), x, y, w, h, null);
         } else {
-            g.drawImage(curAnimation.getCurFrame(), x + boss.getWidth(), y, -boss.getWidth(), boss.getHeight(), null);
+            g.drawImage(curAnimation.getCurFrame(), x + w, y, -w, h, null);
         }
     }
 }

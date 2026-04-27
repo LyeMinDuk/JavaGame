@@ -1,14 +1,12 @@
 package model.entity;
 
-import static util.PlayerStateIndex.*;
-
 import java.awt.Rectangle;
 
 import static core.GameConfig.*;
+import static util.PlayerStateIndex.*;
 
 public class PlayerModel extends EntityModel {
     private int aniIndex = -1;
-    private int damage;
     private boolean facingRight = true;
     private boolean moving = false;
     private boolean jumping = false;
@@ -16,13 +14,25 @@ public class PlayerModel extends EntityModel {
     private boolean hurted = false;
     private boolean ultimate = false;
     private int state = IDLE;
+
+    private final double speed = 2.0 * SCALE;
+    private final double jumpPow = -4 * SCALE;
+
+    private final int atkW = (int) (14 * SCALE);
+    private final int atkH = (int) (10 * SCALE);
+    private final int atkOffset = (int) (3 * SCALE);
+    private long lastNormalAtk = 0;
+    private final long normalAtkCd = 500;
+
     private int curMana;
     private int maxMana;
+    private int ultimateCost;
     private int ultimateDamage;
     private long lastManaRegenTime;
     private long lastUltCastTime = 0;
-    private long ultCooldownMs;
-
+    private long ultCooldown;
+    private static final long HURT_DURATION = 800;
+    private long hurtUntil = 0;
     private Rectangle atkbox;
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
@@ -40,6 +50,8 @@ public class PlayerModel extends EntityModel {
     public void refreshState() {
         if (ultimate)
             state = ULTIMATE;
+        else if (hurted)
+            state = HURT;
         else if (atking)
             state = ATTACK;
         else if (jumping)
@@ -48,15 +60,21 @@ public class PlayerModel extends EntityModel {
             state = RUN;
         else
             state = IDLE;
+
+        if (hurted && System.currentTimeMillis() > hurtUntil) {
+            hurted = false;
+        }
     }
 
     public void takeDamage(int amount) {
-        if (amount <= 0 || !alive) {
+        if (hurted)
             return;
-        }
         curHealth = Math.max(curHealth - amount, 0);
         if (curHealth == 0) {
             alive = false;
+        } else {
+            hurted = true;
+            hurtUntil = System.currentTimeMillis() + HURT_DURATION;
         }
     }
 
@@ -64,27 +82,27 @@ public class PlayerModel extends EntityModel {
         switch (difficult) {
             case 0 -> {
                 this.maxHealth = 10000;
-                this.curHealth = 10000;
                 this.damage = 10000;
                 this.maxMana = 10000;
                 this.ultimateDamage = 50000;
-                this.ultCooldownMs = 1000;
+                this.ultimateCost = 1;
+                this.ultCooldown = 1000;
             }
             case 1 -> {
-                this.maxHealth = 100;
-                this.curHealth = 100;
+                this.maxHealth = 200;
                 this.damage = 20;
-                this.maxMana = 100;
-                this.ultimateDamage = 50;
-                this.ultCooldownMs = 5000;
+                this.maxMana = 200;
+                this.ultimateDamage = 60;
+                this.ultimateCost = 50;
+                this.ultCooldown = 5000;
             }
             case 2 -> {
                 this.maxHealth = 50;
-                this.curHealth = 50;
                 this.damage = 10;
-                this.maxMana = 100; // Vẫn để maxMana 100 để đủ dùng skill
+                this.maxMana = 100;
                 this.ultimateDamage = 30;
-                this.ultCooldownMs = 20000;
+                this.ultimateCost = 100;
+                this.ultCooldown = 15000;
             }
         }
         this.curHealth = this.maxHealth;
@@ -92,21 +110,17 @@ public class PlayerModel extends EntityModel {
     }
 
     public boolean isUltReady() {
-        // Nếu thời gian trôi qua kể từ lần cast cuối >= thời gian CD
-        return System.currentTimeMillis() - lastUltCastTime >= ultCooldownMs;
+        return System.currentTimeMillis() - lastUltCastTime >= ultCooldown;
     }
 
-    public void setLastUltCastTime(long lastUltCastTime) {
-        this.lastUltCastTime = lastUltCastTime;
+    public boolean isNormalAtkReady() {
+        return System.currentTimeMillis() - lastNormalAtk >= normalAtkCd;
     }
 
     public void regenMana() {
         long now = System.currentTimeMillis();
-        // Cứ mỗi 5000ms (5 giây)
-        if (now - lastManaRegenTime >= 5000) {
-            if (curMana < maxMana) {
-                curMana = Math.min(maxMana, curMana + 10);
-            }
+        if (now - lastManaRegenTime >= 1000) {
+            curMana = Math.min(maxMana, curMana + 2);
             lastManaRegenTime = now;
         }
     }
@@ -122,15 +136,37 @@ public class PlayerModel extends EntityModel {
     public Rectangle getUltimateBox() {
         int ultW = (int) (64 * SCALE);
         int ultH = (int) (64 * SCALE);
+        int ultX = facingRight ? hitbox.x + hitbox.width : hitbox.x - ultW;
+        int ultY = hitbox.y; // + (hitbox.height - ultH) / 2
+        return new Rectangle(ultX, ultY, ultW, ultH);
+    }
 
-        // Ngay trước mặt: bên phải thì cộng chiều rộng hitbox player, bên trái thì trừ
-        // đi chiều rộng của skill
-        int ax = facingRight ? hitbox.x + hitbox.width : hitbox.x - ultW;
+    public int getAtkW() {
+        return atkW;
+    }
 
-        // Căn giữa theo chiều dọc so với player
-        int ay = hitbox.y + (hitbox.height - ultH) / 2;
+    public int getAtkH() {
+        return atkH;
+    }
 
-        return new Rectangle(ax, ay, ultW, ultH);
+    public int getAtkOffset() {
+        return atkOffset;
+    }
+
+    public void setLastNormalAttack(long lastNormalAtk) {
+        this.lastNormalAtk = lastNormalAtk;
+    }
+
+    public int getUltimateCost() {
+        return ultimateCost;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public double getJumpPow() {
+        return jumpPow;
     }
 
     public int getCurMana() {
@@ -145,8 +181,36 @@ public class PlayerModel extends EntityModel {
         return ultimateDamage;
     }
 
-    public void setUltimate(boolean ultimate) {
-        this.ultimate = ultimate;
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public int getAniIndex() {
+        return aniIndex;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public boolean isAtking() {
+        return atking;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public boolean isFacingRight() {
+        return facingRight;
+    }
+
+    public boolean isHurted() {
+        return hurted;
     }
 
     public boolean isUltimate() {
@@ -157,56 +221,35 @@ public class PlayerModel extends EntityModel {
         return atkbox;
     }
 
-    public void setAttackBox(Rectangle atkbox) {
-        this.atkbox = atkbox;
+    public void setAniIndex(int v) {
+        aniIndex = v;
     }
 
-    public int getAniIndex() {
-        return aniIndex;
+    public void setMoving(boolean v) {
+        moving = v;
     }
 
-    public void setAniIndex(int aniIndex) {
-        this.aniIndex = aniIndex;
+    public void setAtking(boolean v) {
+        atking = v;
     }
 
-    public boolean isMoving() {
-        return moving;
+    public void setJumping(boolean v) {
+        jumping = v;
     }
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
+    public void setFacingRight(boolean v) {
+        facingRight = v;
     }
 
-    public boolean isAtking() {
-        return atking;
+    public void setUltimate(boolean v) {
+        ultimate = v;
     }
 
-    public void setAtking(boolean atking) {
-        this.atking = atking;
+    public void setAttackBox(Rectangle v) {
+        atkbox = v;
     }
 
-    public boolean isJumping() {
-        return jumping;
+    public void setLastUltCastTime(long v) {
+        lastUltCastTime = v;
     }
-
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
-    }
-
-    public boolean isFacingRight() {
-        return facingRight;
-    }
-
-    public void setFacingRight(boolean facingRight) {
-        this.facingRight = facingRight;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
 }

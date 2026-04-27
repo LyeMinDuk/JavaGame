@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import view.assets.ResourceManager;
-import static util.AssetsPath.*;
 
 public class MapModel {
+    public static final int ENEMY_TYPE_SHARK = 1;
+    public static final int ENEMY_TYPE_SKELETON = 2;
+    public static final int ENEMY_TYPE_DEMON_SLIME = 3;
+    
     private int[][] map;
     private BufferedImage levelImg;
+
     private int tileWide;
     private Point playerLocation;
-    private Point bossLocation;
     private int bossCheckpoint = -1;
-    private List<Point> enemyLocation = new ArrayList<>();
+    private List<int[]> enemySpawns = new ArrayList<>();
 
     public MapModel(String path) {
         initLevel(path);
@@ -34,16 +37,16 @@ public class MapModel {
             for (int j = 0; j < tileWide; ++j) {
                 Color c = new Color(levelImg.getRGB(j, i));
                 map[i][j] = c.getRed();
-                if (c.getGreen() == 150)
+                if (c.getGreen() == 150) {
                     playerLocation = new Point(j, i);
-                if (c.getGreen() == 50) {
-                    enemyLocation.add(new Point(j, i));
-                }
-                if (c.getGreen() == 200) {
+                } else if (c.getGreen() == 50) {
+                    int type = c.getBlue();
+                    enemySpawns.add(new int[] { j, i, type });
+                } else if (c.getGreen() == 200) {
                     bossCheckpoint = j;
-                }
-                if (c.getGreen() == 250) {
-                    bossLocation = new Point(j, i);
+                } else if (c.getGreen() == 250) {
+                    int type = c.getBlue() > 0 ? c.getBlue() : ENEMY_TYPE_DEMON_SLIME;
+                    enemySpawns.add(new int[] { j, i, type });
                 }
             }
         }
@@ -65,16 +68,28 @@ public class MapModel {
         return playerLocation;
     }
 
-    public List<Point> getEnemyLocation() {
-        return enemyLocation;
-    }
-
-    public Point getBossLocation() {
-        return bossLocation;
-    }
-
     public int getBossCheckpoint() {
         return bossCheckpoint;
     }
 
+    public List<int[]> getEnemySpawns() {
+        return enemySpawns;
+    }
+
+    public List<Point> getEnemyLocation() {
+        List<Point> result = new ArrayList<>();
+        for (int[] s : enemySpawns) {
+            if (s[2] != ENEMY_TYPE_DEMON_SLIME)
+                result.add(new Point(s[0], s[1]));
+        }
+        return result;
+    }
+
+    public Point getBossLocation() {
+        for (int[] s : enemySpawns) {
+            if (s[2] == ENEMY_TYPE_DEMON_SLIME)
+                return new Point(s[0], s[1]);
+        }
+        return null;
+    }
 }

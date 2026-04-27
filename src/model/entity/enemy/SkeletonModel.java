@@ -5,45 +5,75 @@ import model.entity.PlayerModel;
 
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
-import static util.enemy.EnemyStateIndex.*;
+import static util.enemy.EnemyStateIndex.Skeleton;;
 
 public class SkeletonModel extends EnemyModel {
-    private final double detectRange = TILE_SIZE * 3;
-    private final double attackRange = TILE_SIZE * 1;
-    private final long attackCD = 900;
-    private long lastAttackTime = 0;
+    private final double detectRange = TILE_SIZE * 2;
+    private final long atkCD = 1000;
+    private long lastAtkTime = 0;
+    private final int atkStartFrame = 3;
+    private final int atkEndFrame = 4;
 
     public SkeletonModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
-        this.moveSpeed = 0.8;
+        this.moveSpeed = 0.5 * SCALE;
+        this.patrolLeftX = x - (TILE_SIZE * 3);
+        this.patrolRightX = x + (TILE_SIZE * 3);
+        this.setHitBox((int) (33 * SCALE), (int) (18 * SCALE), (int) (24 * SCALE), (int) (46 * SCALE));
     }
 
     @Override
     public void updateAi(PlayerModel player) {
-        if (!alive) {
-            aiState = DIE;
+        long now = System.currentTimeMillis();
+        if (aiState == DIE || (aiState == HURT && now < hurtUntil)) {
             dx = dy = 0;
+            refreshState();
             return;
         }
 
-        double distX = player.getX() - x;
+        Rectangle playerBox = player.getHitbox();
+        double centerPlayer = (playerBox.x + playerBox.width) / 2.0;
+        double centerEnemy = (x + width) / 2.0;
+        double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
 
-        if (distX >= 0) {
-            facingRight = true;
-        } else {
-            facingRight = false;
+        if (aiState != ATTACK) {
+            facingRight = distX > 0;
         }
-
-        if (absX <= attackRange) {
-            aiState = ATTACK;
+        if (aiState == ATTACK) {
             dx = 0;
             tryAttack(player);
-        } else if (absX <= detectRange) {
-            aiState = CHASE;
-            dx = distX > 0 ? moveSpeed : -moveSpeed;
-        } else {
-            patrol();
+            // if (aniIndex > atkEndFrame) {
+            //     aiState = IDLE;
+            // }
+        }
+        else {
+            Rectangle atkBox = getAttackBox();
+            boolean canHitPlayer = atkBox.intersects(playerBox);
+            if (canHitPlayer && now - lastAtkTime >= atkCD) {
+                aiState = ATTACK;
+                dx = 0;
+            } else if (absX <= detectRange) {
+                double nextDx = distX > 0 ? moveSpeed : -moveSpeed;
+                double nextX = x + nextDx;
+
+                if (nextX < patrolLeftX || nextX > patrolRightX) {
+                    // Chạm biên nhưng vẫn chưa tới tầm cắn -> Đứng im gầm gừ
+                    dx = 0;
+                    aiState = IDLE;
+                } else {
+                    // Còn trong biên -> Tiếp tục đuổi
+                    aiState = CHASE;
+                    dx = nextDx;
+                }
+            } else {
+                // --- PATROL STATE ---
+                patrol();
+                // Khi tuần tra, cập nhật lại hướng mặt theo gia tốc dx
+                if (dx != 0) {
+                    facingRight = dx > 0;
+                }
+            }
         }
         refreshState();
     }
@@ -52,7 +82,7 @@ public class SkeletonModel extends EnemyModel {
     public void refreshState() {
         switch (aiState) {
             case PATROL, CHASE -> aniState = Skeleton.RUN;
-            case ATTACK -> aniState = Skeleton.ATTACK1;
+            case ATTACK -> aniState = Skeleton.ATTACK;
             case HURT -> aniState = Skeleton.HURT;
             case DIE -> aniState = Skeleton.DIE;
             default -> aniState = Skeleton.IDLE;
@@ -62,39 +92,48 @@ public class SkeletonModel extends EnemyModel {
     private void patrol() {
         aiState = PATROL;
         if (x <= patrolLeftX) {
-            setFacingRight(true);
+            dx = moveSpeed;
         } else if (x >= patrolRightX) {
-            setFacingRight(false);
+            dx = -moveSpeed;
         }
-        dx = isFacingRight() ? moveSpeed : -moveSpeed;
-        dy = 0;
+        if (dx == 0) {
+            dx = moveSpeed;
+        }
     }
 
     private void tryAttack(PlayerModel player) {
+        if (aiState != ATTACK)
+            return;
         long now = System.currentTimeMillis();
-        if (now - lastAttackTime >= attackCD) {
+        int frame = aniIndex;
+        if (now - lastAtkTime >= atkCD) {
             Rectangle atkBox = getAttackBox();
-            if (atkBox.intersects(player.getHitbox())) {
-                player.takeDamage(damage);
+            if (frame >= atkStartFrame && frame <= atkEndFrame) {
+                if (atkBox.intersects(player.getHitbox())) {
+                    player.takeDamage(damage);
+                }
+                lastAtkTime = now;
             }
-            lastAttackTime = now;
         }
     }
 
-    private Rectangle getAttackBox() {
+    @Override
+    public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = 28, atkH = 40, atkOffset = 15;
+        int atkW = (int) (14 * SCALE);
+        int atkH = (int) (10 * SCALE);
+        int atkOffset = (int) (2 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y;
+        int y = hb.y + hb.height / 2 - atkH / 2;
         return new Rectangle(x, y, atkW, atkH);
     }
 
-    public long getLastAttackTime() {
-        return lastAttackTime;
+    public long getLastAtkTime() {
+        return lastAtkTime;
     }
 
-    public void setLastAttackTime(long lastAttackTime) {
-        this.lastAttackTime = lastAttackTime;
+    public void setLastAtkTime(long lastAtkTime) {
+        this.lastAtkTime = lastAtkTime;
     }
 
 }

@@ -2,6 +2,7 @@ package controller.state;
 
 import controller.AudioController;
 import controller.InputController;
+import controller.SaveLoadController;
 // import controller.SaveLoadController;
 import model.state.GameState;
 import model.state.GameStateModel;
@@ -16,16 +17,16 @@ public class OptionController {
     private OptionRenderer renderer;
     private SettingsModel settingsModel;
     private AudioController audioController;
-    // private SaveLoadController saveLoad;
+    private SaveLoadController saveLoad;
 
     public OptionController(InputController input, GameStateModel gameState, OptionRenderer renderer, 
-                            SettingsModel settingsModel, AudioController audioController) {
+                            SettingsModel settingsModel, AudioController audioController, SaveLoadController saveLoad) {
         this.input = input;
         this.gameState = gameState;
         this.renderer = renderer;
         this.settingsModel = settingsModel;
         this.audioController = audioController;
-        // this.saveLoad = saveLoad;
+        this.saveLoad = saveLoad;
     }
 
     public void update() {
@@ -53,7 +54,7 @@ public class OptionController {
                 boolean isMuted = !settingsModel.isMusicMuted(); 
                 settingsModel.setMusicMuted(isMuted);            
                 audioController.toggleMusic(isMuted); 
-                // saveLoad.saveGame();                             
+                saveLoad.saveGame();                             
                 // audioController.playSFX("/audio/click.wav");         
             }
             
@@ -62,7 +63,7 @@ public class OptionController {
                 boolean isMuted = !settingsModel.isSFXMuted();
                 settingsModel.setSFXMuted(isMuted);
                 audioController.toggleSFX(isMuted);
-                // saveLoad.saveGame();
+                saveLoad.saveGame();
                 // audioController.playSFX("/audio/click.wav"); 
             }
 
@@ -71,7 +72,7 @@ public class OptionController {
                 for (int i = 0; i < diffBtns.length; i++) {
                     if (diffBtns[i].isHovered() && diffBtns[i].isPressed()) {
                         settingsModel.setDifficult(i); // Cập nhật độ khó vào model
-                        // saveLoad.saveGame();
+                        saveLoad.saveGame();
                         // audioController.playSFX("/audio/click.wav");
                         break; // Click 1 nút rồi thì thoát vòng lặp
                     }

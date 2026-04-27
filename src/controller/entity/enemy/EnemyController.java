@@ -1,9 +1,5 @@
 package controller.entity.enemy;
 
-import static core.GameConfig.SCALE;
-import static core.GameConfig.TILE_SIZE;
-
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +10,8 @@ import model.entity.enemy.EnemyModel;
 import model.entity.enemy.SharkModel;
 import model.entity.enemy.SkeletonModel;
 
+import static core.GameConfig.*;
+
 public class EnemyController {
     private List<EnemyModel> listEnemy = new ArrayList<>();
 
@@ -22,44 +20,56 @@ public class EnemyController {
     }
 
     private void spawnEnemy(MapModel map, int difficult) {
-        int enemyHp = 10;
-        int enemyDamage = 1;
-
+        int normalHp, normalDmg, bossHp, bossDmg;
         switch (difficult) {
-            case 0 -> { // Easy
-                enemyHp = 10;
-                enemyDamage = 1;
+            case 0 -> {
+                normalHp = 10;
+                normalDmg = 1;
+                bossHp = 100;
+                bossDmg = 10;
             }
-            case 1 -> { // Medium
-                enemyHp = 60;
-                enemyDamage = 10;
+            case 2 -> {
+                normalHp = 60;
+                normalDmg = 10;
+                bossHp = 1000;
+                bossDmg = 20;
             }
-            case 2 -> { // Hard
-                enemyHp = 100;
-                enemyDamage = 100;
+            default -> {
+                normalHp = 100;
+                normalDmg = 100;
+                bossHp = 3000;
+                bossDmg = 1000;
             }
         }
-        for (Point point : map.getEnemyLocation()) {
-            double enemyX = point.x * TILE_SIZE;
-            double enemyY = (point.y - 1) * TILE_SIZE;
 
-            listEnemy.add(new SharkModel(enemyX, enemyY, (int) (34 * SCALE), (int) (30 * SCALE), enemyHp, enemyDamage));
-        }
-
-        Point bossPoint = map.getBossLocation();
-        if (bossPoint != null) {
-            double bossX = bossPoint.x * TILE_SIZE;
-            double bossY = (bossPoint.y - 4) * TILE_SIZE; // Trừ y nhiều hơn vì boss bự (cao 128px)
-
-            listEnemy.add(new DemonSlimeModel(bossX, bossY, (int) (256 * SCALE), (int) (128 * SCALE), 1000, 50));
+        for (int[] spawn : map.getEnemySpawns()) {
+            int tileX = spawn[0];
+            int tileY = spawn[1];
+            int type = spawn[2];
+            switch (type) {
+                case MapModel.ENEMY_TYPE_SHARK -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 1) * TILE_SIZE;
+                    listEnemy.add(new SharkModel(x, y, (int) (34 * SCALE), (int) (30 * SCALE), normalHp, normalDmg));
+                }
+                case MapModel.ENEMY_TYPE_SKELETON -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 1) * TILE_SIZE;
+                    listEnemy.add(new SkeletonModel(x, y, (int) (96 * SCALE), (int) (64 * SCALE), normalHp, normalDmg));
+                }
+                case MapModel.ENEMY_TYPE_DEMON_SLIME -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 4) * TILE_SIZE; // boss cao hơn
+                    listEnemy.add(new DemonSlimeModel(x, y, (int) (256 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                }
+            }
         }
     }
 
     public void updateAllEnemy(PlayerModel player) {
         for (EnemyModel enemy : listEnemy) {
-            if (!enemy.isAlive()) {
+            if (!enemy.isAlive())
                 continue;
-            }
             enemy.updateAi(player);
         }
         removeDie();

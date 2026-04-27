@@ -77,10 +77,6 @@ public class AudioController {
         this.musicMuted = isMuted;
         applyMusicMute();
     }
-
-    // Hàm này can thiệp trực tiếp vào bộ điều khiển âm thanh của Java để tắt/mở
-    // tiếng
-    // Nhạc vẫn chạy ngầm nhưng bị tắt tiếng, giúp chuyển cảnh mượt hơn
     private void applyMusicMute() {
         for (Clip c : musicClips) {
             if (c != null && c.isControlSupported(BooleanControl.Type.MUTE)) {

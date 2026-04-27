@@ -3,11 +3,12 @@ package model.entity;
 import java.awt.Rectangle;
 
 public abstract class EntityModel {
-    protected int curHealth;
-    protected int maxHealth;
     protected double x, y;
     protected double dx, dy;
     protected int width, height;
+    protected int curHealth;
+    protected int maxHealth;
+    protected int damage;
     protected Rectangle hitbox;
     protected int hbOffsetX, hbOffsetY, hbWidth, hbHeight;
     protected boolean alive;
@@ -53,6 +54,14 @@ public abstract class EntityModel {
         syncHitbox();
     }
 
+    public void setDamage(int damage) {
+        this.damage = Math.max(0, damage);
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
     public int getCurHealth() {
         return curHealth;
     }
@@ -73,7 +82,7 @@ public abstract class EntityModel {
         return hbOffsetX;
     }
 
-    public int getHbOffsetY(){
+    public int getHbOffsetY() {
         return hbOffsetY;
     }
 

@@ -8,9 +8,10 @@ import java.awt.Rectangle;
 import java.util.List;
 
 import model.entity.enemy.EnemyModel;
-import model.entity.enemy.SharkModel;
 
 public abstract class EnemyRenderer {
+    // Đặt true khi cần debug hitbox/attackbox
+    protected static final boolean DEBUG = false;
 
     public void updateAll(List<EnemyModel> listEnemy) {
         for (EnemyModel enemy : listEnemy) {
@@ -22,16 +23,17 @@ public abstract class EnemyRenderer {
 
     public void renderAll(Graphics g, List<EnemyModel> listEnemy, int xOffset, int yOffset) {
         for (EnemyModel enemy : listEnemy) {
-            Rectangle hitbox = enemy.getHitbox();
             int x = (int) Math.round(enemy.getX() - xOffset);
             int y = (int) Math.round(enemy.getY() - yOffset);
-            if (enemy instanceof SharkModel shark) {
-                Rectangle atkBox = shark.getAttackBox();
-                g.drawRect(atkBox.x - xOffset, atkBox.y - yOffset, atkBox.width, atkBox.height);
-            }
-            drawHB(g, enemy, xOffset, yOffset);
+
             render(g, enemy, x, y);
             renderHealthBar(g, enemy, x, y);
+
+            if (DEBUG) {
+                Rectangle atkBox = enemy.getAttackBox();
+                g.drawRect(atkBox.x - xOffset, atkBox.y - yOffset, atkBox.width, atkBox.height);
+                drawHB(g, enemy, xOffset, yOffset);
+            }
         }
     }
 

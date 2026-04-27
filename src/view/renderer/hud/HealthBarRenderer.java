@@ -26,7 +26,7 @@ public class HealthBarRenderer {
         double percent = (double) player.getCurHealth() / player.getMaxHealth();
         percent = Math.max(0, Math.min(1, percent));
         int pad = 4;
-        int drawPad = (int) Math.round(1 - percent) * pad;
+        int drawPad = (int) ((1 - percent) * pad);
         int drawWidth = (int) (percent * width);
         g.drawImage(bgImg, x, y, width, height, null);
         g.drawImage(fillImg, x + drawPad, y, drawWidth, height, null);
