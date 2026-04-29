@@ -10,6 +10,8 @@ import model.state.GameState;
 import model.state.GameStateModel;
 import model.state.SettingsModel;
 
+import static core.GameConfig.*;
+
 public class WorldController {
     private MapModel map;
     private CameraModel camera;
@@ -28,9 +30,9 @@ public class WorldController {
         this.physics = new PhysicsController(map, enemyController);
     }
 
-    public void update(PlayerModel player) {
+    public void update(PlayerModel player, AudioController audio) {
         if (gameState.getGameState() == GameState.PLAYING) {
-            playerController.update(player, enemyController.getListEnemy());
+            playerController.update(player, enemyController.getListEnemy(), audio);
             enemyController.updateAllEnemy(player);
             physics.apply(player);
             for (EnemyModel enemy : enemyController.getListEnemy()) {
@@ -38,9 +40,9 @@ public class WorldController {
             }
             player.refreshState();
             if (map.getBossCheckpoint() != -1) {
-                int barrierPixX = map.getBossCheckpoint() * core.GameConfig.TILE_SIZE;
+                int barrierPixX = map.getBossCheckpoint() * TILE_SIZE;
                 if (enemyController.getListEnemy().size() == 1
-                        && player.getX() >= barrierPixX + core.GameConfig.GAME_WIDTH) {
+                        && player.getX() >= barrierPixX + GAME_WIDTH) {
                     camera.setMinOffsetX(barrierPixX);
                 }
             }

@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class MenuButton extends UIButton {
     private int rowIndex;
-    private BufferedImage[][] buttonImgs; // Nút tự giữ mảng ảnh của nó
+    private BufferedImage[][] buttonImgs;
 
     public MenuButton(int x, int y, int width, int height, int rowIndex, BufferedImage[][] buttonImgs) {
-        super(x, y, width, height); // Gọi constructor của class cha
+        super(x, y, width, height);
         this.rowIndex = rowIndex;
         this.buttonImgs = buttonImgs;
     }

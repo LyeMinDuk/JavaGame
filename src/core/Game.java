@@ -60,7 +60,9 @@ public class Game implements Runnable {
         gameState = new GameStateModel();
         initModel();
         initController();
-        audioController.playMusic(AudioController.BGM_MENU);
+        audioController = new AudioController(settingsModel.isMusicMuted(), settingsModel.isSFXMuted());
+        audioController.toggleMusic(settingsModel.isMusicMuted());
+        audioController.toggleSFX(settingsModel.isSFXMuted());
         initRenderer();
         initGameStateController();
 
@@ -92,9 +94,6 @@ public class Game implements Runnable {
     private void initController() {
         playerController = new PlayerController(input);
         worldController = new WorldController(map, camera, playerController, gameState, settingsModel);
-        audioController = new AudioController(settingsModel.isMusicMuted(), settingsModel.isSFXMuted());
-        audioController.toggleMusic(settingsModel.isMusicMuted());
-        audioController.toggleSFX(settingsModel.isSFXMuted());
     }
 
     private void initRenderer() {
@@ -103,12 +102,14 @@ public class Game implements Runnable {
     }
 
     private void initGameStateController() {
-        menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer());
+        menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer(), saveLoad);
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
         victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
         gameOverController = new GameOverController(this, input, gameState, renderer.getGameOverRenderer());
-        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel, audioController, saveLoad);
-        pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel, audioController, saveLoad);
+        optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel,
+                audioController, saveLoad);
+        pausedController = new PausedController(this, input, gameState, renderer.getPausedRenderer(), settingsModel,
+                saveLoad);
     }
 
     private void initWindow() {
@@ -124,12 +125,12 @@ public class Game implements Runnable {
 
     public void update() {
         switch (gameState.getGameState()) {
-            case GameState.MENU -> menuController.update();
-            case GameState.PLAYING -> playingController.update();
-            case GameState.PAUSED -> pausedController.update();
-            case GameState.GAME_OVER -> gameOverController.update();
+            case GameState.MENU -> menuController.update(audioController);
+            case GameState.PLAYING -> playingController.update(audioController);
+            case GameState.PAUSED -> pausedController.update(audioController);
+            case GameState.GAME_OVER -> gameOverController.update(audioController);
             case GameState.OPTIONS -> optionController.update();
-            case GameState.VICTORY -> victoryController.update();
+            case GameState.VICTORY -> victoryController.update(audioController);
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }
     }

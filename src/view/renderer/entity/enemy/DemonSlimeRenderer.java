@@ -25,7 +25,6 @@ public class DemonSlimeRenderer extends EnemyRenderer {
         aniState[RUN] = new Animation(
                 ResourceManager.loadSprite(demonSlimeRun, DEMON_SLIME_FRAME.get(RUN), 256, 128),
                 15, true);
-        // FIX: loop=false để animation ATTACK chạy 1 lần rồi dừng
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(demonSlimeAttack, DEMON_SLIME_FRAME.get(ATTACK), 256, 128),
                 7, false);
@@ -39,35 +38,28 @@ public class DemonSlimeRenderer extends EnemyRenderer {
 
     @Override
     protected void update(EnemyModel enemy) {
-        if (!(enemy instanceof DemonSlimeModel boss))
-            return;
+        int state = enemy.getAniState();
 
-        int state = boss.getAniState();
-
-        if (boss.getLastState() == -1 || state != boss.getLastState()) {
+        if (enemy.getLastState() == -1 || state != enemy.getLastState()) {
             aniState[state].reset();
-            boss.setLastState(state);
+            enemy.setLastState(state);
         }
 
         Animation curAnimation = aniState[state];
         curAnimation.runAni();
-        boss.setAniIndex(curAnimation.getFrameIdx());
+        enemy.setAniIndex(curAnimation.getFrameIdx());
     }
 
     @Override
     protected void render(Graphics g, EnemyModel enemy, int x, int y) {
-        if (!(enemy instanceof DemonSlimeModel boss))
+        if (!(enemy instanceof DemonSlimeModel slime))
             return;
 
-        Animation curAnimation = aniState[boss.getAniState()];
-        int w = boss.getWidth();
-        int h = boss.getHeight();
-
-        // Slime assets quay mặt trái → facingLeft vẽ thẳng, facingRight lật
-        if (!boss.isFacingRight()) {
-            g.drawImage(curAnimation.getCurFrame(), x, y, w, h, null);
+        Animation curAnimation = aniState[slime.getAniState()];
+        if (!slime.isFacingRight()) {
+            g.drawImage(curAnimation.getCurFrame(), x, y, slime.getWidth(), slime.getHeight(), null);
         } else {
-            g.drawImage(curAnimation.getCurFrame(), x + w, y, -w, h, null);
+            g.drawImage(curAnimation.getCurFrame(), x + slime.getWidth(), y, -slime.getWidth(), slime.getHeight(), null);
         }
     }
 }

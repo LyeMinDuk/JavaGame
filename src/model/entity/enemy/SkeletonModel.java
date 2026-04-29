@@ -2,6 +2,7 @@ package model.entity.enemy;
 
 import java.awt.Rectangle;
 import model.entity.PlayerModel;
+import util.enemy.EnemyStateIndex.Skeleton;
 
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
@@ -11,8 +12,8 @@ public class SkeletonModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 2;
     private final long atkCD = 1000;
     private long lastAtkTime = 0;
-    private final int atkStartFrame = 3;
-    private final int atkEndFrame = 4;
+    private final int atkStartFrame = 5;
+    private final int atkEndFrame = 7;
 
     public SkeletonModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
@@ -41,13 +42,14 @@ public class SkeletonModel extends EnemyModel {
             facingRight = distX > 0;
         }
         if (aiState == ATTACK) {
-            dx = 0;
-            tryAttack(player);
-            // if (aniIndex > atkEndFrame) {
-            //     aiState = IDLE;
-            // }
-        }
-        else {
+            if (aniIndex >= 9) {
+                aiState = IDLE;
+            } else {
+                tryAttack(player);
+                refreshState();
+                return;
+            }
+        } else {
             Rectangle atkBox = getAttackBox();
             boolean canHitPlayer = atkBox.intersects(playerBox);
             if (canHitPlayer && now - lastAtkTime >= atkCD) {

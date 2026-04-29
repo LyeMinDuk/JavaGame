@@ -1,5 +1,6 @@
 package controller.state;
 
+import controller.AudioController;
 import controller.InputController;
 import controller.WorldController;
 import model.entity.PlayerModel;
@@ -23,27 +24,24 @@ public class PlayingController {
         this.renderer = renderer;
     }
 
-    public void update() {
-        // Pause (chỉ khi player còn sống)
+    public void update(AudioController audio) {
+        audio.playMusic(AudioController.BGM_PLAYING);
+        if(!player.isAlive()){
+            gameState.setGameState(GameState.GAME_OVER);
+            input.resetKeys();
+            return;
+        }
         if (player.isAlive() && (input.isP() || input.isEsc())) {
             gameState.setGameState(GameState.PAUSED);
             input.resetKeys();
             return;
         }
-
-        // Chờ animation DEATH chạy xong mới chuyển GAME_OVER
-        if (player.isDeathAnimDone()) {
-            gameState.setGameState(GameState.GAME_OVER);
-            return;
-        }
-
-        // Chờ animation DIE của tất cả enemy xong (list rỗng) mới VICTORY
         if (player.isAlive() && worldController.getEnemyController().getListEnemy().isEmpty()) {
             gameState.setGameState(GameState.VICTORY);
             return;
         }
 
-        worldController.update(player);
+        worldController.update(player, audio);
         renderer.getPlayingRenderer().update();
     }
 }

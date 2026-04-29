@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 
 import model.MapModel;
+
 import static core.GameConfig.*;
 
 public class MapRenderer {

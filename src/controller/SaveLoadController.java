@@ -10,7 +10,7 @@ import core.Game;
 import model.state.SettingsModel;
 
 public class SaveLoadController {
-    private final String SAVE_PATH = "/resources/save/savegame.txt";
+    private final String SAVE_PATH = "resources/save/savegame.txt";
     private SettingsModel settingsModel;
     private Game game;
 

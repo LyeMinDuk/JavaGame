@@ -3,7 +3,6 @@ package view.renderer.state.ui;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-// Dùng abstract class vì mỗi nút có thể có cách vẽ (draw) ảnh khác nhau
 public abstract class UIButton {
     protected int x, y, width, height;
     protected Rectangle bounds;
@@ -17,15 +16,12 @@ public abstract class UIButton {
         this.bounds = new Rectangle(x, y, width, height);
     }
 
-    // Nút nào cũng cần bắt va chạm chuột y hệt nhau
     public boolean isHit(int mouseX, int mouseY) {
         return bounds.contains(mouseX, mouseY);
     }
 
-    // Mỗi loại nút sẽ tự định nghĩa cách nó được vẽ ra màn hình
     public abstract void draw(Graphics g);
 
-    // Getters & Setters dùng chung
     public void setHovered(boolean hovered) {
         this.hovered = hovered;
     }

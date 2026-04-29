@@ -28,17 +28,23 @@ public class EnemyController {
                 bossHp = 100;
                 bossDmg = 10;
             }
-            case 2 -> {
+            case 1 -> {
                 normalHp = 60;
                 normalDmg = 10;
                 bossHp = 1000;
                 bossDmg = 20;
             }
-            default -> {
+            case 2 -> {
                 normalHp = 100;
                 normalDmg = 100;
                 bossHp = 3000;
                 bossDmg = 1000;
+            }
+            default -> {
+                normalHp = 60;
+                normalDmg = 10;
+                bossHp = 1000;
+                bossDmg = 20;
             }
         }
 

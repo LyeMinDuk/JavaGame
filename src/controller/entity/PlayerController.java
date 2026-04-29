@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.awt.Rectangle;
 
+import controller.AudioController;
 import controller.InputController;
 import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
@@ -20,7 +21,7 @@ public class PlayerController {
         this.input = input;
     }
 
-    public void update(PlayerModel player, List<EnemyModel> enemies) {
+    public void update(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
         player.regenMana();
         if (player.isUltimate()) {
             player.setDx(0);
@@ -31,18 +32,20 @@ public class PlayerController {
         double dx = 0;
         if (input.isLeft() && !input.isRight()) {
             dx = -player.getSpeed();
+            player.setFacingRight(false);
         }
         if (input.isRight() && !input.isLeft()) {
             dx = player.getSpeed();
+            player.setFacingRight(true);
         }
-        player.setFacingRight(dx > 0);
         player.setDx(dx);
         player.setMoving(dx != 0);
         if (input.isJump() && player.isOnGround()) {
+            audio.playSFX(AudioController.SFX_JUMP);
             player.requestJump(player.getJumpPow());
         }
         handleUltimateInput(player);
-        handleAttackInput(player, enemies);
+        handleAttackInput(player, enemies, audio);
         handleAttack(player, enemies);
     }
 
@@ -80,10 +83,11 @@ public class PlayerController {
         }
     }
 
-    private void handleAttackInput(PlayerModel player, List<EnemyModel> enemies) {
+    private void handleAttackInput(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
         long now = System.currentTimeMillis();
         if (input.isAttack() && !player.isAtking() && !player.isUltimate()
                 && player.isNormalAtkReady()) {
+            audio.playSFX(AudioController.SFX_ATTACK);
             player.setAtking(true);
             player.setAniIndex(0);
             player.setLastNormalAttack(now);
@@ -95,7 +99,8 @@ public class PlayerController {
             return;
         int frame = player.getAniIndex();
         Rectangle hb = player.getHitbox();
-        int atkX = player.isFacingRight() ? hb.x + hb.width + player.getAtkOffset() : hb.x - player.getAtkW() - player.getAtkOffset();
+        int atkX = player.isFacingRight() ? hb.x + hb.width + player.getAtkOffset()
+                : hb.x - player.getAtkW() - player.getAtkOffset();
         int atkY = hb.y + (hb.height - player.getAtkH()) / 2;
         Rectangle atkBox = new Rectangle(atkX, atkY, player.getAtkW(), player.getAtkH());
         player.setAttackBox(atkBox);

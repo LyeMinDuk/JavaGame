@@ -21,8 +21,7 @@ public class AssetsPath {
     public static final String heathBarBG = "/hud/bg.png";
 
     //96x64
-    public static final String whiteSkeletonAttack1 = "/enemy/skeleton/white/ATTACK1.png";
-    public static final String whiteSkeletonAttack2 = "/enemy/skeleton/white/ATTACK2.png";
+    public static final String whiteSkeletonAttack = "/enemy/skeleton/white/ATTACK.png";
     public static final String whiteSkeletonDie = "/enemy/skeleton/white/DIE.png";
     public static final String whiteSkeletonHurt = "/enemy/skeleton/white/HURT.png";
     public static final String whiteSkeletonIdle = "/enemy/skeleton/white/IDLE.png";
@@ -94,8 +93,7 @@ public class AssetsPath {
 
     public static final String[] levelMap = {
             "/level/1.png",
-            "/level/2.png",
-            "/level/3.png"
+            "/level/2.png"
     };
 
 }

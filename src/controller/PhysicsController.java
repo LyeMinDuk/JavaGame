@@ -36,8 +36,8 @@ public class PhysicsController {
 
     private void moveY(EntityModel entity) {
         double dy = entity.getDy();
-        // if (dy == 0)
-        // return;
+        if (dy == 0)
+            return;
         Rectangle hb = entity.getHitbox();
         if (canMove(hb.x, (int) (hb.y + dy), hb.width, hb.height, map)) {
             entity.move(0, dy);
@@ -53,8 +53,8 @@ public class PhysicsController {
 
     private void moveX(EntityModel entity) {
         double dx = entity.getDx();
-        // if (dx == 0)
-        // return;
+        if (dx == 0)
+            return;
         Rectangle hb = entity.getHitbox();
         int nextX = (int) (hb.x + dx);
         if (entity instanceof PlayerModel && map.getBossCheckpoint() != -1) {
@@ -87,9 +87,6 @@ public class PhysicsController {
     private void updateOnGround(EntityModel entity) {
         boolean onGround = isOnGround(entity);
         entity.setOnGround(onGround);
-        // if (onGround && entity.getDy() > 0) {
-        //     entity.setDy(0);
-        // }
         if (entity instanceof PlayerModel p) {
             p.setJumping(!onGround);
         }
@@ -127,9 +124,9 @@ public class PhysicsController {
 
     public static boolean canMove(int x, int y, int width, int height, MapModel map) {
         return !isSolid(x, y, map)
-                && !isSolid(x + width, y, map)
-                && !isSolid(x + width, y + height, map)
-                && !isSolid(x, y + height, map);
+                && !isSolid(x + width - 1, y, map)
+                && !isSolid(x + width - 1, y + height - 1, map)
+                && !isSolid(x, y + height - 1, map);
     }
 
     private static boolean isSolid(int x, int y, MapModel map) {

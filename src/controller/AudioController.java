@@ -5,8 +5,6 @@ import javax.sound.sampled.Clip;
 import view.assets.ResourceManager;
 
 public class AudioController {
-
-    // --- ĐỊNH NGHĨA CÁC ID CHO DỄ GỌI ---
     public static final int BGM_MENU = 0;
     public static final int BGM_PLAYING = 1;
 
@@ -25,16 +23,12 @@ public class AudioController {
     public AudioController(boolean musicMuted, boolean sfxMuted) {
         this.musicMuted = musicMuted;
         this.sfxMuted = sfxMuted;
-
         loadMusic();
         loadSFX();
-
-        // Cập nhật trạng thái mute ngay khi vừa load xong
         applyMusicMute();
     }
 
     private void loadMusic() {
-        // Thay mảng tên này bằng tên file thực tế trong thư mục res/audio của bạn
         String[] names = { "t", "pinduphong" };
         musicClips = new Clip[names.length];
 
@@ -44,7 +38,6 @@ public class AudioController {
     }
 
     private void loadSFX() {
-        // Thay mảng tên này bằng tên file thực tế của bạn
         String[] names = { "click", "jump", "attack", "die" };
         sfxClips = new Clip[names.length];
 
@@ -53,9 +46,9 @@ public class AudioController {
         }
     }
 
-    // --- XỬ LÝ MUSIC (Nhạc nền) ---
     public void playMusic(int id) {
-        // Dừng nhạc cũ nếu đang chạy
+        if (currentMusicId == id)
+            return;
         if (currentMusicId != -1 && musicClips[currentMusicId] != null && musicClips[currentMusicId].isRunning()) {
             musicClips[currentMusicId].stop();
         }
@@ -77,22 +70,19 @@ public class AudioController {
         this.musicMuted = isMuted;
         applyMusicMute();
     }
+
     private void applyMusicMute() {
-        for (Clip c : musicClips) {
-            if (c != null && c.isControlSupported(BooleanControl.Type.MUTE)) {
-                BooleanControl muteControl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
+        for (Clip clip : musicClips) {
+            if (clip != null && clip.isControlSupported(BooleanControl.Type.MUTE)) {
+                BooleanControl muteControl = (BooleanControl) clip.getControl(BooleanControl.Type.MUTE);
                 muteControl.setValue(musicMuted);
             }
         }
     }
 
-    // --- XỬ LÝ SFX (Hiệu ứng) ---
     public void playSFX(int id) {
-        // Nếu đang tắt âm hiệu ứng hoặc file bị lỗi -> Bỏ qua
         if (sfxMuted || sfxClips[id] == null)
             return;
-
-        // Tua lại đầu clip và phát
         if (sfxClips[id].getMicrosecondPosition() > 0) {
             sfxClips[id].setMicrosecondPosition(0);
         }
@@ -101,7 +91,5 @@ public class AudioController {
 
     public void toggleSFX(boolean isMuted) {
         this.sfxMuted = isMuted;
-        // Với SFX, vì chúng chỉ phát 1 lần ngắn ngủi, cờ sfxMuted chặn ở hàm playSFX là
-        // đủ
     }
 }

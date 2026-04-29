@@ -1,6 +1,6 @@
-// VictoryController.java
 package controller.state;
 
+import controller.AudioController;
 import controller.InputController;
 import core.Game;
 import model.state.GameState;
@@ -22,13 +22,12 @@ public class VictoryController {
         this.renderer = renderer;
     }
 
-    public void update() {
+    public void update(AudioController audio) {
         boolean isGameCompleted = game.getCurMapIdx() >= AssetsPath.levelMap.length - 1;
         
         MenuButton home = isGameCompleted ? renderer.getHomeBtnSingle() : renderer.getHomeBtn();
         MenuButton next = isGameCompleted ? null : renderer.getNextBtn();
 
-        // 1. Reset trạng thái
         home.setHovered(false);
         home.setPressed(false);
         if (next != null) {
@@ -36,8 +35,7 @@ public class VictoryController {
             next.setPressed(false);
         }
 
-        // 2. Xử lý Hover & Press bằng tọa độ chuột
-        int mouseX = input.getMouseX(); // Đảm bảo InputController của bạn có hàm này
+        int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
 
         if (home.isHit(mouseX, mouseY)) {
@@ -50,19 +48,20 @@ public class VictoryController {
             if (input.isMousePress()) next.setPressed(true);
         }
 
-        // 3. Xử lý thả chuột (Click hoàn thành)
         if (input.isMouseRelease()) {
             if (home.isHovered()) {
-                game.setCurMapIdx(0); // Trở về Menu thì reset lại game từ level 0
+                audio.playSFX(AudioController.SFX_CLICK);
+                game.setCurMapIdx(0);
                 gameState.setGameState(GameState.MENU);
             } 
             else if (next != null && next.isHovered()) {
+                audio.playSFX(AudioController.SFX_CLICK);
                 int index = game.getCurMapIdx();
                 game.setCurMapIdx(index + 1);
                 game.resetPlaying();
                 gameState.setGameState(GameState.PLAYING);
             }
-            input.resetKeys(); // Xóa trạng thái chuột/phím
+            input.resetKeys();
         }
     }
 }

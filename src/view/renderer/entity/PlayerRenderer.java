@@ -10,13 +10,14 @@ import view.assets.ResourceManager;
 
 import static core.GameConfig.*;
 import static util.PlayerStateIndex.*;
+import static view.renderer.entity.EntityRenderer.drawHB;
 import static util.AssetsPath.*;
 
 public class PlayerRenderer {
     private Animation[] aniState = new Animation[MAX_STATE];
     private Animation slashAnimation;
     private int lastState = -1;
-    private static final boolean DEBUG = false;
+    private static final boolean debug = false;
 
     public PlayerRenderer() {
         loadAnimation();
@@ -34,17 +35,12 @@ public class PlayerRenderer {
                 false);
         aniState[ULTIMATE] = new Animation(
                 ResourceManager.loadSprite(playerUltimate, PLAYER_FRAME.get(ULTIMATE), 64, 64), 7, false);
-        // DEATH: loop=false, dừng ở frame cuối
-        aniState[DIE] = new Animation(ResourceManager.loadSprite(playerDie, PLAYER_FRAME.get(DIE), 64, 42), 15,
-                false);
-
         slashAnimation = new Animation(ResourceManager.loadSprite(ultimateSlash, PLAYER_FRAME.get(ULTIMATE), 64, 64), 7,
                 false);
     }
 
     public void update(PlayerModel player) {
         int state = player.getState();
-
         if (state != lastState) {
             aniState[state].reset();
             if (state == ULTIMATE)
@@ -63,13 +59,11 @@ public class PlayerRenderer {
             player.setAtking(false);
         if (state == ULTIMATE && cur.isLastFrame())
             player.setUltimate(false);
-        // DEATH và HURT tự dừng do loop=false — không cần reset thêm
     }
 
     public void render(Graphics g, PlayerModel player, int xOffset, int yOffset) {
-        if (DEBUG)
-            drawDebug(g, player, xOffset, yOffset);
-
+        if (debug)
+            drawBox(g, player, xOffset, yOffset);
         int state = player.getState();
         Animation cur = aniState[state];
 
@@ -89,10 +83,8 @@ public class PlayerRenderer {
         }
     }
 
-    private void drawDebug(Graphics g, PlayerModel player, int xOffset, int yOffset) {
-        Rectangle hb = player.getHitbox();
-        g.setColor(Color.RED);
-        g.drawRect(hb.x - xOffset, hb.y - yOffset, hb.width, hb.height);
+    private void drawBox(Graphics g, PlayerModel player, int xOffset, int yOffset) {
+        drawHB(g, player, xOffset, yOffset);
 
         Rectangle atkBox = player.getAttackBox();
         if (atkBox != null && player.isAtking()) {
@@ -101,7 +93,7 @@ public class PlayerRenderer {
         }
         Rectangle ultBox = player.getUltimateBox();
         if (ultBox != null && player.isUltimate()) {
-            g.setColor(Color.ORANGE);
+            g.setColor(Color.BLACK);
             g.drawRect(ultBox.x - xOffset, ultBox.y - yOffset, ultBox.width, ultBox.height);
         }
     }

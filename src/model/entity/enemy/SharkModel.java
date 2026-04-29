@@ -6,6 +6,7 @@ import model.entity.PlayerModel;
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
 import static util.enemy.EnemyStateIndex.Shark;
+import static util.enemy.EnemyStateIndex.Shark.SHARK_FRAME;
 
 public class SharkModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 2;
@@ -41,13 +42,14 @@ public class SharkModel extends EnemyModel {
             facingRight = distX > 0;
         }
         if (aiState == ATTACK) {
-            dx = 0;
-            tryAttack(player);
-            // if (aniIndex > atkEndFrame) {
-            //     aiState = IDLE;
-            // }
-        }
-        else {
+            if (aniIndex >= 7) {
+                aiState = IDLE;
+            } else {
+                tryAttack(player);
+                refreshState();
+                return;
+            }
+        } else {
             Rectangle atkBox = getAttackBox();
             boolean canHitPlayer = atkBox.intersects(playerBox);
             if (canHitPlayer && now - lastAtkTime >= atkCD) {

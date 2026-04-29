@@ -18,22 +18,19 @@ public class PausedController {
     private GameStateModel gameState;
     private PausedRenderer renderer;
     private SettingsModel settingsModel;
-    private AudioController audioController;
     private SaveLoadController saveLoad;
 
     public PausedController(Game game, InputController input, GameStateModel gameState, PausedRenderer renderer,
-            SettingsModel settingsModel, AudioController audioController, SaveLoadController saveLoad) {
+            SettingsModel settingsModel, SaveLoadController saveLoad) {
         this.game = game;
         this.input = input;
         this.gameState = gameState;
         this.renderer = renderer;
         this.settingsModel = settingsModel;
-        this.audioController = audioController;
         this.saveLoad = saveLoad;
     }
 
-    public void update() {
-        // Nhấn P hoặc Esc lần nữa để tiếp tục chơi
+    public void update(AudioController audio) {
         if (input.isP() || input.isEsc()) {
             resumeGame();
             return;
@@ -45,48 +42,38 @@ public class PausedController {
 
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
-
-        // 1. Kiểm tra va chạm chuột cho tất cả các nút
+        
         checkButtonStatus(home, mouseX, mouseY);
         checkButtonStatus(resume, mouseX, mouseY);
         for (AudioButton btn : audioBtns) {
             checkButtonStatus(btn, mouseX, mouseY);
         }
-
-        // 2. Xử lý khi click (thả chuột)
         if (input.isMouseRelease()) {
-            
-            // Xử lý nút Home (Về Menu)
             if (home.isHovered() && home.isPressed()) {
-                game.setCurMapIdx(0); 
+                audio.playSFX(AudioController.SFX_CLICK);
+                game.setCurMapIdx(0);
                 gameState.setGameState(GameState.MENU);
                 input.resetKeys();
-            } 
-            // Xử lý nút Resume (Tiếp tục chơi)
-            else if (resume.isHovered() && resume.isPressed()) {
+            } else if (resume.isHovered() && resume.isPressed()) {
+                audio.playSFX(AudioController.SFX_CLICK);
                 resumeGame();
-            }
-            // Xử lý bật tắt Music
-            else if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
+            } else if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
                 boolean isMuted = !settingsModel.isMusicMuted();
                 settingsModel.setMusicMuted(isMuted);
-                audioController.toggleMusic(isMuted); // Tùy chỉnh nhạc map
+                audio.toggleMusic(isMuted);
                 saveLoad.saveGame();
-                audioController.playSFX(AudioController.BGM_MENU);
-            }
-            // Xử lý bật tắt SFX
-            else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
+                audio.playSFX(AudioController.BGM_PLAYING);
+            } else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
                 boolean isMuted = !settingsModel.isSFXMuted();
                 settingsModel.setSFXMuted(isMuted);
-                audioController.toggleSFX(isMuted);
+                audio.toggleSFX(isMuted);
                 saveLoad.saveGame();
-                audioController.playSFX(AudioController.SFX_CLICK);
+                audio.playSFX(AudioController.SFX_CLICK);
             }
-
-            // Reset UI
             home.resetState();
             resume.resetState();
-            for (AudioButton btn : audioBtns) btn.resetState();
+            for (AudioButton btn : audioBtns)
+                btn.resetState();
             input.resetMouse();
         }
     }
@@ -94,7 +81,8 @@ public class PausedController {
     private void checkButtonStatus(UIButton btn, int mouseX, int mouseY) {
         if (btn.isHit(mouseX, mouseY)) {
             btn.setHovered(true);
-            if (input.isMousePress()) btn.setPressed(true);
+            if (input.isMousePress())
+                btn.setPressed(true);
         } else {
             btn.setHovered(false);
             btn.setPressed(false);

@@ -1,7 +1,5 @@
 package view.renderer.entity;
 
-import static view.renderer.entity.EntityRenderer.drawHB;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -9,9 +7,10 @@ import java.util.List;
 
 import model.entity.enemy.EnemyModel;
 
+import static view.renderer.entity.EntityRenderer.drawHB;
+
 public abstract class EnemyRenderer {
-    // Đặt true khi cần debug hitbox/attackbox
-    protected static final boolean DEBUG = false;
+    protected static final boolean debug = true;
 
     public void updateAll(List<EnemyModel> listEnemy) {
         for (EnemyModel enemy : listEnemy) {
@@ -29,7 +28,7 @@ public abstract class EnemyRenderer {
             render(g, enemy, x, y);
             renderHealthBar(g, enemy, x, y);
 
-            if (DEBUG) {
+            if (debug) {
                 Rectangle atkBox = enemy.getAttackBox();
                 g.drawRect(atkBox.x - xOffset, atkBox.y - yOffset, atkBox.width, atkBox.height);
                 drawHB(g, enemy, xOffset, yOffset);
@@ -42,9 +41,10 @@ public abstract class EnemyRenderer {
     private void renderHealthBar(Graphics g, EnemyModel enemy, int x, int y) {
         int barW = enemy.getWidth();
         int hpW = (int) (barW * (enemy.getCurHealth() / (double) enemy.getMaxHealth()));
+        int pad = (int) (4 * core.GameConfig.SCALE);
         g.setColor(Color.DARK_GRAY);
-        g.fillRect(x, y - 8, barW, 4);
+        g.fillRect(x, y - pad, barW, 4);
         g.setColor(Color.GREEN);
-        g.fillRect(x, y - 8, hpW, 4);
+        g.fillRect(x, y - pad, hpW, 4);
     }
 }

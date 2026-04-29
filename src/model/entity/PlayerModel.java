@@ -37,7 +37,7 @@ public class PlayerModel extends EntityModel {
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
-        setHitBox((int) (18 * SCALE), (int) (6 * SCALE), (int) (27 * SCALE), (int) (35 * SCALE));
+        this.setHitBox((int) (18 * SCALE), (int) (6 * SCALE), (int) (27 * SCALE), (int) (35 * SCALE));
     }
 
     public void requestJump(double jumpPow) {

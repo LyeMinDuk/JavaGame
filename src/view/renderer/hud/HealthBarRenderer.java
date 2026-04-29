@@ -6,19 +6,16 @@ import java.awt.image.BufferedImage;
 import model.entity.PlayerModel;
 import view.assets.ResourceManager;
 
-import static core.GameConfig.*;
 import static util.AssetsPath.*;
 
 public class HealthBarRenderer {
     private final int x = 32, y = 32, width = 200, height = 25;
 
     private BufferedImage fillImg;
-    private BufferedImage frameImg;
     private BufferedImage bgImg;
 
     public HealthBarRenderer() {
         fillImg = ResourceManager.loadImg(heathBarFill);
-        frameImg = ResourceManager.loadImg(heathBarFrame);
         bgImg = ResourceManager.loadImg(heathBarBG);
     }
 
@@ -30,6 +27,5 @@ public class HealthBarRenderer {
         int drawWidth = (int) (percent * width);
         g.drawImage(bgImg, x, y, width, height, null);
         g.drawImage(fillImg, x + drawPad, y, drawWidth, height, null);
-        // g.drawImage(frameImg, x, y, width, height, null);
     }
 }

@@ -60,7 +60,7 @@ public class GameRenderer {
             case GameState.MENU -> menuRenderer.render(g);
             case GameState.PLAYING -> playingRenderer.render(g);
             case GameState.PAUSED -> {
-                playingRenderer.render(g); // Vẽ cảnh game đóng băng
+                playingRenderer.render(g);
                 pausedRenderer.render(g, settingsModel);
             }
             case GameState.GAME_OVER -> {
@@ -69,9 +69,9 @@ public class GameRenderer {
             }
             case GameState.OPTIONS -> optionRenderer.render(g, settingsModel);
             case GameState.VICTORY -> {
-                playingRenderer.render(g); // Vẽ cảnh game đóng băng ở nền
+                playingRenderer.render(g);
                 boolean isGameCompleted = curMapIdx >= levelMap.length - 1;
-                victoryRenderer.render(g, isGameCompleted); // Vẽ Overlay đè lên
+                victoryRenderer.render(g, isGameCompleted);
             }
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }

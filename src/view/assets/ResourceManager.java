@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -29,29 +28,24 @@ public class ResourceManager {
     public static BufferedImage[] loadSprite(String path, int frames, int width, int height) {
         BufferedImage img = loadImg(path);
         BufferedImage[] sprite = new BufferedImage[frames];
-
         for (int i = 0; i < frames; ++i) {
             sprite[i] = img.getSubimage(i * width, 0, width, height);
         }
-
         return sprite;
     }
 
     public static Clip loadClip(String path) {
         Clip clip = null;
-        // Với âm thanh, ta dùng getResource (trả về URL) sẽ an toàn hơn
-        // getResourceAsStream
         URL url = ResourceManager.class.getResource(path);
-
         if (url == null) {
-            System.out.println("Audio file not Found: " + path);
+            System.out.println("Audio not Found: " + path);
         } else {
             try {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(url);
                 clip = AudioSystem.getClip();
                 clip.open(audioInput);
             } catch (Exception e) {
-                System.out.println("Error loading audio: " + path);
+                System.out.println("Error load: " + path);
                 e.printStackTrace();
             }
         }

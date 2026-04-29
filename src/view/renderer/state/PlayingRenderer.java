@@ -17,7 +17,6 @@ import view.renderer.MapRenderer;
 import view.renderer.entity.EnemyRenderer;
 import view.renderer.entity.enemy.EnemyManager;
 import view.renderer.entity.PlayerRenderer;
-import view.renderer.entity.enemy.SharkRenderer;
 import view.renderer.hud.HealthBarRenderer;
 import view.renderer.hud.ManaBarRenderer;
 
@@ -27,6 +26,7 @@ public class PlayingRenderer {
     private CameraModel camera;
     private MapModel map;
     private PlayerModel player;
+
     private MapRenderer mapRenderer;
     private PlayerRenderer playerRenderer;
     private EnemyRenderer enemyRenderer;
@@ -94,24 +94,10 @@ public class PlayingRenderer {
 
     private void drawBackground(Graphics g, int xOffset) {
         for(int i = 0; i < bgLayers.length; ++i){
-            // Tính toán quãng đường di chuyển của layer này
             int xMove = (int) (xOffset * parallaxFactors[i]);
-
-            // Dùng Modulo để tìm vị trí x bắt đầu vẽ. 
-            // Dấu trừ vì camera đi sang phải thì cảnh vật phải lùi về bên trái
             int xStart = -(xMove % GAME_WIDTH);
-
-            // Vẽ ảnh thứ nhất
             g.drawImage(bgLayers[i], xStart, 0, GAME_WIDTH, GAME_HEIGHT, null);
-            
-            // Vẽ ảnh thứ hai nối tiếp ngay sau đuôi ảnh thứ nhất (xStart + GAME_WIDTH)
-            // để lấp đầy khoảng trống khi ảnh thứ nhất trôi qua
             g.drawImage(bgLayers[i], xStart + GAME_WIDTH, 0, GAME_WIDTH, GAME_HEIGHT, null);
-            
-            // (Tùy chọn) Nếu game cho phép lùi camera ra số âm, bạn có thể cần vẽ 
-            // thêm 1 ảnh ở xStart - GAME_WIDTH để tránh bị rỗng hình bên trái.
-            // g.setColor(new Color(0, 0, 0, 120));
-            // g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         }
     }
 
