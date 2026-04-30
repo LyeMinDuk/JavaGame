@@ -23,6 +23,7 @@ import util.AssetsPath;
 import view.GameWindow;
 import view.renderer.GameRenderer;
 import view.GamePanel;
+
 import static core.GameConfig.*;
 
 public class Game implements Runnable {
@@ -50,7 +51,6 @@ public class Game implements Runnable {
     private SaveLoadController saveLoad;
 
     private GameRenderer renderer;
-
     private int curMapIdx = 0;
 
     public Game() {
@@ -97,7 +97,7 @@ public class Game implements Runnable {
     }
 
     private void initRenderer() {
-        renderer = new GameRenderer(map, player, camera, worldController.getEnemyController(), gameState,
+        renderer = new GameRenderer(map, player, curMapIdx, camera, worldController.getEnemyController().getListEnemy(), worldController.getSpikeController().getListSpike(), gameState,
                 settingsModel);
     }
 

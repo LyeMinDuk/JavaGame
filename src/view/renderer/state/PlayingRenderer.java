@@ -7,22 +7,26 @@ import static util.AssetsPath.playingBG;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
-import controller.entity.enemy.EnemyController;
+import controller.entity.EnemyController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
+import model.entity.enemy.EnemyModel;
+import model.object.SpikeModel;
 import view.assets.ResourceManager;
 import view.renderer.MapRenderer;
-import view.renderer.entity.EnemyRenderer;
 import view.renderer.entity.enemy.EnemyManager;
+import view.renderer.entity.enemy.EnemyRenderer;
 import view.renderer.entity.PlayerRenderer;
 import view.renderer.hud.HealthBarRenderer;
 import view.renderer.hud.ManaBarRenderer;
+import view.renderer.object.SpikeRenderer;
 
 public class PlayingRenderer {
     private BufferedImage[] bgLayers;
-    private final double[] parallaxFactors = {0.0, 0.15, 0.3, 0.5, 0.7};
+    private final double[] parallaxFactors = { 0.0, 0.15, 0.3, 0.5, 0.7 };
     private CameraModel camera;
     private MapModel map;
     private PlayerModel player;
@@ -30,29 +34,39 @@ public class PlayingRenderer {
     private MapRenderer mapRenderer;
     private PlayerRenderer playerRenderer;
     private EnemyRenderer enemyRenderer;
-    private EnemyController enemyController;
     private HealthBarRenderer healthBarRenderer;
     private ManaBarRenderer manaBarRenderer;
+    private SpikeRenderer spikeRenderer;
 
-    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, EnemyController enemyController) {
+    private List<EnemyModel> enemies;
+    private List<SpikeModel> spikes;
+
+    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, int levelIdx, List<EnemyModel> enemies,
+            List<SpikeModel> spikes) {
         this.camera = camera;
         this.map = map;
         this.player = player;
-        this.enemyController = enemyController;
-        loadMapTexture();
+        this.enemies = enemies;
+        this.spikes = spikes;
 
+        loadMapTexture();
         loadPlayerAnimation();
-        initEnemyRenderer();
-        healthBarRenderer = new HealthBarRenderer();
-        manaBarRenderer = new ManaBarRenderer();
-        loadResource();
+        initRenderer();
+        loadResource(levelIdx);
     }
 
-    private void loadResource() {
-        bgLayers = new BufferedImage[5];
-
-        for(int i = 0; i < bgLayers.length; ++i){
-            bgLayers[i] = ResourceManager.loadImg(playingBG + (i + 1) + ".png");
+    private void loadResource(int levelIdx) {
+        int frame = 0;
+        switch (levelIdx) {
+            case 0 -> frame = 5;
+            case 1 -> frame = 4;
+            // case 2 -> frame = 5;
+            // case 0 -> frame = 5;
+        }
+        bgLayers = new BufferedImage[frame];
+        
+        for (int i = 0; i < bgLayers.length; ++i) {
+            bgLayers[i] = ResourceManager.loadImg(playingBG + (levelIdx + 1) + "/" + (i + 1) + ".png");
         }
     }
 
@@ -68,8 +82,11 @@ public class PlayingRenderer {
         mapRenderer = new MapRenderer(tiles);
     }
 
-    private void initEnemyRenderer() {
+    private void initRenderer() {
         enemyRenderer = new EnemyManager();
+        spikeRenderer = new SpikeRenderer();
+        healthBarRenderer = new HealthBarRenderer();
+        manaBarRenderer = new ManaBarRenderer();
     }
 
     private void loadPlayerAnimation() {
@@ -78,7 +95,7 @@ public class PlayingRenderer {
 
     public void update() {
         playerRenderer.update(player);
-        enemyRenderer.updateAll(enemyController.getListEnemy());
+        enemyRenderer.updateAll(enemies);
     }
 
     public void render(Graphics g) {
@@ -86,14 +103,15 @@ public class PlayingRenderer {
         int yOffset = camera.getOffsetY();
         drawBackground(g, xOffset);
         mapRenderer.render(g, map, xOffset, yOffset);
+        spikeRenderer.render(g, spikes, xOffset, yOffset);
         playerRenderer.render(g, player, xOffset, yOffset);
-        enemyRenderer.renderAll(g, enemyController.getListEnemy(), xOffset, yOffset);
+        enemyRenderer.renderAll(g, enemies, xOffset, yOffset);
         healthBarRenderer.render(g, player);
         manaBarRenderer.render(g, player);
     }
 
     private void drawBackground(Graphics g, int xOffset) {
-        for(int i = 0; i < bgLayers.length; ++i){
+        for (int i = 0; i < bgLayers.length; ++i) {
             int xMove = (int) (xOffset * parallaxFactors[i]);
             int xStart = -(xMove % GAME_WIDTH);
             g.drawImage(bgLayers[i], xStart, 0, GAME_WIDTH, GAME_HEIGHT, null);

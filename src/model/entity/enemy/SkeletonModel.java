@@ -9,7 +9,7 @@ import static util.enemy.EnemyAIState.*;
 import static util.enemy.EnemyStateIndex.Skeleton;;
 
 public class SkeletonModel extends EnemyModel {
-    private final double detectRange = TILE_SIZE * 2;
+    private final double detectRange = TILE_SIZE * 3;
     private final long atkCD = 1000;
     private long lastAtkTime = 0;
     private final int atkStartFrame = 5;
@@ -17,9 +17,9 @@ public class SkeletonModel extends EnemyModel {
 
     public SkeletonModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
-        this.moveSpeed = 0.5 * SCALE;
-        this.patrolLeftX = x - (TILE_SIZE * 3);
-        this.patrolRightX = x + (TILE_SIZE * 3);
+        this.moveSpeed = 0.7 * SCALE;
+        this.patrolLeftX = x - (TILE_SIZE * 5);
+        this.patrolRightX = x + (TILE_SIZE * 5);
         this.setHitBox((int) (33 * SCALE), (int) (18 * SCALE), (int) (24 * SCALE), (int) (46 * SCALE));
     }
 
@@ -52,26 +52,26 @@ public class SkeletonModel extends EnemyModel {
         } else {
             Rectangle atkBox = getAttackBox();
             boolean canHitPlayer = atkBox.intersects(playerBox);
-            if (canHitPlayer && now - lastAtkTime >= atkCD) {
-                aiState = ATTACK;
-                dx = 0;
+            if (canHitPlayer) {
+                if (now - lastAtkTime >= atkCD) {
+                    aiState = ATTACK;
+                    dx = 0;
+                } else {
+                    dx = 0;
+                    aiState = IDLE;
+                }
             } else if (absX <= detectRange) {
                 double nextDx = distX > 0 ? moveSpeed : -moveSpeed;
                 double nextX = x + nextDx;
-
                 if (nextX < patrolLeftX || nextX > patrolRightX) {
-                    // Chạm biên nhưng vẫn chưa tới tầm cắn -> Đứng im gầm gừ
                     dx = 0;
                     aiState = IDLE;
                 } else {
-                    // Còn trong biên -> Tiếp tục đuổi
                     aiState = CHASE;
                     dx = nextDx;
                 }
             } else {
-                // --- PATROL STATE ---
                 patrol();
-                // Khi tuần tra, cập nhật lại hướng mặt theo gia tốc dx
                 if (dx != 0) {
                     facingRight = dx > 0;
                 }
@@ -122,8 +122,8 @@ public class SkeletonModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (14 * SCALE);
-        int atkH = (int) (10 * SCALE);
+        int atkW = (int) (32 * SCALE);
+        int atkH = (int) (15 * SCALE);
         int atkOffset = (int) (2 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
         int y = hb.y + hb.height / 2 - atkH / 2;

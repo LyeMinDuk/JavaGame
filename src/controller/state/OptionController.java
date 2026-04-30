@@ -48,7 +48,6 @@ public class OptionController {
                 settingsModel.setMusicMuted(isMuted);
                 audioController.toggleMusic(isMuted);
                 saveLoad.saveGame();
-                audioController.playMusic(AudioController.BGM_PLAYING);
             } else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
                 boolean isMuted = !settingsModel.isSFXMuted();
                 settingsModel.setSFXMuted(isMuted);

@@ -44,15 +44,16 @@ public class PlayerController {
             audio.playSFX(AudioController.SFX_JUMP);
             player.requestJump(player.getJumpPow());
         }
-        handleUltimateInput(player);
-        handleAttackInput(player, enemies, audio);
+        handleUltimateInput(player, audio);
+        handleAttackInput(player, audio);
         handleAttack(player, enemies);
     }
 
-    private void handleUltimateInput(PlayerModel player) {
+    private void handleUltimateInput(PlayerModel player, AudioController audio) {
         if (input.isUltimate() && !player.isUltimate() && !player.isAtking() && player.isOnGround()) {
             if (player.isUltReady()) {
                 if (player.useMana(player.getUltimateCost())) {
+                    audio.playSFX(AudioController.SFX_SLASH);
                     player.setUltimate(true);
                     player.setAniIndex(0);
                     player.setLastUltCastTime(System.currentTimeMillis());
@@ -83,7 +84,7 @@ public class PlayerController {
         }
     }
 
-    private void handleAttackInput(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
+    private void handleAttackInput(PlayerModel player, AudioController audio) {
         long now = System.currentTimeMillis();
         if (input.isAttack() && !player.isAtking() && !player.isUltimate()
                 && player.isNormalAtkReady()) {

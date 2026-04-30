@@ -1,11 +1,14 @@
 package view.renderer;
 
 import java.awt.Graphics;
+import java.util.List;
 
-import controller.entity.enemy.EnemyController;
+import controller.entity.EnemyController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
+import model.entity.enemy.EnemyModel;
+import model.object.SpikeModel;
 import model.state.GameStateModel;
 import view.renderer.state.GameOverRenderer;
 import view.renderer.state.MenuRenderer;
@@ -32,23 +35,27 @@ public class GameRenderer {
     private OptionRenderer optionRenderer;
     private PausedRenderer pausedRenderer;
 
-    private EnemyController enemyController;
+    private List<EnemyModel> enemies;
+    private List<SpikeModel> spikes;
 
-    public GameRenderer(MapModel map, PlayerModel player, CameraModel camera, EnemyController enemyController,
-            GameStateModel gameState, SettingsModel settingsModel) {
+    private int curMapIdx = 0;
+
+    public GameRenderer(MapModel map, PlayerModel player, int curMapIdx, CameraModel camera, List<EnemyModel> enemies,
+            List<SpikeModel> spikes, GameStateModel gameState, SettingsModel settingsModel) {
         this.map = map;
         this.player = player;
+        this.curMapIdx = curMapIdx;
         this.camera = camera;
-        this.enemyController = enemyController;
         this.gameState = gameState;
         this.settingsModel = settingsModel;
-
+        this.enemies = enemies;
+        this.spikes = spikes;
         initGameStateRenderer();
     }
 
     private void initGameStateRenderer() {
         menuRenderer = new MenuRenderer();
-        playingRenderer = new PlayingRenderer(camera, map, player, enemyController);
+        playingRenderer = new PlayingRenderer(camera, map, player, curMapIdx, enemies, spikes);
         victoryRenderer = new VictoryRenderer();
         gameOverRenderer = new GameOverRenderer();
         optionRenderer = new OptionRenderer();
@@ -78,13 +85,11 @@ public class GameRenderer {
     }
 
     public void reloadForNewGame(MapModel newMap, PlayerModel newPlayer, CameraModel newCamera,
-            EnemyController newEnemyController) {
+            List<EnemyModel> enemies, List<SpikeModel> spikes) {
         this.map = newMap;
         this.player = newPlayer;
         this.camera = newCamera;
-        this.enemyController = newEnemyController;
-
-        playingRenderer = new PlayingRenderer(camera, map, player, enemyController);
+        playingRenderer = new PlayingRenderer(camera, map, player, curMapIdx, enemies, spikes);
     }
 
     public MenuRenderer getMenuRenderer() {

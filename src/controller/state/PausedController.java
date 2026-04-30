@@ -62,7 +62,6 @@ public class PausedController {
                 settingsModel.setMusicMuted(isMuted);
                 audio.toggleMusic(isMuted);
                 saveLoad.saveGame();
-                audio.playSFX(AudioController.BGM_PLAYING);
             } else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
                 boolean isMuted = !settingsModel.isSFXMuted();
                 settingsModel.setSFXMuted(isMuted);

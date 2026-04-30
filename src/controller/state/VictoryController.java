@@ -24,7 +24,7 @@ public class VictoryController {
 
     public void update(AudioController audio) {
         boolean isGameCompleted = game.getCurMapIdx() >= AssetsPath.levelMap.length - 1;
-        
+
         MenuButton home = isGameCompleted ? renderer.getHomeBtnSingle() : renderer.getHomeBtn();
         MenuButton next = isGameCompleted ? null : renderer.getNextBtn();
 
@@ -40,23 +40,25 @@ public class VictoryController {
 
         if (home.isHit(mouseX, mouseY)) {
             home.setHovered(true);
-            if (input.isMousePress()) home.setPressed(true);
+            if (input.isMousePress())
+                home.setPressed(true);
         }
 
         if (next != null && next.isHit(mouseX, mouseY)) {
             next.setHovered(true);
-            if (input.isMousePress()) next.setPressed(true);
+            if (input.isMousePress())
+                next.setPressed(true);
         }
-
+        audio.stopMusic();
         if (input.isMouseRelease()) {
             if (home.isHovered()) {
                 audio.playSFX(AudioController.SFX_CLICK);
                 game.setCurMapIdx(0);
                 gameState.setGameState(GameState.MENU);
-            } 
-            else if (next != null && next.isHovered()) {
+            } else if (next != null && next.isHovered()) {
                 audio.playSFX(AudioController.SFX_CLICK);
                 int index = game.getCurMapIdx();
+                audio.setLevelMusic(index + 1);
                 game.setCurMapIdx(index + 1);
                 game.resetPlaying();
                 gameState.setGameState(GameState.PLAYING);

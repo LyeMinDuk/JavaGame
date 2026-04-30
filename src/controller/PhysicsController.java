@@ -2,10 +2,10 @@ package controller;
 
 import java.awt.Rectangle;
 
+import controller.entity.EnemyController;
 import model.MapModel;
 import model.entity.EntityModel;
 import model.entity.PlayerModel;
-import controller.entity.enemy.EnemyController;
 
 import static core.GameConfig.*;
 

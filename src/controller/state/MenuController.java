@@ -46,6 +46,7 @@ public class MenuController {
                     switch (i) {
                         case 0 -> {
                             audio.playSFX(AudioController.SFX_CLICK);
+                            audio.setLevelMusic(game.getCurMapIdx());
                             game.resetPlaying();
                             gameState.setGameState(GameState.PLAYING);
                         }

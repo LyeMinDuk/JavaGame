@@ -25,7 +25,6 @@ public class PlayingController {
     }
 
     public void update(AudioController audio) {
-        audio.playMusic(AudioController.BGM_PLAYING);
         if(!player.isAlive()){
             gameState.setGameState(GameState.GAME_OVER);
             input.resetKeys();

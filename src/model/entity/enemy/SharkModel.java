@@ -2,11 +2,11 @@ package model.entity.enemy;
 
 import java.awt.Rectangle;
 import model.entity.PlayerModel;
+import util.enemy.EnemyStateIndex.Shark;
 
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
 import static util.enemy.EnemyStateIndex.Shark;
-import static util.enemy.EnemyStateIndex.Shark.SHARK_FRAME;
 
 public class SharkModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 2;
@@ -31,7 +31,6 @@ public class SharkModel extends EnemyModel {
             refreshState();
             return;
         }
-
         Rectangle playerBox = player.getHitbox();
         double centerPlayer = (playerBox.x + playerBox.width) / 2.0;
         double centerEnemy = (x + width) / 2.0;
@@ -52,26 +51,26 @@ public class SharkModel extends EnemyModel {
         } else {
             Rectangle atkBox = getAttackBox();
             boolean canHitPlayer = atkBox.intersects(playerBox);
-            if (canHitPlayer && now - lastAtkTime >= atkCD) {
-                aiState = ATTACK;
-                dx = 0;
+            if (canHitPlayer) {
+                if (now - lastAtkTime >= atkCD) {
+                    aiState = ATTACK;
+                    dx = 0;
+                } else {
+                    dx = 0;
+                    aiState = IDLE;
+                }
             } else if (absX <= detectRange) {
                 double nextDx = distX > 0 ? moveSpeed : -moveSpeed;
                 double nextX = x + nextDx;
-
                 if (nextX < patrolLeftX || nextX > patrolRightX) {
-                    // Chạm biên nhưng vẫn chưa tới tầm cắn -> Đứng im gầm gừ
                     dx = 0;
                     aiState = IDLE;
                 } else {
-                    // Còn trong biên -> Tiếp tục đuổi
                     aiState = CHASE;
                     dx = nextDx;
                 }
             } else {
-                // --- PATROL STATE ---
                 patrol();
-                // Khi tuần tra, cập nhật lại hướng mặt theo gia tốc dx
                 if (dx != 0) {
                     facingRight = dx > 0;
                 }

@@ -9,16 +9,16 @@ import static core.GameConfig.TILE_SIZE;
 import static util.enemy.EnemyAIState.*;
 
 public class DemonSlimeModel extends EnemyModel {
-    private final int SIGHT_RANGE = 500;
-    private final long ATTACK_COOLDOWN = 2000;
-    private long lastAttackTime = 0;
+    private final double detectRange = TILE_SIZE * 10;
+    private final double atkRange = TILE_SIZE * 1.5;
+    private long atkCD = 2000;
+    private long lastAtkTime = 0;
 
     private final int atkStartFrame = 9;
     private final int atkEndFrame = 11;
-    private boolean hasDealtDamage = false;
 
-    // Deadzone đủ lớn để tránh flip liên tục khi player đứng gần tâm boss
-    private final double FLIP_DEADZONE = TILE_SIZE * 0.5;
+    private boolean isPhase2 = false;
+    private boolean isPhase3 = false;
 
     public DemonSlimeModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
@@ -28,90 +28,86 @@ public class DemonSlimeModel extends EnemyModel {
     }
 
     @Override
-    public void refreshState() {
-        switch (aiState) {
-            case IDLE -> aniState = DemonSlime.IDLE;
-            case CHASE, PATROL -> aniState = DemonSlime.RUN;
-            case ATTACK -> aniState = DemonSlime.ATTACK;
-            case HURT -> aniState = DemonSlime.HURT;
-            case DIE -> aniState = DemonSlime.DIE;
-        }
-    }
-
-    @Override
     public void updateAi(PlayerModel player) {
-        if (aiState == DIE) {
+        long now = System.currentTimeMillis();
+        if (aiState == DIE || (aiState == HURT && now < hurtUntil)) {
+            dx = dy = 0;
             refreshState();
             return;
         }
-
-        if (aiState == HURT) {
-            if (System.currentTimeMillis() > hurtUntil) {
-                aiState = IDLE;
-            }
-            dx = 0;
-            refreshState();
-            return;
+        if (!isPhase2 && (1.0 * getCurHealth() / getMaxHealth() < 0.5)) {
+            isPhase2 = true;
+            damage *= 2;
+            moveSpeed = 0.9 * SCALE;
+            atkCD /= 2;
         }
 
+        if (!isPhase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
+            isPhase3 = true;
+            damage *= 2;
+            curHealth = maxHealth;
+        }
+        Rectangle hitbox = getHitbox();
         Rectangle playerBox = player.getHitbox();
-        double centerPlayer = playerBox.x + playerBox.width / 2.0;
-        double centerEnemy = getHitbox().x + getHitbox().width / 2.0;
+        double centerPlayer = (playerBox.x + playerBox.width) / 2.0;
+        double centerEnemy = (hitbox.x + hitbox.width) / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
 
-        // FIX: chỉ đổi hướng khi khoảng cách đủ lớn (deadzone) VÀ không đang tấn công
-        if (aiState != ATTACK && absX > FLIP_DEADZONE) {
-            facingRight = distX > 0;
-        }
-
         if (aiState == ATTACK) {
             dx = 0;
-            tryAttack(player);
-            // Khi animation ATTACK chạy xong (frame cuối), về IDLE
-            // DemonSlimeRenderer set loop=false nên aniIndex sẽ dừng ở frame cuối
-            if (aniIndex >= DEMON_SLIME_ATK_LAST_FRAME()) {
+            if (aniIndex >= 14) {
                 aiState = IDLE;
+            } else {
+                tryAttack(player);
+                refreshState();
+                return;
             }
         } else {
-            Rectangle simulatedAtkBox = getAttackBox();
-            boolean canHitPlayer = simulatedAtkBox.intersects(playerBox);
-
-            if (canHitPlayer) {
-                if (System.currentTimeMillis() - lastAttackTime > ATTACK_COOLDOWN) {
+            facingRight = distX > 0;
+            if (absX <= atkRange) {
+                if (now - lastAtkTime >= atkCD) {
                     aiState = ATTACK;
-                    lastAttackTime = System.currentTimeMillis();
-                    hasDealtDamage = false; // FIX: bỏ comment, reset đúng chỗ
                     dx = 0;
+                    facingRight = distX > 0;
                 } else {
-                    aiState = IDLE;
                     dx = 0;
+                    aiState = IDLE;
                 }
-            } else if (absX <= SIGHT_RANGE) {
-                aiState = CHASE;
+            } else if (absX <= detectRange) {
                 dx = distX > 0 ? moveSpeed : -moveSpeed;
-                this.x += dx;
+                aiState = CHASE;
             } else {
                 aiState = IDLE;
                 dx = 0;
             }
         }
-
-        syncHitbox();
         refreshState();
     }
 
-    // Frame cuối của animation ATTACK (15 frames, index 0-14)
-    private int DEMON_SLIME_ATK_LAST_FRAME() {
-        return 14;
+    @Override
+    public void refreshState() {
+        switch (aiState) {
+            case PATROL, CHASE -> aniState = DemonSlime.RUN;
+            case ATTACK -> aniState = DemonSlime.ATTACK;
+            case HURT -> aniState = DemonSlime.HURT;
+            case DIE -> aniState = DemonSlime.DIE;
+            default -> aniState = DemonSlime.IDLE;
+        }
     }
 
     private void tryAttack(PlayerModel player) {
-        if (!hasDealtDamage && aniIndex >= atkStartFrame && aniIndex <= atkEndFrame) {
+        if (aiState != ATTACK)
+            return;
+        long now = System.currentTimeMillis();
+        int frame = aniIndex;
+        if (now - lastAtkTime >= atkCD) {
             Rectangle atkBox = getAttackBox();
-            if (atkBox.intersects(player.getHitbox())) {
-                player.takeDamage(damage);
-                hasDealtDamage = true;
+            if (frame >= atkStartFrame && frame <= atkEndFrame) {
+                if (atkBox.intersects(player.getHitbox())) {
+                    player.takeDamage(damage);
+                }
+                lastAtkTime = now;
             }
         }
     }
@@ -119,11 +115,12 @@ public class DemonSlimeModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = 100;
-        int atkH = 100;
-        int atkOffset = 20;
-        int ax = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int ay = hb.y + (hb.height - atkH);
-        return new Rectangle(ax, ay, atkW, atkH);
+        int atkW = (int) (50 * SCALE);
+        int atkH = (int) (50 * SCALE);
+        int atkOffset = (int) (20 * SCALE);
+        int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
+        int y = hb.y + (hb.height - atkH);
+        return new Rectangle(x, y, atkW, atkH);
     }
+
 }

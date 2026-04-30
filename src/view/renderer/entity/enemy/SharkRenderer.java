@@ -6,15 +6,14 @@ import model.entity.enemy.EnemyModel;
 import model.entity.enemy.SharkModel;
 import view.assets.Animation;
 import view.assets.ResourceManager;
-import view.renderer.entity.EnemyRenderer;
 
 import static util.enemy.EnemyStateIndex.Shark.*;
 import static util.AssetsPath.*;
 
 public class SharkRenderer extends EnemyRenderer {
-    private Animation[] aniState = new Animation[MAX_STATE];
 
     public SharkRenderer() {
+        aniState = new Animation[MAX_STATE];
         loadAnimation();
     }
 
@@ -31,32 +30,4 @@ public class SharkRenderer extends EnemyRenderer {
                 ResourceManager.loadSprite(sharkAttack, SHARK_FRAME.get(ATTACK), 34, 30),
                 15, false);
     }
-    
-    @Override
-    protected void update(EnemyModel enemy) {
-        int state = enemy.getAniState();
-        SharkModel shark = (SharkModel) enemy;
-        if (shark.getLastState() == -1 || state != shark.getLastState()) {
-            aniState[state].reset();
-            shark.setLastState(state);
-        }
-        Animation curAnimation = aniState[state];
-        curAnimation.runAni();
-        enemy.setAniIndex(curAnimation.getFrameIdx());
-    }
-
-    @Override
-    protected void render(Graphics g, EnemyModel enemy, int x, int y) {
-        if (!(enemy instanceof SharkModel shark))
-            return;
-        Animation curAnimation = aniState[shark.getAniState()];
-        if (!shark.isFacingRight()) {
-            g.drawImage(curAnimation.getCurFrame(), x, y, +shark.getWidth(), shark.getHeight(), null);
-        } else {
-            g.drawImage(curAnimation.getCurFrame(), x + shark.getWidth(), y,
-                    -shark.getWidth(), shark.getHeight(), null);
-        }
-    }
-
-    
 }

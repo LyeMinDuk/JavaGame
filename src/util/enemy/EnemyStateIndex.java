@@ -53,4 +53,20 @@ public final class EnemyStateIndex {
                 HURT, 5,
                 DIE, 22);
     }
+
+    public static class Minotaur {
+        public static final int MAX_STATE = 5;
+        public static final int IDLE = 0;
+        public static final int RUN = 1;
+        public static final int ATTACK = 2;
+        public static final int HURT = 3;
+        public static final int DIE = 4;
+
+        public static final Map<Integer, Integer> MINOTAUR_FRAME = Map.of(
+                IDLE, 16,
+                RUN, 12,
+                ATTACK, 15,
+                HURT, 6,
+                DIE, 10);
+    }
 }

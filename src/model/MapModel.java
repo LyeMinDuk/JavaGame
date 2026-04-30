@@ -12,7 +12,8 @@ public class MapModel {
     public static final int ENEMY_TYPE_SHARK = 1;
     public static final int ENEMY_TYPE_SKELETON = 2;
     public static final int ENEMY_TYPE_DEMON_SLIME = 3;
-    
+    public static final int ENEMY_TYPE_MINOTAUR = 4;
+
     private int[][] map;
     private BufferedImage levelImg;
 
@@ -20,6 +21,7 @@ public class MapModel {
     private Point playerLocation;
     private int bossCheckpoint = -1;
     private List<int[]> enemySpawns = new ArrayList<>();
+    private List<Point> spikeSpawns = new ArrayList<>();
 
     public MapModel(String path) {
         initLevel(path);
@@ -36,7 +38,12 @@ public class MapModel {
         for (int i = 0; i < map.length; ++i) {
             for (int j = 0; j < tileWide; ++j) {
                 Color c = new Color(levelImg.getRGB(j, i));
-                map[i][j] = c.getRed();
+                if (c.getRed() == 100) {
+                    map[i][j] = 11;
+                    spikeSpawns.add(new Point(j, i));
+                } else {
+                    map[i][j] = c.getRed();
+                }
                 if (c.getGreen() == 150) {
                     playerLocation = new Point(j, i);
                 } else if (c.getGreen() == 50) {
@@ -74,6 +81,10 @@ public class MapModel {
 
     public List<int[]> getEnemySpawns() {
         return enemySpawns;
+    }
+
+    public List<Point> getSpikeSpawns() {
+        return spikeSpawns;
     }
 
     public List<Point> getEnemyLocation() {

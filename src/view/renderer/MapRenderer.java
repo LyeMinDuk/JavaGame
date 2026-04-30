@@ -39,9 +39,6 @@ public class MapRenderer {
         for (int i = firstRow; i < lastRow; ++i) {
             for (int j = firstCol; j < lastCol; ++j) {
                 int idx = map.getTile(j, i);
-                if (idx < 0 || idx >= tiles.length || tiles[idx] == null) {
-                    idx = 11;
-                }
                 g.drawImage(tiles[idx], j * TILE_SIZE - xOffset, i * TILE_SIZE - yOffset, TILE_SIZE, TILE_SIZE, null);
             }
         }

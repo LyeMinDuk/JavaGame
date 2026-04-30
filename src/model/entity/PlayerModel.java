@@ -31,7 +31,7 @@ public class PlayerModel extends EntityModel {
     private long lastManaRegenTime;
     private long lastUltCastTime = 0;
     private long ultCooldown;
-    private static final long HURT_DURATION = 800;
+    private static final long HURT_DURATION = 500;
     private long hurtUntil = 0;
     private Rectangle atkbox;
 
