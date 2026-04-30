@@ -1,9 +1,5 @@
 package view.renderer.entity.enemy;
 
-import java.awt.Graphics;
-
-import model.entity.enemy.EnemyModel;
-import model.entity.enemy.DemonSlimeModel;
 import view.assets.Animation;
 import view.assets.ResourceManager;
 

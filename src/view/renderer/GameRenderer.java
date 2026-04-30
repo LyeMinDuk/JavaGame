@@ -3,7 +3,6 @@ package view.renderer;
 import java.awt.Graphics;
 import java.util.List;
 
-import controller.entity.EnemyController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;

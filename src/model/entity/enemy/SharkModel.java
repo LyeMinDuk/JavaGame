@@ -2,7 +2,6 @@ package model.entity.enemy;
 
 import java.awt.Rectangle;
 import model.entity.PlayerModel;
-import util.enemy.EnemyStateIndex.Shark;
 
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;

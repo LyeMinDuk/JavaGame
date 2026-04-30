@@ -28,8 +28,7 @@ public class AssetsPath {
     public static final String whiteSkeletonRun = "/enemy/skeleton/white/RUN.png";
 
     // 96x64
-    public static final String yellowSkeletonAttack1 = "/enemy/skeleton/yellow/ATTACK1.png";
-    public static final String yellowSkeletonAttack2 = "/enemy/skeleton/yellow/ATTACK2.png";
+    public static final String yellowSkeletonAttack = "/enemy/skeleton/yellow/ATTACK.png";
     public static final String yellowSkeletonDie = "/enemy/skeleton/yellow/DIE.png";
     public static final String yellowSkeletonHurt = "/enemy/skeleton/yellow/HURT.png";
     public static final String yellowSkeletonIdle = "/enemy/skeleton/yellow/IDLE.png";
@@ -55,6 +54,9 @@ public class AssetsPath {
     public static final String minotaurAttack = "/enemy/boss/minotaur/ATTACK.png";
     public static final String minotaurHurt = "/enemy/boss/minotaur/HURT.png";
     public static final String minotaurDie = "/enemy/boss/minotaur/DIE.png";
+
+    //192x112 79/47/24/50
+    //public static final String cthulu
 
     //160x64
     public static final String minotaurHPBar = "/enemy/boss/minotaur/frame.png";

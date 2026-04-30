@@ -2,7 +2,6 @@ package model.entity.enemy;
 
 import java.awt.Rectangle;
 import model.entity.PlayerModel;
-import util.enemy.EnemyStateIndex.Skeleton;
 
 import static core.GameConfig.*;
 import static util.enemy.EnemyAIState.*;
@@ -15,9 +14,14 @@ public class SkeletonModel extends EnemyModel {
     private final int atkStartFrame = 5;
     private final int atkEndFrame = 7;
 
+    public static final int WHITE = 0;
+    public static final int YELLOW = 1;
+    private final int type;
+
     public SkeletonModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
         this.moveSpeed = 0.7 * SCALE;
+        this.type = Math.random() < 0.5 ? WHITE : YELLOW;
         this.patrolLeftX = x - (TILE_SIZE * 5);
         this.patrolRightX = x + (TILE_SIZE * 5);
         this.setHitBox((int) (33 * SCALE), (int) (18 * SCALE), (int) (24 * SCALE), (int) (46 * SCALE));
@@ -136,6 +140,10 @@ public class SkeletonModel extends EnemyModel {
 
     public void setLastAtkTime(long lastAtkTime) {
         this.lastAtkTime = lastAtkTime;
+    }
+
+    public int getType() {
+        return type;
     }
 
 }

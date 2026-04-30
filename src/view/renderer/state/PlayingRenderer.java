@@ -1,15 +1,9 @@
 package view.renderer.state;
 
-import static core.GameConfig.*;
-import static util.AssetsPath.mapTexture;
-import static util.AssetsPath.playingBG;
-
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import controller.entity.EnemyController;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
@@ -23,6 +17,10 @@ import view.renderer.entity.PlayerRenderer;
 import view.renderer.hud.HealthBarRenderer;
 import view.renderer.hud.ManaBarRenderer;
 import view.renderer.object.SpikeRenderer;
+
+import static core.GameConfig.*;
+import static util.AssetsPath.mapTexture;
+import static util.AssetsPath.playingBG;
 
 public class PlayingRenderer {
     private BufferedImage[] bgLayers;
