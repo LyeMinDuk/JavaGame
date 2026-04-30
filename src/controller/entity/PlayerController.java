@@ -22,6 +22,12 @@ public class PlayerController {
     }
 
     public void update(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
+        if (player.isFrozen()) {
+            player.setDx(0);
+            player.setDy(0);
+            player.setMoving(false);
+            return;
+        }
         player.regenMana();
         if (player.isUltimate()) {
             player.setDx(0);

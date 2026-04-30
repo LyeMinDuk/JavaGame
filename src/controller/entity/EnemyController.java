@@ -5,11 +5,15 @@ import java.util.List;
 
 import model.MapModel;
 import model.entity.PlayerModel;
-import model.entity.enemy.DemonSlimeModel;
 import model.entity.enemy.EnemyModel;
-import model.entity.enemy.MinotaurModel;
 import model.entity.enemy.SharkModel;
 import model.entity.enemy.SkeletonModel;
+import model.entity.enemy.boss.CthuluModel;
+import model.entity.enemy.boss.DemonSlimeModel;
+import model.entity.enemy.boss.FrostGuardianModel;
+import model.entity.enemy.boss.MinotaurModel;
+import util.enemy.EnemyStateIndex.Cthulu;
+import util.enemy.EnemyStateIndex.FrostGuardian;
 
 import static core.GameConfig.*;
 
@@ -74,6 +78,16 @@ public class EnemyController {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
                     listEnemy.add(new MinotaurModel(x, y, (int) (256 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                }
+                case MapModel.ENEMY_TYPE_FROST_GUARDIAN -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 4) * TILE_SIZE;
+                    listEnemy.add(new FrostGuardianModel(x, y, (int) (192 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                }
+                case MapModel.ENEMY_TYPE_CTHULU -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 4) * TILE_SIZE;
+                    listEnemy.add(new CthuluModel(x, y, (int) (192 * SCALE), (int) (112 * SCALE), bossHp, bossDmg));
                 }
             }
         }

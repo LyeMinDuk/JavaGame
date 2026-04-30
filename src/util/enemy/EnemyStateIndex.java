@@ -69,4 +69,40 @@ public final class EnemyStateIndex {
                 HURT, 6,
                 DIE, 10);
     }
+
+    public static class Cthulu {
+        public static final int MAX_STATE = 7;
+        public static final int IDLE = 0;
+        public static final int RUN = 1;
+        public static final int ATTACK = 2;
+        public static final int HURT = 3;
+        public static final int DIE = 4;
+        public static final int FLY = 5;
+        public static final int ATTACK1 = 6;
+
+        public static final Map<Integer, Integer> CTHULU_FRAME = Map.of(
+                IDLE, 15,
+                RUN, 12,
+                ATTACK, 16,
+                HURT, 5,
+                DIE, 11,
+                FLY, 6,
+                ATTACK1, 7);
+    }
+
+    public static class FrostGuardian {
+        public static final int MAX_STATE = 5;
+        public static final int IDLE = 0;
+        public static final int RUN = 1;
+        public static final int ATTACK = 2;
+        public static final int HURT = 3;
+        public static final int DIE = 4;
+
+        public static final Map<Integer, Integer> FROST_GUARDIAN_FRAME = Map.of(
+                IDLE, 6,
+                RUN, 10,
+                ATTACK, 14,
+                HURT, 7,
+                DIE, 16);
+    }
 }

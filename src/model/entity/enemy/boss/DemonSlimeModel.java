@@ -1,34 +1,31 @@
-package model.entity.enemy;
+package model.entity.enemy.boss;
 
 import java.awt.Rectangle;
 import model.entity.PlayerModel;
-import util.enemy.EnemyStateIndex.Minotaur;
+import model.entity.enemy.EnemyModel;
+import util.enemy.EnemyStateIndex.DemonSlime;
 
 import static core.GameConfig.SCALE;
 import static core.GameConfig.TILE_SIZE;
 import static util.enemy.EnemyAIState.*;
 
-public class MinotaurModel extends EnemyModel {
+public class DemonSlimeModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
     private final double atkRange = TILE_SIZE * 1.5;
-    private final long atkCD = 2000;
+    private long atkCD = 2000;
     private long lastAtkTime = 0;
-    private boolean invulnerable = false;
-    private long invulnerableUntil = 0;
-    private boolean hit1Done = false;
-    private boolean hit2Done = false;
 
-    private final int atkStartFrame = 3;
-    private final int atkEndFrame = 9;
+    private final int atkStartFrame = 9;
+    private final int atkEndFrame = 11;
 
     private boolean isPhase2 = false;
     private boolean isPhase3 = false;
 
-    public MinotaurModel(double x, double y, int width, int height, int maxHealth, int damage) {
+    public DemonSlimeModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
         this.aiState = IDLE;
         this.moveSpeed = 0.6 * SCALE;
-        this.setHitBox((int) (91 * SCALE), (int) (36 * SCALE), (int) (90 * SCALE), (int) (90 * SCALE));
+        this.setHitBox((int) (81 * SCALE), (int) (52 * SCALE), (int) (70 * SCALE), (int) (75 * SCALE));
     }
 
     @Override
@@ -39,23 +36,17 @@ public class MinotaurModel extends EnemyModel {
             refreshState();
             return;
         }
-        if (invulnerable && now >= invulnerableUntil) {
-            invulnerable = false;
-        }
         if (!isPhase2 && (1.0 * getCurHealth() / getMaxHealth() < 0.5)) {
             isPhase2 = true;
             damage *= 2;
-            moveSpeed = 0.8 * SCALE;
-            invulnerable = true;
-            invulnerableUntil = now + 5000;
+            moveSpeed = 0.9 * SCALE;
+            atkCD /= 2;
         }
 
         if (!isPhase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
             isPhase3 = true;
             damage *= 2;
             curHealth = maxHealth;
-            invulnerable = true;
-            invulnerableUntil = now + 15000;
         }
         Rectangle hitbox = getHitbox();
         Rectangle playerBox = player.getHitbox();
@@ -68,7 +59,6 @@ public class MinotaurModel extends EnemyModel {
             dx = 0;
             if (aniIndex >= 14) {
                 aiState = IDLE;
-                lastAtkTime = now;
             } else {
                 tryAttack(player);
                 refreshState();
@@ -81,7 +71,6 @@ public class MinotaurModel extends EnemyModel {
                     aiState = ATTACK;
                     dx = 0;
                     facingRight = distX > 0;
-                    hit1Done = hit2Done = false;
                 } else {
                     dx = 0;
                     aiState = IDLE;
@@ -98,41 +87,29 @@ public class MinotaurModel extends EnemyModel {
     }
 
     @Override
-    public void takeDamage(int amount) {
-        long now = System.currentTimeMillis();
-        if (invulnerable && now < invulnerableUntil) {
-            return;
-        }
-        super.takeDamage(amount);
-    }
-
-    @Override
     public void refreshState() {
         switch (aiState) {
-            case PATROL, CHASE -> aniState = Minotaur.RUN;
-            case ATTACK -> aniState = Minotaur.ATTACK;
-            case HURT -> aniState = Minotaur.HURT;
-            case DIE -> aniState = Minotaur.DIE;
-            default -> aniState = Minotaur.IDLE;
+            case PATROL, CHASE -> aniState = DemonSlime.RUN;
+            case ATTACK -> aniState = DemonSlime.ATTACK;
+            case HURT -> aniState = DemonSlime.HURT;
+            case DIE -> aniState = DemonSlime.DIE;
+            default -> aniState = DemonSlime.IDLE;
         }
     }
 
     private void tryAttack(PlayerModel player) {
         if (aiState != ATTACK)
             return;
+        long now = System.currentTimeMillis();
         int frame = aniIndex;
-        Rectangle atkBox = getAttackBox();
-        if (!hit1Done && frame >= atkStartFrame) {
-            if (atkBox.intersects(player.getHitbox())) {
-                player.takeDamage(damage);
+        if (now - lastAtkTime >= atkCD) {
+            Rectangle atkBox = getAttackBox();
+            if (frame >= atkStartFrame && frame <= atkEndFrame) {
+                if (atkBox.intersects(player.getHitbox())) {
+                    player.takeDamage(damage);
+                }
+                lastAtkTime = now;
             }
-            hit1Done = true;
-        }
-        if (!hit2Done && frame >= atkEndFrame) {
-            if (atkBox.intersects(player.getHitbox())) {
-                player.takeDamage(damage);
-            }
-            hit2Done = true;
         }
     }
 
@@ -145,10 +122,6 @@ public class MinotaurModel extends EnemyModel {
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
         int y = hb.y + (hb.height - atkH);
         return new Rectangle(x, y, atkW, atkH);
-    }
-
-    public boolean isInvulnerable() {
-        return invulnerable;
     }
 
 }

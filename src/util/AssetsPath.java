@@ -10,6 +10,7 @@ public class AssetsPath {
     public static final String playerRun = "/player/RUN.png";
     public static final String playerIdle = "/player/IDLE.png";
     public static final String playerDie = "/player/DIE.png";
+    public static final String playerFrozen = "/player/FROZEN.png";
 
     // 64x64
     public static final String playerUltimate = "/player/ULTIMATE.png";
@@ -41,28 +42,41 @@ public class AssetsPath {
     public static final String sharkHurt = "/enemy/shark/HURT.png";
     public static final String sharkDie = "/enemy/shark/DIE.png";
 
-    // 256x128, 81/52/70/75
+    // 256x128 81/52/70/75
     public static final String demonSlimeIdle = "/enemy/boss/demon_slime/IDLE.png";
     public static final String demonSlimeRun = "/enemy/boss/demon_slime/RUN.png";
     public static final String demonSlimeAttack = "/enemy/boss/demon_slime/ATTACK.png";
     public static final String demonSlimeHurt = "/enemy/boss/demon_slime/HURT.png";
     public static final String demonSlimeDie = "/enemy/boss/demon_slime/DIE.png";
 
-    // 256x128, 91/36/90/90
+    // 256x128 91/36/90/90
     public static final String minotaurIdle = "/enemy/boss/minotaur/IDLE.png";
     public static final String minotaurRun = "/enemy/boss/minotaur/RUN.png";
     public static final String minotaurAttack = "/enemy/boss/minotaur/ATTACK.png";
     public static final String minotaurHurt = "/enemy/boss/minotaur/HURT.png";
     public static final String minotaurDie = "/enemy/boss/minotaur/DIE.png";
 
-    //192x112 79/47/24/50
-    //public static final String cthulu
+    // 192x112 79/47/24/50
+    public static final String cthuluIdle = "/enemy/boss/cthulu/IDLE.png";
+    public static final String cthuluRun = "/enemy/boss/cthulu/RUN.png";
+    public static final String cthuluAttack = "/enemy/boss/cthulu/ATTACK.png";
+    public static final String cthuluAttack1 = "/enemy/boss/cthulu/ATTACK1.png";
+    public static final String cthuluFly = "/enemy/boss/cthulu/FLY.png";
+    public static final String cthuluHurt = "/enemy/boss/cthulu/HURT.png";
+    public static final String cthuluDie = "/enemy/boss/cthulu/DIE.png";
 
-    //160x64
-    public static final String minotaurHPBar = "/enemy/boss/minotaur/frame.png";
+    //128x128
+    public static final String cthuluSkill1 = "/enemy/boss/cthulu/MAGIC1.png";
+    public static final String cthuluSkill2 = "/enemy/boss/cthulu/MAGIC2.png";
+    public static final String cthuluSkill3 = "/enemy/boss/cthulu/MAGIC3.png";
+    public static final String cthuluSkill4 = "/enemy/boss/cthulu/MAGIC4.png";
 
-    //144x64
-    public static final String minotaurHPfill = "/enemy/boss/minotaur/fill.png";
+    // 192x128 64/32/71/78
+    public static final String frostGuardianIdle = "/enemy/boss/frost_guardian/IDLE.png";
+    public static final String frostGuardianRun = "/enemy/boss/frost_guardian/RUN.png";
+    public static final String frostGuardianAttack = "/enemy/boss/frost_guardian/ATTACK.png";
+    public static final String frostGuardianHurt = "/enemy/boss/frost_guardian/HURT.png";
+    public static final String frostGuardianDie = "/enemy/boss/frost_guardian/DIE.png";
 
     // 72x24
     public static final String cloud = "/playing/cloud.png";

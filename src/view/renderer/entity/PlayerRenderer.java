@@ -37,6 +37,8 @@ public class PlayerRenderer {
                 ResourceManager.loadSprite(playerUltimate, PLAYER_FRAME.get(ULTIMATE), 64, 64), 7, false);
         slashAnimation = new Animation(ResourceManager.loadSprite(ultimateSlash, PLAYER_FRAME.get(ULTIMATE), 64, 64), 7,
                 false);
+        aniState[FROZEN] = new Animation(ResourceManager.loadSprite(playerFrozen, PLAYER_FRAME.get(FROZEN), 64, 42),
+                7, false);
     }
 
     public void update(PlayerModel player) {

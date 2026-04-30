@@ -13,6 +13,8 @@ public class MapModel {
     public static final int ENEMY_TYPE_SKELETON = 2;
     public static final int ENEMY_TYPE_DEMON_SLIME = 3;
     public static final int ENEMY_TYPE_MINOTAUR = 4;
+    public static final int ENEMY_TYPE_FROST_GUARDIAN = 5;
+    public static final int ENEMY_TYPE_CTHULU = 6;
 
     private int[][] map;
     private BufferedImage levelImg;
@@ -52,7 +54,7 @@ public class MapModel {
                 } else if (c.getGreen() == 200) {
                     bossCheckpoint = j;
                 } else if (c.getGreen() == 250) {
-                    int type = c.getBlue() > 0 ? c.getBlue() : ENEMY_TYPE_DEMON_SLIME;
+                    int type = c.getBlue();
                     enemySpawns.add(new int[] { j, i, type });
                 }
             }
@@ -87,20 +89,20 @@ public class MapModel {
         return spikeSpawns;
     }
 
-    public List<Point> getEnemyLocation() {
-        List<Point> result = new ArrayList<>();
-        for (int[] s : enemySpawns) {
-            if (s[2] != ENEMY_TYPE_DEMON_SLIME)
-                result.add(new Point(s[0], s[1]));
-        }
-        return result;
-    }
+    // public List<Point> getEnemyLocation() {
+    //     List<Point> result = new ArrayList<>();
+    //     for (int[] s : enemySpawns) {
+    //         if (s[2] != ENEMY_TYPE_DEMON_SLIME)
+    //             result.add(new Point(s[0], s[1]));
+    //     }
+    //     return result;
+    // }
 
-    public Point getBossLocation() {
-        for (int[] s : enemySpawns) {
-            if (s[2] == ENEMY_TYPE_DEMON_SLIME)
-                return new Point(s[0], s[1]);
-        }
-        return null;
-    }
+    // public Point getBossLocation() {
+    //     for (int[] s : enemySpawns) {
+    //         if (s[2] == ENEMY_TYPE_DEMON_SLIME)
+    //             return new Point(s[0], s[1]);
+    //     }
+    //     return null;
+    // }
 }

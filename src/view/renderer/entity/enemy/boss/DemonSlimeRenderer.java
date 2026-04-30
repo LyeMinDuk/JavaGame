@@ -1,7 +1,8 @@
-package view.renderer.entity.enemy;
+package view.renderer.entity.enemy.boss;
 
 import view.assets.Animation;
 import view.assets.ResourceManager;
+import view.renderer.entity.enemy.EnemyRenderer;
 
 import static util.enemy.EnemyStateIndex.DemonSlime.*;
 import static util.AssetsPath.*;

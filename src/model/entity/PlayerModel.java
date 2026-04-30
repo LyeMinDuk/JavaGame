@@ -33,6 +33,9 @@ public class PlayerModel extends EntityModel {
     private long ultCooldown;
     private static final long HURT_DURATION = 500;
     private long hurtUntil = 0;
+    private boolean frozen = false;
+    private long frozenUntil = 0;
+    private static final long FROZEN_DURATION = 2000;
     private Rectangle atkbox;
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
@@ -48,7 +51,12 @@ public class PlayerModel extends EntityModel {
     }
 
     public void refreshState() {
-        if (ultimate)
+        if (frozen && System.currentTimeMillis() > frozenUntil) {
+            frozen = false;
+        }
+        if (frozen)
+            state = FROZEN;
+        else if (ultimate)
             state = ULTIMATE;
         else if (hurted)
             state = HURT;
@@ -137,8 +145,14 @@ public class PlayerModel extends EntityModel {
         int ultW = (int) (64 * SCALE);
         int ultH = (int) (64 * SCALE);
         int ultX = facingRight ? hitbox.x + hitbox.width : hitbox.x - ultW;
-        int ultY = hitbox.y; // + (hitbox.height - ultH) / 2
+        int ultY = hitbox.y;
         return new Rectangle(ultX, ultY, ultW, ultH);
+    }
+
+    public void applyFrozen() {
+        frozen = true;
+        frozenUntil = System.currentTimeMillis() + FROZEN_DURATION;
+        aniIndex = 0;
     }
 
     public int getAtkW() {
@@ -251,5 +265,9 @@ public class PlayerModel extends EntityModel {
 
     public void setLastUltCastTime(long v) {
         lastUltCastTime = v;
+    }
+
+    public boolean isFrozen() {
+        return frozen;
     }
 }
