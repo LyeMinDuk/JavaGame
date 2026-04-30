@@ -13,26 +13,26 @@ import static util.enemy.EnemyAIState.*;
 
 public class CthuluModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
-    private final double atkRange = TILE_SIZE * 1.5;
-    private long atkCD = 1000;
+    private double atkRange = TILE_SIZE * 1.5;
+    private long atkCD = 2000;
     private long lastAtkTime = 0;
     private boolean hit1Done = false;
     private boolean hit2Done = false;
     private boolean magicDone = false;
-    private boolean fly = false;
     private Random rand = new Random();
 
     private final int atkStartFrame = 3;
     private final int atkStartFrame2 = 11;
     private final int atkEndFrame = 14;
 
-    private boolean isPhase2 = false;
-    private boolean isPhase3 = false;
-    private double flyY;
+    private boolean phase2 = false;
+    private boolean phase3 = false;
+
     private int curSkill = -1;
-    private final int[] hitFrames = { 6, 10, 9, 10 };
-    private final int[] endFrames = { 9, 14, 12, 15 };
+    private final int[] hitFrames = { 8, 6, 8 };
+    private final int[] endFrames = { 13, 11, 14 };
     private Rectangle magicBox;
+    private int magicAniIndex = -1;
 
     public CthuluModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
@@ -49,16 +49,17 @@ public class CthuluModel extends EnemyModel {
             refreshState();
             return;
         }
-        if (!isPhase2 && (1.0 * getCurHealth() / getMaxHealth() <= 0.5)) {
-            isPhase2 = true;
+        if (!phase2 && (1.0 * getCurHealth() / getMaxHealth() <= 0.5)) {
+            phase2 = true;
             damage *= 2;
+            atkRange *= 3;
         }
 
-        if (!isPhase3 && (1.0 * getCurHealth() / getMaxHealth() <= 0.3)) {
-            isPhase3 = true;
+        if (!phase3 && (1.0 * getCurHealth() / getMaxHealth() <= 0.3)) {
+            phase3 = true;
             curHealth = maxHealth;
-            fly = true;
-            flyY = y - 3 * TILE_SIZE;
+            damage *= 2;
+            atkCD /= 2;
         }
         Rectangle hitbox = getHitbox();
         Rectangle playerBox = player.getHitbox();
@@ -67,16 +68,7 @@ public class CthuluModel extends EnemyModel {
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
 
-        if (isPhase3) {
-            if (fly) {
-                if (y > flyY) {
-                    dy = -1.5 * SCALE;
-                } else {
-                    y = flyY;
-                    dy = 0;
-                    fly = false;
-                }
-            }
+        if (phase2) {
             if (aiState == ATTACK) {
                 dx = 0;
                 tryAttack(player);
@@ -90,7 +82,7 @@ public class CthuluModel extends EnemyModel {
                     aiState = ATTACK;
                     dx = 0;
                     magicDone = false;
-                    curSkill = rand.nextInt(4);
+                    curSkill = rand.nextInt(3);
 
                     int size = (int) (128 * SCALE);
                     int mx = playerBox.x + playerBox.width / 2 - size / 2;
@@ -98,8 +90,9 @@ public class CthuluModel extends EnemyModel {
                     magicBox = new Rectangle(mx, my, size, size);
 
                     aniIndex = 0;
+                    magicAniIndex = -1;
                     lastAtkTime = now;
-
+                    facingRight = distX > 0;
                 } else if (absX <= detectRange) {
                     dx = distX > 0 ? moveSpeed : -moveSpeed;
                     aiState = CHASE;
@@ -108,8 +101,9 @@ public class CthuluModel extends EnemyModel {
                     aiState = IDLE;
                 }
             }
+            refreshState();
+            return;
         }
-
         if (aiState == ATTACK) {
             dx = 0;
             if (aniIndex >= 15) {
@@ -126,6 +120,7 @@ public class CthuluModel extends EnemyModel {
                     aiState = ATTACK;
                     dx = 0;
                     facingRight = distX > 0;
+                    hit1Done = hit2Done = false;
                 } else {
                     dx = 0;
                     aiState = IDLE;
@@ -143,7 +138,7 @@ public class CthuluModel extends EnemyModel {
 
     @Override
     public void refreshState() {
-        if (isPhase3) {
+        if (phase2) {
             switch (aiState) {
                 case ATTACK -> aniState = Cthulu.ATTACK1;
                 case CHASE -> aniState = Cthulu.FLY;
@@ -165,7 +160,7 @@ public class CthuluModel extends EnemyModel {
     private void tryAttack(PlayerModel player) {
         if (aiState != ATTACK)
             return;
-        if (isPhase3) {
+        if (phase2) {
             tryMagicAttack(player);
             return;
         }
@@ -186,7 +181,9 @@ public class CthuluModel extends EnemyModel {
     }
 
     private void tryMagicAttack(PlayerModel player) {
-        int frame = aniIndex;
+        int frame = magicAniIndex;
+        if (frame == -1)
+            return;
         int hitFrame = hitFrames[curSkill];
         int endFrame = endFrames[curSkill];
 
@@ -223,6 +220,14 @@ public class CthuluModel extends EnemyModel {
 
     public Rectangle getMagicBox() {
         return magicBox;
+    }
+
+    public void setMagicAniIndex(int magicAniIndex) {
+        this.magicAniIndex = magicAniIndex;
+    }
+
+    public int getMagicAniIndex() {
+        return magicAniIndex;
     }
 
 }

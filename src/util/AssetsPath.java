@@ -69,7 +69,6 @@ public class AssetsPath {
     public static final String cthuluSkill1 = "/enemy/boss/cthulu/MAGIC1.png";
     public static final String cthuluSkill2 = "/enemy/boss/cthulu/MAGIC2.png";
     public static final String cthuluSkill3 = "/enemy/boss/cthulu/MAGIC3.png";
-    public static final String cthuluSkill4 = "/enemy/boss/cthulu/MAGIC4.png";
 
     // 192x128 64/32/71/78
     public static final String frostGuardianIdle = "/enemy/boss/frost_guardian/IDLE.png";

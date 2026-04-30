@@ -12,5 +12,5 @@ public class GameConfig {
     public static final int GAME_WIDTH = TILE_SIZE * TILE_IN_COL;
     public static final int GAME_HEIGHT = TILE_SIZE * TILE_IN_ROW;
     public static final double GRAVITY = 0.1 * SCALE;
-    public static final double MAX_FALL_SPEED = 4.0 * SCALE;
+    public static final double MAX_FALL_SPEED = 6.0 * SCALE;
 }

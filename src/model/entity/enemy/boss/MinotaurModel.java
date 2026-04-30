@@ -22,8 +22,8 @@ public class MinotaurModel extends EnemyModel {
     private final int atkStartFrame = 3;
     private final int atkEndFrame = 9;
 
-    private boolean isPhase2 = false;
-    private boolean isPhase3 = false;
+    private boolean phase2 = false;
+    private boolean phase3 = false;
 
     public MinotaurModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
@@ -43,16 +43,16 @@ public class MinotaurModel extends EnemyModel {
         if (invulnerable && now >= invulnerableUntil) {
             invulnerable = false;
         }
-        if (!isPhase2 && (1.0 * getCurHealth() / getMaxHealth() < 0.5)) {
-            isPhase2 = true;
+        if (!phase2 && (1.0 * getCurHealth() / getMaxHealth() < 0.5)) {
+            phase2 = true;
             damage *= 2;
             moveSpeed = 0.8 * SCALE;
             invulnerable = true;
             invulnerableUntil = now + 5000;
         }
 
-        if (!isPhase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
-            isPhase3 = true;
+        if (!phase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
+            phase3 = true;
             damage *= 2;
             curHealth = maxHealth;
             invulnerable = true;

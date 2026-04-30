@@ -97,7 +97,8 @@ public class Game implements Runnable {
     }
 
     private void initRenderer() {
-        renderer = new GameRenderer(map, player, curMapIdx, camera, worldController.getEnemyController().getListEnemy(), worldController.getSpikeController().getListSpike(), gameState,
+        renderer = new GameRenderer(map, player, curMapIdx, camera, worldController.getEnemyController().getListEnemy(),
+                worldController.getSpikeController().getListSpike(), gameState,
                 settingsModel);
     }
 

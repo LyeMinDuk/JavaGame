@@ -102,8 +102,8 @@ public class PlayingRenderer {
         drawBackground(g, xOffset);
         mapRenderer.render(g, map, xOffset, yOffset);
         spikeRenderer.render(g, spikes, xOffset, yOffset);
-        playerRenderer.render(g, player, xOffset, yOffset);
         enemyRenderer.renderAll(g, enemies, xOffset, yOffset);
+        playerRenderer.render(g, player, xOffset, yOffset);
         healthBarRenderer.render(g, player);
         manaBarRenderer.render(g, player);
     }
