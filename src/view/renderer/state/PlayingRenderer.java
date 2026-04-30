@@ -16,6 +16,7 @@ import view.renderer.entity.enemy.EnemyRenderer;
 import view.renderer.entity.PlayerRenderer;
 import view.renderer.hud.HealthBarRenderer;
 import view.renderer.hud.ManaBarRenderer;
+import view.renderer.hud.MinimapRenderer;
 import view.renderer.object.SpikeRenderer;
 
 import static core.GameConfig.*;
@@ -34,12 +35,13 @@ public class PlayingRenderer {
     private EnemyRenderer enemyRenderer;
     private HealthBarRenderer healthBarRenderer;
     private ManaBarRenderer manaBarRenderer;
+    private MinimapRenderer minimapRenderer;
     private SpikeRenderer spikeRenderer;
 
     private List<EnemyModel> enemies;
     private List<SpikeModel> spikes;
 
-    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, int levelIdx, List<EnemyModel> enemies,
+    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, int curMapIdx, List<EnemyModel> enemies,
             List<SpikeModel> spikes) {
         this.camera = camera;
         this.map = map;
@@ -49,8 +51,8 @@ public class PlayingRenderer {
 
         loadMapTexture();
         loadPlayerAnimation();
-        initRenderer();
-        loadResource(levelIdx);
+        initRenderer(curMapIdx);
+        loadResource(curMapIdx);
     }
 
     private void loadResource(int levelIdx) {
@@ -80,11 +82,12 @@ public class PlayingRenderer {
         mapRenderer = new MapRenderer(tiles);
     }
 
-    private void initRenderer() {
+    private void initRenderer(int curMapIdx) {
         enemyRenderer = new EnemyManager();
         spikeRenderer = new SpikeRenderer();
         healthBarRenderer = new HealthBarRenderer();
         manaBarRenderer = new ManaBarRenderer();
+        minimapRenderer = new MinimapRenderer(curMapIdx);
     }
 
     private void loadPlayerAnimation() {
@@ -106,6 +109,7 @@ public class PlayingRenderer {
         playerRenderer.render(g, player, xOffset, yOffset);
         healthBarRenderer.render(g, player);
         manaBarRenderer.render(g, player);
+        minimapRenderer.render(g);
     }
 
     private void drawBackground(Graphics g, int xOffset) {

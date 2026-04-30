@@ -65,7 +65,7 @@ public class AssetsPath {
     public static final String cthuluHurt = "/enemy/boss/cthulu/HURT.png";
     public static final String cthuluDie = "/enemy/boss/cthulu/DIE.png";
 
-    //128x128
+    // 128x128
     public static final String cthuluSkill1 = "/enemy/boss/cthulu/MAGIC1.png";
     public static final String cthuluSkill2 = "/enemy/boss/cthulu/MAGIC2.png";
     public static final String cthuluSkill3 = "/enemy/boss/cthulu/MAGIC3.png";
@@ -125,6 +125,11 @@ public class AssetsPath {
     public static final String[] levelMap = {
             "/level/1.png",
             "/level/2.png"
+    };
+
+    public static final String[] minimap = {
+        "/level/lv1.png", //960x200
+        "/level/lv2.png"
     };
 
 }

@@ -8,7 +8,7 @@ public class CameraModel {
     private final int leftBorder = (int) (0.4 * GAME_WIDTH);
     private final int rightBorder = (int) (0.6 * GAME_WIDTH);
     private final int topBorder = (int) (0.2 * GAME_HEIGHT);
-    private final int botBorder = (int) (0.8 * GAME_HEIGHT);
+    private final int botBorder = (int) (0.55 * GAME_HEIGHT);
 
     public void update(int playerX, int playerY, int tileWide, int tileHeight) {
         int diffX = playerX - xOffset;

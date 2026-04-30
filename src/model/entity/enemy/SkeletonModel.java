@@ -22,8 +22,8 @@ public class SkeletonModel extends EnemyModel {
         super(x, y, width, height, maxHealth, damage);
         this.moveSpeed = 0.7 * SCALE;
         this.type = Math.random() < 0.5 ? WHITE : YELLOW;
-        this.patrolLeftX = x - (TILE_SIZE * 5);
-        this.patrolRightX = x + (TILE_SIZE * 5);
+        this.patrolLeftX = x - (TILE_SIZE * 3);
+        this.patrolRightX = x + (TILE_SIZE * 3);
         this.setHitBox((int) (33 * SCALE), (int) (18 * SCALE), (int) (24 * SCALE), (int) (46 * SCALE));
     }
 
