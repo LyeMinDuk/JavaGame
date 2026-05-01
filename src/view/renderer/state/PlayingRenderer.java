@@ -1,11 +1,14 @@
 package view.renderer.state;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 import model.CameraModel;
 import model.MapModel;
+import model.QuestModel;
 import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
 import model.object.SpikeModel;
@@ -40,14 +43,16 @@ public class PlayingRenderer {
 
     private List<EnemyModel> enemies;
     private List<SpikeModel> spikes;
+    private QuestModel quest;
 
-    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, int curMapIdx, List<EnemyModel> enemies,
-            List<SpikeModel> spikes) {
+    public PlayingRenderer(CameraModel camera, MapModel map, PlayerModel player, int curMapIdx,
+            List<EnemyModel> enemies, List<SpikeModel> spikes, QuestModel quest) {
         this.camera = camera;
         this.map = map;
         this.player = player;
         this.enemies = enemies;
         this.spikes = spikes;
+        this.quest = quest;
 
         loadMapTexture();
         loadPlayerAnimation();
@@ -64,7 +69,7 @@ public class PlayingRenderer {
             // case 0 -> frame = 5;
         }
         bgLayers = new BufferedImage[frame];
-        
+
         for (int i = 0; i < bgLayers.length; ++i) {
             bgLayers[i] = ResourceManager.loadImg(playingBG + (levelIdx + 1) + "/" + (i + 1) + ".png");
         }
@@ -110,6 +115,7 @@ public class PlayingRenderer {
         healthBarRenderer.render(g, player);
         manaBarRenderer.render(g, player);
         minimapRenderer.render(g);
+        renderQuest(g);
     }
 
     private void drawBackground(Graphics g, int xOffset) {
@@ -121,4 +127,13 @@ public class PlayingRenderer {
         }
     }
 
+    private void renderQuest(Graphics g) {
+        Font old = g.getFont();
+        g.setFont(old.deriveFont(Font.BOLD, 20));
+        int questX = minimapRenderer.getDrawX();
+        int questY = minimapRenderer.getDrawY() + minimapRenderer.getDrawHeight() + 25;
+        g.setColor(Color.WHITE);
+        g.drawString("Diệt quái (" + quest.getKilledEnemies() + "/" + quest.getTotalEnemies() + ")", questX, questY);
+        g.drawString("Diệt boss (" + quest.getKilledBosses() + "/" + quest.getTotalBosses() + ")", questX, questY + 20);
+    }
 }

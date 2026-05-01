@@ -7,9 +7,9 @@ import javax.sound.sampled.FloatControl;
 import view.assets.ResourceManager;
 
 public class AudioController {
-    private float musicVolume = 0.5f;
+    private float musicVolume = 0.6f;
     private float sfxVolume = 0.7f;
-    
+
     public static final int BGM_MENU = 0;
     public static final int LV1 = 1;
     public static final int LV2 = 2;
@@ -19,6 +19,7 @@ public class AudioController {
     public static final int SFX_ATTACK = 2;
     public static final int SFX_SLASH = 3;
     public static final int SFX_DIE = 4;
+    public static final int SFX_WIN = 5;
 
     private Clip[] music;
     private Clip[] sfx;
@@ -36,7 +37,7 @@ public class AudioController {
     }
 
     private void loadMusic() {
-        String[] names = { "t", "piano", "pinduphong" };
+        String[] names = { "menu", "level1", "level2" };
         music = new Clip[names.length];
         for (int i = 0; i < names.length; i++) {
             music[i] = ResourceManager.loadClip("/audio/" + names[i] + ".wav");
@@ -44,7 +45,7 @@ public class AudioController {
     }
 
     private void loadSFX() {
-        String[] names = { "click", "jump", "attack", "slash", "die" };
+        String[] names = { "click", "jump", "attack", "slash", "die", "lvlcompleted" };
         sfx = new Clip[names.length];
         for (int i = 0; i < names.length; i++) {
             sfx[i] = ResourceManager.loadClip("/audio/" + names[i] + ".wav");
@@ -52,10 +53,10 @@ public class AudioController {
     }
 
     private void applyVolume(Clip clip, float volume) {
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		float range = gainControl.getMaximum() - gainControl.getMinimum();
-		float gain = (range * volume) + gainControl.getMinimum();
-		gainControl.setValue(gain);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        float range = gainControl.getMaximum() - gainControl.getMinimum();
+        float gain = (range * volume) + gainControl.getMinimum();
+        gainControl.setValue(gain);
     }
 
     public void playMusic(int id) {
@@ -67,12 +68,12 @@ public class AudioController {
     }
 
     public void setLevelMusic(int lvlIndex) {
-		switch (lvlIndex) {
+        switch (lvlIndex) {
             case 0 -> playMusic(LV1);
             case 1 -> playMusic(LV2);
             // case 2 -> playMusic(LV3);
         }
-	}
+    }
 
     public void stopMusic() {
         if (music[currentMusicId].isRunning()) {
@@ -93,7 +94,7 @@ public class AudioController {
     }
 
     public void playSFX(int id) {
-        if(sfxMuted)
+        if (sfxMuted)
             return;
         applyVolume(sfx[id], sfxVolume);
         if (sfx[id].getMicrosecondPosition() > 0) {

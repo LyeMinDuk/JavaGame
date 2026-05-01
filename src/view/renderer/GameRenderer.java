@@ -3,6 +3,7 @@ package view.renderer;
 import java.awt.Graphics;
 import java.util.List;
 
+import core.Game;
 import model.CameraModel;
 import model.MapModel;
 import model.entity.PlayerModel;
@@ -26,6 +27,7 @@ public class GameRenderer {
     private CameraModel camera;
     private GameStateModel gameState;
     private SettingsModel settingsModel;
+    private Game game;
 
     private MenuRenderer menuRenderer;
     private PlayingRenderer playingRenderer;
@@ -37,13 +39,11 @@ public class GameRenderer {
     private List<EnemyModel> enemies;
     private List<SpikeModel> spikes;
 
-    private int curMapIdx = 0;
-
-    public GameRenderer(MapModel map, PlayerModel player, int curMapIdx, CameraModel camera, List<EnemyModel> enemies,
+    public GameRenderer(MapModel map, PlayerModel player, Game game, CameraModel camera, List<EnemyModel> enemies,
             List<SpikeModel> spikes, GameStateModel gameState, SettingsModel settingsModel) {
         this.map = map;
         this.player = player;
-        this.curMapIdx = curMapIdx;
+        this.game = game;
         this.camera = camera;
         this.gameState = gameState;
         this.settingsModel = settingsModel;
@@ -54,7 +54,8 @@ public class GameRenderer {
 
     private void initGameStateRenderer() {
         menuRenderer = new MenuRenderer();
-        playingRenderer = new PlayingRenderer(camera, map, player, curMapIdx, enemies, spikes);
+        playingRenderer = new PlayingRenderer(camera, map, player, game.getCurMapIdx(), enemies, spikes,
+                game.getWorldController().getQuest());
         victoryRenderer = new VictoryRenderer();
         gameOverRenderer = new GameOverRenderer();
         optionRenderer = new OptionRenderer();
@@ -88,7 +89,8 @@ public class GameRenderer {
         this.map = newMap;
         this.player = newPlayer;
         this.camera = newCamera;
-        playingRenderer = new PlayingRenderer(camera, map, player, curMapIdx, enemies, spikes);
+        playingRenderer = new PlayingRenderer(camera, map, player, game.getCurMapIdx(), enemies, spikes,
+                game.getWorldController().getQuest());
     }
 
     public MenuRenderer getMenuRenderer() {

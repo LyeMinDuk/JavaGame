@@ -28,13 +28,6 @@ public class VictoryController {
         MenuButton home = isGameCompleted ? renderer.getHomeBtnSingle() : renderer.getHomeBtn();
         MenuButton next = isGameCompleted ? null : renderer.getNextBtn();
 
-        home.setHovered(false);
-        home.setPressed(false);
-        if (next != null) {
-            next.setHovered(false);
-            next.setPressed(false);
-        }
-
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
 
@@ -42,27 +35,36 @@ public class VictoryController {
             home.setHovered(true);
             if (input.isMousePress())
                 home.setPressed(true);
+        } else {
+            home.setHovered(false);
+            home.setPressed(false);
         }
 
         if (next != null && next.isHit(mouseX, mouseY)) {
             next.setHovered(true);
             if (input.isMousePress())
                 next.setPressed(true);
+        } else if (next != null) {
+            next.setHovered(false);
+            next.setPressed(false);
         }
-        audio.stopMusic();
+
         if (input.isMouseRelease()) {
-            if (home.isHovered()) {
+            if (home.isHovered() && home.isPressed()) {
                 audio.playSFX(AudioController.SFX_CLICK);
                 game.setCurMapIdx(0);
                 gameState.setGameState(GameState.MENU);
-            } else if (next != null && next.isHovered()) {
+            } else if (next != null && next.isHovered() && next.isPressed()) {
                 audio.playSFX(AudioController.SFX_CLICK);
                 int index = game.getCurMapIdx();
-                audio.setLevelMusic(index + 1);
                 game.setCurMapIdx(index + 1);
                 game.resetPlaying();
                 gameState.setGameState(GameState.PLAYING);
             }
+            home.resetState();
+            if (next != null)
+                next.resetState();
+            input.resetMouse();
             input.resetKeys();
         }
     }

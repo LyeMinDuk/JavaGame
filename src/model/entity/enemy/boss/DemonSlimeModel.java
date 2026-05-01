@@ -124,4 +124,8 @@ public class DemonSlimeModel extends EnemyModel {
         return new Rectangle(x, y, atkW, atkH);
     }
 
+    @Override
+    public boolean isBoss() {
+        return true;
+    }
 }

@@ -51,7 +51,7 @@ public class PausedController {
         if (input.isMouseRelease()) {
             if (home.isHovered() && home.isPressed()) {
                 audio.playSFX(AudioController.SFX_CLICK);
-                game.setCurMapIdx(0);
+                game.resetPlaying();
                 gameState.setGameState(GameState.MENU);
                 input.resetKeys();
             } else if (resume.isHovered() && resume.isPressed()) {

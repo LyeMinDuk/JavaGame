@@ -105,4 +105,7 @@ public abstract class EnemyModel extends EntityModel {
         this.aniState = aniState;
     }
 
+    public boolean isBoss() {
+        return false;
+    }
 }

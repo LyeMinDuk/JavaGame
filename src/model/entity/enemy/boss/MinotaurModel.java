@@ -152,4 +152,8 @@ public class MinotaurModel extends EnemyModel {
         return invulnerable;
     }
 
+    @Override
+    public boolean isBoss() {
+        return true;
+    }
 }

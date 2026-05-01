@@ -105,12 +105,9 @@ public class PlayerController {
         if (!player.isAtking())
             return;
         int frame = player.getAniIndex();
-        Rectangle hb = player.getHitbox();
-        int atkX = player.isFacingRight() ? hb.x + hb.width + player.getAtkOffset()
-                : hb.x - player.getAtkW() - player.getAtkOffset();
-        int atkY = hb.y + (hb.height - player.getAtkH()) / 2;
-        Rectangle atkBox = new Rectangle(atkX, atkY, player.getAtkW(), player.getAtkH());
+        Rectangle atkBox = player.getDefaultAttackBox();
         player.setAttackBox(atkBox);
+
         if (frame == atkHitFrame) {
             for (EnemyModel enemy : enemies) {
                 if (enemy.isAlive() && enemy.getAiState() != HURT && atkBox.intersects(enemy.getHitbox())) {

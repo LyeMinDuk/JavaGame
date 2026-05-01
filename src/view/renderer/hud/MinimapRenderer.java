@@ -17,7 +17,7 @@ public class MinimapRenderer {
 
     public MinimapRenderer(int curMapIdx) {
         mapImg = ResourceManager.loadImg(minimap[curMapIdx]);
-        drawWidth = GAME_WIDTH / 5; 
+        drawWidth = GAME_WIDTH / 5;
         double ratio = (double) mapImg.getHeight() / mapImg.getWidth();
         drawHeight = (int) (drawWidth * ratio);
         int pad = (int) (10 * SCALE);
@@ -31,4 +31,21 @@ public class MinimapRenderer {
         g.fillRect(drawX - pad, drawY - pad, drawWidth + (2 * pad), drawHeight + (2 * pad));
         g.drawImage(mapImg, drawX, drawY, drawWidth, drawHeight, null);
     }
+
+    public int getDrawWidth() {
+        return drawWidth;
+    }
+
+    public int getDrawHeight() {
+        return drawHeight;
+    }
+
+    public int getDrawX() {
+        return drawX;
+    }
+
+    public int getDrawY() {
+        return drawY;
+    }
+
 }

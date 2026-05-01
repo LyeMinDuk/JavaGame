@@ -89,20 +89,4 @@ public class MapModel {
         return spikeSpawns;
     }
 
-    // public List<Point> getEnemyLocation() {
-    //     List<Point> result = new ArrayList<>();
-    //     for (int[] s : enemySpawns) {
-    //         if (s[2] != ENEMY_TYPE_DEMON_SLIME)
-    //             result.add(new Point(s[0], s[1]));
-    //     }
-    //     return result;
-    // }
-
-    // public Point getBossLocation() {
-    //     for (int[] s : enemySpawns) {
-    //         if (s[2] == ENEMY_TYPE_DEMON_SLIME)
-    //             return new Point(s[0], s[1]);
-    //     }
-    //     return null;
-    // }
 }

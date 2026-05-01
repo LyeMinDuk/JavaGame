@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.MapModel;
+import model.QuestModel;
 import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
 import model.entity.enemy.SharkModel;
@@ -16,10 +17,13 @@ import model.entity.enemy.boss.MinotaurModel;
 import static core.GameConfig.*;
 
 public class EnemyController {
+    private QuestModel quest;
     private List<EnemyModel> listEnemy = new ArrayList<>();
 
-    public EnemyController(MapModel map, int difficult) {
+    public EnemyController(MapModel map, int difficult, QuestModel quest) {
+        this.quest = quest;
         spawnEnemy(map, difficult);
+        quest.initTotals(listEnemy);
     }
 
     private void spawnEnemy(MapModel map, int difficult) {
@@ -80,7 +84,8 @@ public class EnemyController {
                 case MapModel.ENEMY_TYPE_FROST_GUARDIAN -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
-                    listEnemy.add(new FrostGuardianModel(x, y, (int) (192 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                    listEnemy.add(
+                            new FrostGuardianModel(x, y, (int) (192 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
                 }
                 case MapModel.ENEMY_TYPE_CTHULU -> {
                     double x = tileX * TILE_SIZE;
@@ -103,6 +108,7 @@ public class EnemyController {
     public void removeDie() {
         for (int i = listEnemy.size() - 1; i >= 0; --i) {
             if (listEnemy.get(i).canRemove()) {
+                quest.onEnemyRemoved(listEnemy.get(i));
                 listEnemy.remove(i);
             }
         }

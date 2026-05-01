@@ -50,6 +50,7 @@ public class Game implements Runnable {
     private AudioController audioController;
     private SaveLoadController saveLoad;
 
+    private GameState lastState = null;
     private GameRenderer renderer;
     private int curMapIdx = 0;
 
@@ -97,9 +98,8 @@ public class Game implements Runnable {
     }
 
     private void initRenderer() {
-        renderer = new GameRenderer(map, player, curMapIdx, camera, worldController.getEnemyController().getListEnemy(),
-                worldController.getSpikeController().getListSpike(), gameState,
-                settingsModel);
+        renderer = new GameRenderer(map, player, this, camera, worldController.getEnemyController().getListEnemy(),
+                worldController.getSpikeController().getListSpike(), gameState, settingsModel);
     }
 
     private void initGameStateController() {
@@ -125,7 +125,13 @@ public class Game implements Runnable {
     }
 
     public void update() {
-        switch (gameState.getGameState()) {
+        GameState current = gameState.getGameState();
+        if (current != lastState) {
+            onEnterState(current);
+            lastState = current;
+        }
+
+        switch (current) {
             case GameState.MENU -> menuController.update(audioController);
             case GameState.PLAYING -> playingController.update(audioController);
             case GameState.PAUSED -> pausedController.update(audioController);
@@ -133,6 +139,17 @@ public class Game implements Runnable {
             case GameState.OPTIONS -> optionController.update();
             case GameState.VICTORY -> victoryController.update(audioController);
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
+        }
+    }
+
+    private void onEnterState(GameState state) {
+        switch (state) {
+            case GameState.MENU -> audioController.playMusic(AudioController.BGM_MENU);
+            case GameState.PLAYING -> audioController.setLevelMusic(curMapIdx);
+            // case GameState.PAUSED -> pausedController.update(audioController);
+            // case GameState.GAME_OVER -> gameOverController.update(audioController);
+            // case GameState.OPTIONS -> optionController.update();
+            case GameState.VICTORY -> audioController.playSFX(AudioController.SFX_WIN);
         }
     }
 
@@ -173,6 +190,10 @@ public class Game implements Runnable {
                 deltaFrame--;
             }
         }
+    }
+
+    public WorldController getWorldController() {
+        return worldController;
     }
 
 }

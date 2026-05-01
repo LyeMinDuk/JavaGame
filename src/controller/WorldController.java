@@ -5,6 +5,7 @@ import controller.entity.PlayerController;
 import controller.object.SpikeController;
 import model.CameraModel;
 import model.MapModel;
+import model.QuestModel;
 import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
 import model.state.GameState;
@@ -21,6 +22,7 @@ public class WorldController {
     private EnemyController enemyController;
     private SpikeController spikeController;
     private GameStateModel gameState;
+    private QuestModel quest;
 
     public WorldController(MapModel map, CameraModel camera, PlayerController playerController,
             GameStateModel gameState, SettingsModel settingsModel) {
@@ -28,7 +30,8 @@ public class WorldController {
         this.camera = camera;
         this.playerController = playerController;
         this.gameState = gameState;
-        this.enemyController = new EnemyController(map, settingsModel.getDifficult());
+        this.quest = new QuestModel();
+        this.enemyController = new EnemyController(map, settingsModel.getDifficult(), quest);
         spikeController = new SpikeController(map);
         this.physics = new PhysicsController(map, enemyController);
     }
@@ -60,5 +63,9 @@ public class WorldController {
 
     public SpikeController getSpikeController() {
         return spikeController;
+    }
+
+    public QuestModel getQuest() {
+        return quest;
     }
 }

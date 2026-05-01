@@ -155,6 +155,13 @@ public class PlayerModel extends EntityModel {
         aniIndex = 0;
     }
 
+    public Rectangle getDefaultAttackBox() {
+        Rectangle hb = getHitbox();
+        int atkX = isFacingRight() ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
+        int atkY = hb.y + (hb.height - getAtkH()) / 2;
+        return new Rectangle(atkX, atkY, getAtkW(), getAtkH());
+    }
+
     public int getAtkW() {
         return atkW;
     }
