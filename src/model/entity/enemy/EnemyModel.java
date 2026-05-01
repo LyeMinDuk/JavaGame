@@ -17,7 +17,7 @@ public abstract class EnemyModel extends EntityModel {
     protected long hurtUntil = 0;
     protected long dieUntil = 0;
     private static final long HURT_DURATION = 800;
-    private static final long DIE_DURATION = 1500;
+    private static final long DIE_DURATION = 1200;
 
     protected double patrolLeftX;
     protected double patrolRightX;

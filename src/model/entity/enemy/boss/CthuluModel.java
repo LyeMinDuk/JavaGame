@@ -37,7 +37,7 @@ public class CthuluModel extends EnemyModel {
     public CthuluModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
         this.aiState = IDLE;
-        this.moveSpeed = 0.8 * SCALE;
+        this.moveSpeed = 1 * SCALE;
         this.setHitBox((int) (79 * SCALE), (int) (47 * SCALE), (int) (24 * SCALE), (int) (50 * SCALE));
     }
 

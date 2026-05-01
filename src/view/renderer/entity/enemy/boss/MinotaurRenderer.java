@@ -29,7 +29,7 @@ public class MinotaurRenderer extends EnemyRenderer {
                 20, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(minotaurDie, MINOTAUR_FRAME.get(DIE), 256, 128),
-                15, false);
+                21, false);
     }
 
 }

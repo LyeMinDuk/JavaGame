@@ -29,7 +29,7 @@ public class CthuluRenderer extends EnemyRenderer {
                 10, true);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(cthuluAttack, CTHULU_FRAME.get(ATTACK), 192, 112),
-                7, false);
+                10, false);
         aniState[ATTACK1] = new Animation(
                 ResourceManager.loadSprite(cthuluAttack1, CTHULU_FRAME.get(ATTACK1), 192, 112),
                 7, false);
@@ -38,7 +38,7 @@ public class CthuluRenderer extends EnemyRenderer {
                 20, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(cthuluDie, CTHULU_FRAME.get(DIE), 192, 112),
-                15, false);
+                19, false);
         aniState[FLY] = new Animation(
                 ResourceManager.loadSprite(cthuluFly, CTHULU_FRAME.get(FLY), 192, 112),
                 15, true);

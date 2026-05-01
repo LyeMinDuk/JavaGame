@@ -29,7 +29,7 @@ public class DemonSlimeRenderer extends EnemyRenderer {
                 20, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(demonSlimeDie, DEMON_SLIME_FRAME.get(DIE), 256, 128),
-                15, false);
+                9, false);
     }
 
 }

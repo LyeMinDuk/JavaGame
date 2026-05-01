@@ -7,12 +7,14 @@ import model.MapModel;
 import model.QuestModel;
 import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
+import model.entity.enemy.GolemModel;
 import model.entity.enemy.SharkModel;
 import model.entity.enemy.SkeletonModel;
 import model.entity.enemy.boss.CthuluModel;
 import model.entity.enemy.boss.DemonSlimeModel;
 import model.entity.enemy.boss.FrostGuardianModel;
 import model.entity.enemy.boss.MinotaurModel;
+import util.enemy.EnemyStateIndex.Golem;
 
 import static core.GameConfig.*;
 
@@ -91,6 +93,12 @@ public class EnemyController {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
                     listEnemy.add(new CthuluModel(x, y, (int) (192 * SCALE), (int) (112 * SCALE), bossHp, bossDmg));
+                }
+                case MapModel.ENEMY_TYPE_GOLEM -> {
+                    double x = tileX * TILE_SIZE;
+                    double y = (tileY - 1) * TILE_SIZE;
+                    listEnemy.add(new GolemModel(x, y, (int) (90 * SCALE), (int) (64 * SCALE), normalHp + 30,
+                            normalDmg - 20));
                 }
             }
         }

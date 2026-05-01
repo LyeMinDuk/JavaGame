@@ -20,6 +20,8 @@ public class AudioController {
     public static final int SFX_SLASH = 3;
     public static final int SFX_DIE = 4;
     public static final int SFX_WIN = 5;
+    public static final int SFX_MAGE_ATTACK = 6;
+    public static final int SFX_MAGE_ULT = 7;
 
     private Clip[] music;
     private Clip[] sfx;
@@ -45,7 +47,7 @@ public class AudioController {
     }
 
     private void loadSFX() {
-        String[] names = { "click", "jump", "attack", "slash", "die", "lvlcompleted" };
+        String[] names = { "click", "jump", "attack", "slash", "die", "lvlcompleted", "mage_attack", "mage_ult" };
         sfx = new Clip[names.length];
         for (int i = 0; i < names.length; i++) {
             sfx[i] = ResourceManager.loadClip("/audio/" + names[i] + ".wav");

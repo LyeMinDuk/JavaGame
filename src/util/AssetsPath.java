@@ -4,17 +4,53 @@ public class AssetsPath {
     public static final String mapTexture = "/outside_sprites.png";
 
     // 64x42
-    public static final String playerHurt = "/player/HURT.png";
-    public static final String playerAttack = "/player/ATTACK.png";
-    public static final String playerJump = "/player/JUMP.png";
-    public static final String playerRun = "/player/RUN.png";
-    public static final String playerIdle = "/player/IDLE.png";
-    public static final String playerDie = "/player/DIE.png";
-    public static final String playerFrozen = "/player/FROZEN.png";
+    public static final String playerHurt = "/player/knight/HURT.png";
+    public static final String playerAttack = "/player/knight/ATTACK.png";
+    public static final String playerJump = "/player/knight/JUMP.png";
+    public static final String playerRun = "/player/knight/RUN.png";
+    public static final String playerIdle = "/player/knight/IDLE.png";
+    public static final String playerDie = "/player/knight/DIE.png";
+    public static final String playerFrozen = "/player/knight/FROZEN.png";
+    public static final String playerSpecial = "/player/knight/SPECIAL.png";
 
     // 64x64
-    public static final String playerUltimate = "/player/ULTIMATE.png";
-    public static final String ultimateSlash = "/player/SLASH.png";
+    public static final String playerUltimate = "/player/knight/ULTIMATE.png";
+    public static final String ultimateSlash = "/player/knight/SLASH.png";
+
+    // 128x128
+    public static final String specialSkill = "/player/knight/SKILL.png";
+
+    // 231x140 84/60/40/81
+    public static final String mageHurt = "/player/mage/HURT.png";
+    public static final String mageAttack = "/player/mage/ATTACK.png";
+    public static final String mageJump = "/player/mage/JUMP.png";
+    public static final String mageRun = "/player/mage/RUN.png";
+    public static final String mageIdle = "/player/mage/IDLE.png";
+    public static final String mageDie = "/player/mage/DIE.png";
+    public static final String mageFrozen = "/player/mage/FROZEN.png";
+    public static final String mageUltimate = "/player/mage/ULTIMATE.png";
+    public static final String mageSpecialAni = "/player/mage/SPECIAL.png";
+
+    // 80x80
+    public static final String mageSkill = "/player/mage/SKILL.png";
+
+    // 128x128
+    public static final String mageSkill1 = "/player/mage/SKILL1.png";
+    public static final String mageSkill2 = "/player/mage/SKILL2.png";
+    public static final String mageSkill3 = "/player/mage/SKILL3.png";
+    public static final String mageSkill4 = "/player/mage/SKILL4.png";
+    public static final String mageSkill5 = "/player/mage/SKILL5.png";
+    public static final String mageSkill6 = "/player/mage/SKILL6.png";
+    public static final String mageSkill7 = "/player/mage/SKILL7.png";
+    public static final String mageSkill8 = "/player/mage/SKILL8.png";
+
+    // 192x128
+    public static final String mageSkill9 = "/player/mage/SKILL9.png";
+    public static final String mageSkill10 = "/player/mage/SKILL10.png";
+    public static final String mageSkill11 = "/player/mage/SKILL11.png";
+
+    public static final String classSelectKnight = "/player/knight/SELECT.png";
+    public static final String classSelectMage = "/player/mage/SELECT.png";
 
     public static final String heathBarFill = "/hud/hp.png";
     public static final String manaBarFill = "/hud/mana.png";
@@ -34,6 +70,19 @@ public class AssetsPath {
     public static final String yellowSkeletonHurt = "/enemy/skeleton/yellow/HURT.png";
     public static final String yellowSkeletonIdle = "/enemy/skeleton/yellow/IDLE.png";
     public static final String yellowSkeletonRun = "/enemy/skeleton/yellow/RUN.png";
+
+    // 90x64
+    public static final String blueGolemAttack = "/enemy/golem/blue/ATTACK.png";
+    public static final String blueGolemDie = "/enemy/golem/blue/DIE.png";
+    public static final String blueGolemHurt = "/enemy/golem/blue/HURT.png";
+    public static final String blueGolemIdle = "/enemy/golem/blue/IDLE.png";
+    public static final String blueGolemRun = "/enemy/golem/blue/RUN.png";
+
+    public static final String orangeGolemAttack = "/enemy/golem/orange/ATTACK.png";
+    public static final String orangeGolemDie = "/enemy/golem/orange/DIE.png";
+    public static final String orangeGolemHurt = "/enemy/golem/orange/HURT.png";
+    public static final String orangeGolemIdle = "/enemy/golem/orange/IDLE.png";
+    public static final String orangeGolemRun = "/enemy/golem/orange/RUN.png";
 
     // 34x30
     public static final String sharkIdle = "/enemy/shark/IDLE.png";
@@ -128,8 +177,8 @@ public class AssetsPath {
     };
 
     public static final String[] minimap = {
-        "/level/lv1.png", //960x200
-        "/level/lv2.png"
+            "/level/lv1.png", // 960x200
+            "/level/lv2.png"
     };
 
 }

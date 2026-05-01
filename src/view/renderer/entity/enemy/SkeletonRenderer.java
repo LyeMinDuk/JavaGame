@@ -33,7 +33,7 @@ public class SkeletonRenderer extends EnemyRenderer {
                 20, false);
         aniSet[SkeletonModel.WHITE][DIE] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonDie, SKELETON_FRAME.get(DIE), 96, 64),
-                18, false);
+                16, false);
 
         aniSet[SkeletonModel.YELLOW][IDLE] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonIdle, SKELETON_FRAME.get(IDLE), 96, 64),
@@ -49,7 +49,7 @@ public class SkeletonRenderer extends EnemyRenderer {
                 20, false);
         aniSet[SkeletonModel.YELLOW][DIE] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonDie, SKELETON_FRAME.get(DIE), 96, 64),
-                18, false);
+                16, false);
     }
 
     @Override

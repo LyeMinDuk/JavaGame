@@ -7,6 +7,7 @@ import controller.InputController;
 import controller.SaveLoadController;
 import controller.WorldController;
 import controller.entity.PlayerController;
+import controller.state.ClassSelectController;
 import controller.state.GameOverController;
 import controller.state.MenuController;
 import controller.state.OptionController;
@@ -15,6 +16,8 @@ import controller.state.PlayingController;
 import controller.state.VictoryController;
 import model.CameraModel;
 import model.MapModel;
+import model.entity.KnightModel;
+import model.entity.MageModel;
 import model.entity.PlayerModel;
 import model.state.SettingsModel;
 import model.state.GameState;
@@ -53,6 +56,8 @@ public class Game implements Runnable {
     private GameState lastState = null;
     private GameRenderer renderer;
     private int curMapIdx = 0;
+    private ClassSelectController classSelectController;
+    private boolean selectedMage = false;
 
     public Game() {
         initInput();
@@ -88,7 +93,11 @@ public class Game implements Runnable {
 
         int x = map.getPlayerLocation().x * TILE_SIZE;
         int y = map.getPlayerLocation().y * TILE_SIZE;
-        player = new PlayerModel(x, y, (int) (64 * SCALE), (int) (42 * SCALE), 100);
+        if (selectedMage) {
+            player = new MageModel(x, y, 100);
+        } else {
+            player = new KnightModel(x, y, 100);
+        }
         player.applyDifficult(settingsModel.getDifficult());
     }
 
@@ -104,6 +113,7 @@ public class Game implements Runnable {
 
     private void initGameStateController() {
         menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer(), saveLoad);
+        classSelectController = new ClassSelectController(this, input, gameState, renderer.getClassSelectRenderer());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
         victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
         gameOverController = new GameOverController(this, input, gameState, renderer.getGameOverRenderer());
@@ -138,6 +148,7 @@ public class Game implements Runnable {
             case GameState.GAME_OVER -> gameOverController.update(audioController);
             case GameState.OPTIONS -> optionController.update();
             case GameState.VICTORY -> victoryController.update(audioController);
+            case GameState.CHOOSE_CLASS -> classSelectController.update(audioController);
             default -> throw new IllegalArgumentException("Unexpected value: " + gameState.getGameState());
         }
     }
@@ -196,4 +207,11 @@ public class Game implements Runnable {
         return worldController;
     }
 
+    public void setSelectedClassMage() {
+        selectedMage = true;
+    }
+
+    public void setSelectedClassKnight() {
+        selectedMage = false;
+    }
 }

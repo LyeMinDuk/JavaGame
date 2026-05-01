@@ -35,8 +35,24 @@ public final class EnemyStateIndex {
                 ATTACK, 8,
                 HURT, 4,
                 DIE, 5);
-
     }
+
+    public static class Golem {
+        public static final int MAX_STATE = 5;
+        public static final int IDLE = 0;
+        public static final int RUN = 1;
+        public static final int ATTACK = 2;
+        public static final int HURT = 3;
+        public static final int DIE = 4;
+
+        public static final Map<Integer, Integer> GOLEM_FRAME = Map.of(
+                IDLE, 8,
+                RUN, 10,
+                ATTACK, 11,
+                HURT, 4,
+                DIE, 12);
+    }
+
 
     public static class DemonSlime {
         public static final int MAX_STATE = 5;

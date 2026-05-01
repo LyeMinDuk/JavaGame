@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.entity.enemy.EnemyModel;
+import model.entity.enemy.GolemModel;
 import model.entity.enemy.SharkModel;
 import model.entity.enemy.SkeletonModel;
 import model.entity.enemy.boss.CthuluModel;
@@ -17,7 +18,7 @@ import view.renderer.entity.enemy.boss.FrostGuardianRenderer;
 import view.renderer.entity.enemy.boss.MinotaurRenderer;
 
 public class EnemyManager extends EnemyRenderer {
-    private Map<Class<? extends EnemyModel>, EnemyRenderer> renderers = new HashMap<>();
+    private Map<Class<?>, EnemyRenderer> renderers = new HashMap<>();
 
     public EnemyManager() {
         renderers.put(SharkModel.class, new SharkRenderer());
@@ -26,6 +27,7 @@ public class EnemyManager extends EnemyRenderer {
         renderers.put(MinotaurModel.class, new MinotaurRenderer());
         renderers.put(CthuluModel.class, new CthuluRenderer());
         renderers.put(FrostGuardianModel.class, new FrostGuardianRenderer());
+        renderers.put(GolemModel.class, new GolemRenderer());
     }
 
     @Override

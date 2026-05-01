@@ -11,7 +11,7 @@ import view.assets.Animation;
 import static view.renderer.entity.EntityRenderer.drawHB;
 
 public abstract class EnemyRenderer {
-    protected static final boolean debug = true;
+    protected static final boolean debug = false;
     protected Animation[] aniState;
 
     public void updateAll(List<EnemyModel> listEnemy) {

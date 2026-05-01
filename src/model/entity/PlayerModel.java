@@ -13,24 +13,29 @@ public class PlayerModel extends EntityModel {
     private boolean atking = false;
     private boolean hurted = false;
     private boolean ultimate = false;
+    private boolean special = false;
     private int state = IDLE;
 
     private final double speed = 2.0 * SCALE;
     private final double jumpPow = -4 * SCALE;
 
-    private final int atkW = (int) (14 * SCALE);
-    private final int atkH = (int) (10 * SCALE);
-    private final int atkOffset = (int) (3 * SCALE);
+    private int atkW = (int) (14 * SCALE);
+    private int atkH = (int) (10 * SCALE);
+    private int atkOffset = (int) (3 * SCALE);
     private long lastNormalAtk = 0;
-    private final long normalAtkCd = 500;
+    protected long normalAtkCd = 500;
 
-    private int curMana;
-    private int maxMana;
-    private int ultimateCost;
-    private int ultimateDamage;
-    private long lastManaRegenTime;
-    private long lastUltCastTime = 0;
-    private long ultCooldown;
+    protected int specialCost;
+    protected int specialDamage;
+    protected long lastSpecialCastTime = 0;
+    protected long specialCooldown;
+    protected int curMana;
+    protected int maxMana;
+    protected int ultimateCost;
+    protected int ultimateDamage;
+    protected long lastManaRegenTime;
+    protected long lastUltCastTime = 0;
+    protected long ultCooldown;
     private static final long HURT_DURATION = 500;
     private long hurtUntil = 0;
     private boolean frozen = false;
@@ -40,7 +45,6 @@ public class PlayerModel extends EntityModel {
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
-        this.setHitBox((int) (18 * SCALE), (int) (6 * SCALE), (int) (27 * SCALE), (int) (35 * SCALE));
     }
 
     public void requestJump(double jumpPow) {
@@ -58,6 +62,8 @@ public class PlayerModel extends EntityModel {
             state = FROZEN;
         else if (ultimate)
             state = ULTIMATE;
+        else if (special)
+            state = SPECIAL;
         else if (hurted)
             state = HURT;
         else if (atking)
@@ -92,25 +98,31 @@ public class PlayerModel extends EntityModel {
                 this.maxHealth = 10000;
                 this.damage = 10000;
                 this.maxMana = 10000;
-                this.ultimateDamage = 50000;
-                this.ultimateCost = 1;
-                this.ultCooldown = 1000;
+                this.ultimateDamage = this.specialDamage = 50000;
+                this.ultimateCost = this.specialCost = 1;
+                this.ultCooldown = this.specialCooldown = 1000;
             }
             case 1 -> {
-                this.maxHealth = 200;
+                this.maxHealth = 300;
                 this.damage = 20;
                 this.maxMana = 200;
-                this.ultimateDamage = 60;
-                this.ultimateCost = 50;
-                this.ultCooldown = 5000;
+                this.ultimateDamage = 50;
+                this.ultimateCost = 40;
+                this.ultCooldown = 3000;
+                this.specialDamage = 80;
+                this.specialCost = 60;
+                this.specialCooldown = 5000;
             }
             case 2 -> {
-                this.maxHealth = 50;
+                this.maxHealth = 100;
                 this.damage = 10;
                 this.maxMana = 100;
                 this.ultimateDamage = 30;
                 this.ultimateCost = 100;
-                this.ultCooldown = 15000;
+                this.ultCooldown = 10000;
+                this.specialDamage = 50;
+                this.specialCost = 70;
+                this.specialCooldown = 12000;
             }
         }
         this.curHealth = this.maxHealth;
@@ -121,14 +133,14 @@ public class PlayerModel extends EntityModel {
         return System.currentTimeMillis() - lastUltCastTime >= ultCooldown;
     }
 
-    public boolean isNormalAtkReady() {
-        return System.currentTimeMillis() - lastNormalAtk >= normalAtkCd;
+    public boolean isSpecialReady() {
+        return System.currentTimeMillis() - lastSpecialCastTime >= specialCooldown;
     }
 
     public void regenMana() {
         long now = System.currentTimeMillis();
         if (now - lastManaRegenTime >= 1000) {
-            curMana = Math.min(maxMana, curMana + 2);
+            curMana = Math.min(maxMana, curMana + 10);
             lastManaRegenTime = now;
         }
     }
@@ -147,6 +159,18 @@ public class PlayerModel extends EntityModel {
         int ultX = facingRight ? hitbox.x + hitbox.width : hitbox.x - ultW;
         int ultY = hitbox.y;
         return new Rectangle(ultX, ultY, ultW, ultH);
+    }
+
+    public boolean isNormalAtkReady() {
+        return System.currentTimeMillis() - lastNormalAtk >= normalAtkCd;
+    }
+
+    public Rectangle getSpecialBox() {
+        return getUltimateBox();
+    }
+
+    public int getSpecialDamage() {
+        return specialDamage;
     }
 
     public void applyFrozen() {
@@ -176,6 +200,10 @@ public class PlayerModel extends EntityModel {
 
     public void setLastNormalAttack(long lastNormalAtk) {
         this.lastNormalAtk = lastNormalAtk;
+    }
+
+    public void setLastSpecialCastTime(long lastSpecialCastTime) {
+        this.lastSpecialCastTime = lastSpecialCastTime;
     }
 
     public int getUltimateCost() {
@@ -238,6 +266,10 @@ public class PlayerModel extends EntityModel {
         return ultimate;
     }
 
+    public boolean isSpecial() {
+        return special;
+    }
+
     public Rectangle getAttackBox() {
         return atkbox;
     }
@@ -266,6 +298,10 @@ public class PlayerModel extends EntityModel {
         ultimate = v;
     }
 
+    public void setSpecial(boolean v) {
+        special = v;
+    }
+
     public void setAttackBox(Rectangle v) {
         atkbox = v;
     }
@@ -277,4 +313,5 @@ public class PlayerModel extends EntityModel {
     public boolean isFrozen() {
         return frozen;
     }
+
 }

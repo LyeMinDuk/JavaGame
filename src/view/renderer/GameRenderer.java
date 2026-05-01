@@ -10,6 +10,7 @@ import model.entity.PlayerModel;
 import model.entity.enemy.EnemyModel;
 import model.object.SpikeModel;
 import model.state.GameStateModel;
+import view.renderer.state.ClassSelectRenderer;
 import view.renderer.state.GameOverRenderer;
 import view.renderer.state.MenuRenderer;
 import view.renderer.state.OptionRenderer;
@@ -35,6 +36,7 @@ public class GameRenderer {
     private GameOverRenderer gameOverRenderer;
     private OptionRenderer optionRenderer;
     private PausedRenderer pausedRenderer;
+    private ClassSelectRenderer classSelectRenderer;
 
     private List<EnemyModel> enemies;
     private List<SpikeModel> spikes;
@@ -60,11 +62,13 @@ public class GameRenderer {
         gameOverRenderer = new GameOverRenderer();
         optionRenderer = new OptionRenderer();
         pausedRenderer = new PausedRenderer();
+        classSelectRenderer = new ClassSelectRenderer();
     }
 
     public void render(Graphics g, int curMapIdx) {
         switch (gameState.getGameState()) {
             case GameState.MENU -> menuRenderer.render(g);
+            case GameState.CHOOSE_CLASS -> classSelectRenderer.render(g);
             case GameState.PLAYING -> playingRenderer.render(g);
             case GameState.PAUSED -> {
                 playingRenderer.render(g);
@@ -115,5 +119,9 @@ public class GameRenderer {
 
     public GameOverRenderer getGameOverRenderer() {
         return gameOverRenderer;
+    }
+
+    public ClassSelectRenderer getClassSelectRenderer() {
+        return classSelectRenderer;
     }
 }

@@ -46,8 +46,7 @@ public class MenuController {
                     switch (i) {
                         case 0 -> {
                             audio.playSFX(AudioController.SFX_CLICK);
-                            game.resetPlaying();
-                            gameState.setGameState(GameState.PLAYING);
+                            gameState.setGameState(GameState.CHOOSE_CLASS);
                         }
                         case 1 -> {
                             audio.playSFX(AudioController.SFX_CLICK);

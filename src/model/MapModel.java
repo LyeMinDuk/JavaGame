@@ -15,6 +15,7 @@ public class MapModel {
     public static final int ENEMY_TYPE_MINOTAUR = 4;
     public static final int ENEMY_TYPE_FROST_GUARDIAN = 5;
     public static final int ENEMY_TYPE_CTHULU = 6;
+    public static final int ENEMY_TYPE_GOLEM = 7;
 
     private int[][] map;
     private BufferedImage levelImg;

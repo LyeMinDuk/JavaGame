@@ -29,7 +29,7 @@ public class FrostGuardianRenderer extends EnemyRenderer {
                 20, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(frostGuardianDie, FROST_GUARDIAN_FRAME.get(DIE), 192, 128),
-                15, false);
+                13, false);
     }
 
 }
