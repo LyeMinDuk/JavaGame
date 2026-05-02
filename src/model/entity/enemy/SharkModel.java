@@ -35,7 +35,6 @@ public class SharkModel extends EnemyModel {
         double centerEnemy = x + width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
-
         if (aiState != ATTACK) {
             facingRight = distX > 0;
         }

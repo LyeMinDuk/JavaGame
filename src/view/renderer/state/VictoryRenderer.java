@@ -13,7 +13,6 @@ import static util.AssetsPath.*;
 public class VictoryRenderer {
     private BufferedImage levelCompletedBoardImg;
     private BufferedImage gameCompletedBoardImg;
-
     private BufferedImage[][] homeImgs = new BufferedImage[1][3];
     private BufferedImage[][] nextImgs = new BufferedImage[1][3];
 
@@ -23,7 +22,6 @@ public class VictoryRenderer {
 
     private int lvBoardWidth, lvBoardHeight;
     private int lvBoardX, lvBoardY;
-
     private int gameBoardWidth, gameBoardHeight;
     private int gameBoardX, gameBoardY;
 
@@ -35,7 +33,6 @@ public class VictoryRenderer {
     private void loadResource() {
         levelCompletedBoardImg = ResourceManager.loadImg(lvCompletedBoard);
         gameCompletedBoardImg = ResourceManager.loadImg(gameCompletedBoard);
-
         homeImgs[0] = ResourceManager.loadSprite(homeButton, 3, 56, 56);
         nextImgs[0] = ResourceManager.loadSprite(resumeButton, 3, 56, 56);
     }
@@ -88,4 +85,5 @@ public class VictoryRenderer {
     public MenuButton getHomeBtnSingle() {
         return homeBtnSingle;
     }
+
 }

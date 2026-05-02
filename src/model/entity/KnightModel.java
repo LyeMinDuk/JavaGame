@@ -19,19 +19,16 @@ public class KnightModel extends PlayerModel {
 
     @Override
     public Rectangle getUltimateBox() {
-        int spriteX = (int) x;
-        int spriteY = (int) y;
-        int slashX = isFacingRight() ? spriteX + SPRITE_W : spriteX - SLASH_W;
-        int slashY = spriteY - (ULT_SPRITE_H - height);
+        int slashX = facingRight ? (int) x + SPRITE_W : (int) x - SLASH_W;
+        int slashY = (int) y - (ULT_SPRITE_H - height);
         return new Rectangle(slashX, slashY, SLASH_W, SLASH_H);
     }
 
     @Override
     public Rectangle getSpecialBox() {
-        int spriteX = (int) x;
-        int drawY = (int) y;
-        int skillX = isFacingRight() ? spriteX + SPRITE_W : spriteX - SPECIAL_W;
-        int skillY = drawY - (SPECIAL_H - height);
+        int skillX = facingRight ? (int) x + SPRITE_W : (int) x - SPECIAL_W;
+        int skillY = (int) y - (SPECIAL_H - height);
         return new Rectangle(skillX, skillY, SPECIAL_W, SPECIAL_H);
     }
+
 }

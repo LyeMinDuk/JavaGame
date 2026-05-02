@@ -56,7 +56,6 @@ public class GolemRenderer extends EnemyRenderer {
     protected void update(EnemyModel enemy) {
         if (!(enemy instanceof GolemModel golem))
             return;
-
         int type = golem.getType();
         int state = golem.getAniState();
 
@@ -64,7 +63,6 @@ public class GolemRenderer extends EnemyRenderer {
             aniSet[type][state].reset();
             golem.setLastState(state);
         }
-
         Animation cur = aniSet[type][state];
         cur.runAni();
         golem.setAniIndex(cur.getFrameIdx());
@@ -85,4 +83,5 @@ public class GolemRenderer extends EnemyRenderer {
                     -golem.getWidth(), golem.getHeight(), null);
         }
     }
+
 }

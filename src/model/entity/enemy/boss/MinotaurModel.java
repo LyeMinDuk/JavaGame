@@ -50,7 +50,6 @@ public class MinotaurModel extends EnemyModel {
             invulnerable = true;
             invulnerableUntil = now + 5000;
         }
-
         if (!phase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
             phase3 = true;
             damage *= 2;
@@ -64,7 +63,6 @@ public class MinotaurModel extends EnemyModel {
         double centerEnemy = hitbox.x + hitbox.width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
-
         if (aiState == ATTACK) {
             dx = 0;
             if (aniIndex >= 14) {
@@ -156,4 +154,5 @@ public class MinotaurModel extends EnemyModel {
     public boolean isBoss() {
         return true;
     }
+    
 }

@@ -66,4 +66,5 @@ public abstract class EnemyRenderer {
         g.setColor(Color.GREEN);
         g.fillRect(x, y - pad, hpW, 4);
     }
+    
 }

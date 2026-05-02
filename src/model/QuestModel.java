@@ -46,4 +46,5 @@ public class QuestModel {
     public int getKilledBosses() {
         return killedBosses;
     }
+    
 }

@@ -17,6 +17,10 @@ public class MinimapRenderer {
 
     public MinimapRenderer(int curMapIdx) {
         mapImg = ResourceManager.loadImg(minimap[curMapIdx]);
+        initCordinate();
+    }
+
+    private void initCordinate() {
         drawWidth = GAME_WIDTH / 5;
         double ratio = (double) mapImg.getHeight() / mapImg.getWidth();
         drawHeight = (int) (drawWidth * ratio);

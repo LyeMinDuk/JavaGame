@@ -41,7 +41,6 @@ public class SaveLoadController {
             System.out.println("Not found save");
             return;
         }
-
         try {
             String encodedString = Files.readString(Paths.get(SAVE_PATH));
             String decodedString = new String(Base64.getDecoder().decode(encodedString));
@@ -61,4 +60,5 @@ public class SaveLoadController {
             System.out.println("Load error");
         }
     }
+    
 }

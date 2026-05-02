@@ -30,8 +30,8 @@ public class MenuController {
         int mouseY = input.getMouseY();
         boolean isPress = input.isMousePress();
         boolean isRelease = input.isMouseRelease();
-
         MenuButton[] buttons = menuRenderer.getButtons();
+        
         for (MenuButton btn : buttons) {
             btn.setHovered(false);
         }
@@ -67,11 +67,11 @@ public class MenuController {
             }
             input.resetMouse();
         }
-
         if (input.isEnter()) {
             game.resetPlaying();
             gameState.setGameState(GameState.PLAYING);
             input.resetKeys();
         }
     }
+
 }

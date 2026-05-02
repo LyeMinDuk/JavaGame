@@ -33,7 +33,7 @@ public class AudioController {
     private int currentMusicId;
     private boolean musicMuted;
     private boolean sfxMuted;
-    private boolean premium = true;
+    private boolean premium = false;
 
     public AudioController(boolean musicMuted, boolean sfxMuted) {
         this.musicMuted = musicMuted;
@@ -47,10 +47,11 @@ public class AudioController {
         String[] songs = { "menu", "level1", "level2", "level3", "level4" };
         String[] vip = { "vip0", "vip1", "vip2", "vip3", "vip4" };
         String[] song;
-        if (premium)
+        if (premium) {
             song = vip;
-        else
+        } else {
             song = songs;
+        }
         music = new Clip[song.length];
         for (int i = 0; i < song.length; i++) {
             music[i] = ResourceManager.loadClip("/audio/" + song[i] + ".wav");
@@ -109,7 +110,7 @@ public class AudioController {
 
     private void stopSFX(int id) {
         Clip clip = sfx[id];
-        if (clip != null && clip.isRunning()) {
+        if (clip.isRunning()) {
             clip.stop();
             clip.setMicrosecondPosition(0);
         }
@@ -145,4 +146,5 @@ public class AudioController {
     public void toggleSFX(boolean isMuted) {
         this.sfxMuted = isMuted;
     }
+
 }

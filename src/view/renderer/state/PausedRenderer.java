@@ -14,7 +14,6 @@ import static util.AssetsPath.*;
 
 public class PausedRenderer {
     private BufferedImage pausedBoardImg;
-
     private BufferedImage[][] audioImgs = new BufferedImage[2][3];
     private BufferedImage[][] homeImgs = new BufferedImage[1][3];
     private BufferedImage[][] resumeImgs = new BufferedImage[1][3];
@@ -48,7 +47,6 @@ public class PausedRenderer {
 
         int audioSize = (int) (42 * UI_SCALE);
         int normalSize = (int) (56 * UI_SCALE);
-
         int audioX = GAME_WIDTH / 2 + (int) (35 * UI_SCALE);
         int audioStartY = boardY + (int) (115 * UI_SCALE);
         int audioGap = (int) (7 * UI_SCALE);
@@ -89,4 +87,5 @@ public class PausedRenderer {
     public MenuButton getResumeBtn() {
         return resumeBtn;
     }
+
 }

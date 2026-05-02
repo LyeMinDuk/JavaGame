@@ -50,9 +50,6 @@ public class MapModel {
                 }
                 if (c.getGreen() == 150) {
                     playerLocation = new Point(j, i);
-                } else if (c.getGreen() == 50) {
-                    int type = c.getBlue();
-                    enemySpawns.add(new int[] { j, i, type });
                 } else if (c.getGreen() == 200) {
                     bossCheckpoint = j;
                 } else if (c.getGreen() == 250) {

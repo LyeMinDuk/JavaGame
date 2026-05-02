@@ -23,11 +23,11 @@ public class PlayerRenderer {
     private Animation knightSlash;
     private Animation knightSpecial;
     private Animation mageNormal;
-    private Animation[] mageUlt = new Animation[8];
-    private Animation[] mageSpecial = new Animation[3];
+    private Animation[] mageUlt = new Animation[9];
+    private Animation[] mageSpecial = new Animation[5];
     private static final int[] SKILL_FRAMES_NORMAL = { 6 };
-    private static final int[] SKILL_FRAMES_ULT = { 15, 6, 15, 20, 20, 15, 7, 12 };
-    private static final int[] SKILL_FRAMES_SPECIAL = { 11, 9, 11 };
+    private static final int[] SKILL_FRAMES_ULT = { 15, 6, 15, 20, 20, 15, 7, 12, 15 };
+    private static final int[] SKILL_FRAMES_SPECIAL = { 15, 11, 9, 11, 20 };
     private int lastState = -1;
     private static final boolean debug = true;
 
@@ -83,12 +83,17 @@ public class PlayerRenderer {
         mageUlt[5] = new Animation(ResourceManager.loadSprite(mageSkill6, SKILL_FRAMES_ULT[5], 128, 128), 11, false);
         mageUlt[6] = new Animation(ResourceManager.loadSprite(mageSkill7, SKILL_FRAMES_ULT[6], 128, 128), 25, false);
         mageUlt[7] = new Animation(ResourceManager.loadSprite(mageSkill8, SKILL_FRAMES_ULT[7], 128, 128), 7, false);
+        mageUlt[8] = new Animation(ResourceManager.loadSprite(mageSkill9, SKILL_FRAMES_ULT[8], 128, 128), 11, false);
 
-        mageSpecial[0] = new Animation(ResourceManager.loadSprite(mageSkill9, SKILL_FRAMES_SPECIAL[0], 192, 128), 21,
+        mageSpecial[0] = new Animation(ResourceManager.loadSprite(mageSkill10, SKILL_FRAMES_SPECIAL[0], 192, 128), 15,
                 false);
-        mageSpecial[1] = new Animation(ResourceManager.loadSprite(mageSkill10, SKILL_FRAMES_SPECIAL[1], 192, 128), 25,
+        mageSpecial[1] = new Animation(ResourceManager.loadSprite(mageSkill11, SKILL_FRAMES_SPECIAL[1], 192, 128), 21,
                 false);
-        mageSpecial[2] = new Animation(ResourceManager.loadSprite(mageSkill11, SKILL_FRAMES_SPECIAL[2], 192, 128), 21,
+        mageSpecial[2] = new Animation(ResourceManager.loadSprite(mageSkill12, SKILL_FRAMES_SPECIAL[2], 192, 128), 25,
+                false);
+        mageSpecial[3] = new Animation(ResourceManager.loadSprite(mageSkill13, SKILL_FRAMES_SPECIAL[3], 192, 128), 21,
+                false);
+        mageSpecial[4] = new Animation(ResourceManager.loadSprite(mageSkill14, SKILL_FRAMES_SPECIAL[4], 192, 128), 11,
                 false);
     }
 
@@ -119,7 +124,6 @@ public class PlayerRenderer {
             player.setUltimate(false);
             player.setSpecial(false);
         }
-
         if (player instanceof MageModel mage && mage.getSkillBox() != null) {
             Animation skillAni = getMageSkillAni(mage);
             if (skillAni != null && mage.getSkillAniIndex() == -1) {
@@ -146,12 +150,11 @@ public class PlayerRenderer {
                 g.drawImage(skillAni.getCurFrame(), box.x - xOffset, box.y - yOffset, box.width, box.height, null);
             }
         }
-
         int state = player.getState();
         Animation cur = getAniSet(player)[state];
-
         int drawW = player.getWidth();
         int drawH = player.getHeight();
+
         if (player instanceof KnightModel && state == ULTIMATE) {
             drawH = (int) (64 * SCALE);
         }
@@ -160,16 +163,13 @@ public class PlayerRenderer {
 
         if (player.isFacingRight()) {
             g.drawImage(cur.getCurFrame(), drawX, drawY, drawW, drawH, null);
-
             if (player instanceof KnightModel && state == ULTIMATE) {
                 g.drawImage(knightSlash.getCurFrame(), drawX + drawW, drawY, drawW, drawH, null);
             }
-
             if (player instanceof KnightModel && state == SPECIAL) {
                 int skillW = (int) (128 * SCALE);
                 int skillH = (int) (128 * SCALE);
                 int skillY = drawY - (skillH - drawH);
-
                 int skillX = player.isFacingRight() ? drawX + drawW : drawX - skillW;
                 int drawSkillX = player.isFacingRight() ? skillX : skillX + skillW;
                 int drawSkillW = player.isFacingRight() ? skillW : -skillW;
@@ -177,11 +177,9 @@ public class PlayerRenderer {
             }
         } else {
             g.drawImage(cur.getCurFrame(), drawX + drawW, drawY, -drawW, drawH, null);
-
             if (player instanceof KnightModel && state == ULTIMATE) {
                 g.drawImage(knightSlash.getCurFrame(), drawX, drawY, -drawW, drawH, null);
             }
-
             if (player instanceof KnightModel && state == SPECIAL) {
                 int skillW = (int) (128 * SCALE);
                 int skillH = (int) (128 * SCALE);
@@ -208,7 +206,7 @@ public class PlayerRenderer {
     private void drawBox(Graphics g, PlayerModel player, int xOffset, int yOffset) {
         drawHB(g, player, xOffset, yOffset);
 
-        Rectangle atkBox = player.getAttackBox();
+        Rectangle atkBox = player.getNormalAttackBox();
         if (atkBox != null && player.isAtking()) {
             g.setColor(Color.BLACK);
             g.drawRect(atkBox.x - xOffset, atkBox.y - yOffset, atkBox.width, atkBox.height);
@@ -228,4 +226,5 @@ public class PlayerRenderer {
             g.drawRect(skillBox.x - xOffset, skillBox.y - yOffset, skillBox.width, skillBox.height);
         }
     }
+
 }

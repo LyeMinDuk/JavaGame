@@ -53,7 +53,6 @@ public final class EnemyStateIndex {
                 DIE, 12);
     }
 
-
     public static class DemonSlime {
         public static final int MAX_STATE = 5;
         public static final int IDLE = 0;
@@ -121,4 +120,5 @@ public final class EnemyStateIndex {
                 HURT, 7,
                 DIE, 16);
     }
+
 }

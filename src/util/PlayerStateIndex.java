@@ -36,4 +36,5 @@ public class PlayerStateIndex {
                 FROZEN, 12,
                 SPECIAL, 9);
     }
+
 }

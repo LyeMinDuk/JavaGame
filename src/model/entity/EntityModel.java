@@ -54,36 +54,12 @@ public abstract class EntityModel {
         syncHitbox();
     }
 
-    public void setDamage(int damage) {
-        this.damage = Math.max(0, damage);
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getCurHealth() {
-        return curHealth;
-    }
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
     public double getX() {
         return x;
     }
 
     public double getY() {
         return y;
-    }
-
-    public int getHbOffsetX() {
-        return hbOffsetX;
-    }
-
-    public int getHbOffsetY() {
-        return hbOffsetY;
     }
 
     public double getDx() {
@@ -94,14 +70,6 @@ public abstract class EntityModel {
         return dy;
     }
 
-    public void setDx(double dx) {
-        this.dx = dx;
-    }
-
-    public void setDy(double dy) {
-        this.dy = dy;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -110,23 +78,56 @@ public abstract class EntityModel {
         return height;
     }
 
+    public int getCurHealth() {
+        return curHealth;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
     public Rectangle getHitbox() {
         return hitbox;
+    }
+
+    public int getHbOffsetX() {
+        return hbOffsetX;
+    }
+
+    public int getHbOffsetY() {
+        return hbOffsetY;
     }
 
     public boolean isAlive() {
         return alive;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-    }
-
     public boolean isOnGround() {
         return onGround;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
     }
+
 }

@@ -2,7 +2,6 @@ package core;
 
 public class GameConfig {
     public static final int FPS = 120;
-
     public static final int TILE_DEFAULT_SIZE = 32;
     public static final double SCALE = 2;
     public static final double UI_SCALE = 1.5;

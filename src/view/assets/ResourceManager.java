@@ -19,6 +19,7 @@ public class ResourceManager {
             try {
                 img = ImageIO.read(is);
             } catch (IOException e) {
+                System.out.println("Error load: " + path);
                 e.printStackTrace();
             }
         }
@@ -28,8 +29,13 @@ public class ResourceManager {
     public static BufferedImage[] loadSprite(String path, int frames, int width, int height) {
         BufferedImage img = loadImg(path);
         BufferedImage[] sprite = new BufferedImage[frames];
-        for (int i = 0; i < frames; ++i) {
-            sprite[i] = img.getSubimage(i * width, 0, width, height);
+        try {
+            for (int i = 0; i < frames; ++i) {
+                sprite[i] = img.getSubimage(i * width, 0, width, height);
+            }
+        } catch (Exception e) {
+            System.out.println("Error load: " + path);
+            e.printStackTrace();
         }
         return sprite;
     }
@@ -51,4 +57,5 @@ public class ResourceManager {
         }
         return clip;
     }
+
 }

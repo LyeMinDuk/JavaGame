@@ -43,11 +43,14 @@ public class AssetsPath {
     public static final String mageSkill6 = "/player/mage/SKILL6.png";
     public static final String mageSkill7 = "/player/mage/SKILL7.png";
     public static final String mageSkill8 = "/player/mage/SKILL8.png";
+    public static final String mageSkill9 = "/player/mage/SKILL9.png";
 
     // 192x128
-    public static final String mageSkill9 = "/player/mage/SKILL9.png";
     public static final String mageSkill10 = "/player/mage/SKILL10.png";
     public static final String mageSkill11 = "/player/mage/SKILL11.png";
+    public static final String mageSkill12 = "/player/mage/SKILL12.png";
+    public static final String mageSkill13 = "/player/mage/SKILL13.png";
+    public static final String mageSkill14 = "/player/mage/SKILL14.png";
 
     public static final String classSelectKnight = "/player/knight/SELECT.png";
     public static final String classSelectMage = "/player/mage/SELECT.png";
@@ -104,6 +107,9 @@ public class AssetsPath {
     public static final String minotaurAttack = "/enemy/boss/minotaur/ATTACK.png";
     public static final String minotaurHurt = "/enemy/boss/minotaur/HURT.png";
     public static final String minotaurDie = "/enemy/boss/minotaur/DIE.png";
+
+    // 128x128
+    public static final String minotaurShield = "/enemy/boss/minotaur/SHIELD.png";
 
     // 192x112 79/47/24/50
     public static final String cthuluIdle = "/enemy/boss/cthulu/IDLE.png";

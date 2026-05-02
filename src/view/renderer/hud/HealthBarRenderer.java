@@ -28,4 +28,5 @@ public class HealthBarRenderer {
         g.drawImage(bgImg, x, y, width, height, null);
         g.drawImage(fillImg, x + drawPad, y, drawWidth, height, null);
     }
+    
 }

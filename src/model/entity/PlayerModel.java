@@ -6,20 +6,18 @@ import static core.GameConfig.*;
 import static util.PlayerStateIndex.*;
 
 public class PlayerModel extends EntityModel {
-    private int aniIndex = -1;
-    private boolean facingRight = true;
-    private boolean moving = false;
-    private boolean jumping = false;
-    private boolean atking = false;
-    private boolean hurted = false;
-    private boolean ultimate = false;
-    private boolean special = false;
-    private int state = IDLE;
-
-    private final double speed = 2.0 * SCALE;
-    private final double jumpPow = -4 * SCALE;
-
-    private long lastNormalAtk = 0;
+    protected int aniIndex = -1;
+    protected boolean facingRight = true;
+    protected boolean moving = false;
+    protected boolean jumping = false;
+    protected boolean atking = false;
+    protected boolean hurted = false;
+    protected boolean ultimate = false;
+    protected boolean special = false;
+    protected int state = IDLE;
+    protected final double speed = 2.0 * SCALE;
+    protected final double jumpPow = -4 * SCALE;
+    protected long lastNormalAtk = 0;
     protected long normalAtkCd = 500;
     protected int manaRegeneraion;
 
@@ -27,20 +25,22 @@ public class PlayerModel extends EntityModel {
     protected int specialDamage;
     protected long lastSpecialCastTime = 0;
     protected long specialCooldown;
+
     protected int curMana;
     protected int maxMana;
+
     protected int ultimateCost;
     protected int ultimateDamage;
     protected long lastManaRegenTime;
     protected long lastUltCastTime = 0;
     protected long ultCooldown;
 
-    private static final long HURT_DURATION = 500;
-    private long hurtUntil = 0;
-    private boolean frozen = false;
-    private long frozenUntil = 0;
-    private static final long FROZEN_DURATION = 2000;
-    private Rectangle atkbox;
+    protected static final long HURT_DURATION = 500;
+    protected long hurtUntil = 0;
+    protected boolean frozen = false;
+    protected long frozenUntil = 0;
+    protected static final long FROZEN_DURATION = 2000;
+    protected Rectangle atkbox;
 
     public PlayerModel(double x, double y, int width, int height, int maxHealth) {
         super(x, y, width, height, maxHealth);
@@ -72,7 +72,6 @@ public class PlayerModel extends EntityModel {
             state = RUN;
         else
             state = IDLE;
-
         if (hurted && System.currentTimeMillis() > hurtUntil) {
             hurted = false;
         }
@@ -136,6 +135,10 @@ public class PlayerModel extends EntityModel {
         this.curMana = this.maxMana;
     }
 
+    public boolean isNormalAtkReady() {
+        return System.currentTimeMillis() - lastNormalAtk >= normalAtkCd;
+    }
+
     public boolean isUltReady() {
         return System.currentTimeMillis() - lastUltCastTime >= ultCooldown;
     }
@@ -168,10 +171,6 @@ public class PlayerModel extends EntityModel {
         return new Rectangle(ultX, ultY, ultW, ultH);
     }
 
-    public boolean isNormalAtkReady() {
-        return System.currentTimeMillis() - lastNormalAtk >= normalAtkCd;
-    }
-
     public Rectangle getSpecialBox() {
         return getUltimateBox();
     }
@@ -186,74 +185,33 @@ public class PlayerModel extends EntityModel {
         aniIndex = 0;
     }
 
-    public Rectangle getDefaultAttackBox() {
-        int atkW = (int) (18 * SCALE);
+    public Rectangle getNormalAttackBox() {
+        int atkW = (int) (50 * SCALE);
         int atkH = (int) (15 * SCALE);
-        int atkOffset = (int) (-1 * SCALE);
-        Rectangle hb = getHitbox();
-        int atkX = isFacingRight() ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int atkY = hb.y + (int) (13 * SCALE);
+        int atkOffset = (int) (-34 * SCALE);
+        int atkX = facingRight ? hitbox.x + hitbox.width + atkOffset : hitbox.x - atkW - atkOffset;
+        int atkY = hitbox.y + (int) (13 * SCALE);
         return new Rectangle(atkX, atkY, atkW, atkH);
-    }
-
-    public void setLastNormalAttack(long lastNormalAtk) {
-        this.lastNormalAtk = lastNormalAtk;
-    }
-
-    public void setLastSpecialCastTime(long lastSpecialCastTime) {
-        this.lastSpecialCastTime = lastSpecialCastTime;
-    }
-
-    public int getUltimateCost() {
-        return ultimateCost;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public double getJumpPow() {
-        return jumpPow;
-    }
-
-    public int getCurMana() {
-        return curMana;
-    }
-
-    public int getMaxMana() {
-        return maxMana;
-    }
-
-    public int getUltimateDamage() {
-        return ultimateDamage;
-    }
-
-    public int getDamage() {
-        return damage;
-    }
-
-    public int getState() {
-        return state;
     }
 
     public int getAniIndex() {
         return aniIndex;
     }
 
-    public boolean isMoving() {
-        return moving;
+    public boolean isFacingRight() {
+        return facingRight;
     }
 
-    public boolean isAtking() {
-        return atking;
+    public boolean isMoving() {
+        return moving;
     }
 
     public boolean isJumping() {
         return jumping;
     }
 
-    public boolean isFacingRight() {
-        return facingRight;
+    public boolean isAtking() {
+        return atking;
     }
 
     public boolean isHurted() {
@@ -268,52 +226,84 @@ public class PlayerModel extends EntityModel {
         return special;
     }
 
-    public Rectangle getAttackBox() {
-        return atkbox;
+    public int getState() {
+        return state;
     }
 
-    public void setAniIndex(int v) {
-        aniIndex = v;
+    public double getSpeed() {
+        return speed;
     }
 
-    public void setMoving(boolean v) {
-        moving = v;
+    public double getJumpPow() {
+        return jumpPow;
     }
 
-    public void setAtking(boolean v) {
-        atking = v;
+    public int getSpecialCost() {
+        return specialCost;
     }
 
-    public void setJumping(boolean v) {
-        jumping = v;
+    public int getCurMana() {
+        return curMana;
     }
 
-    public void setFacingRight(boolean v) {
-        facingRight = v;
+    public int getMaxMana() {
+        return maxMana;
     }
 
-    public void setUltimate(boolean v) {
-        ultimate = v;
+    public int getUltimateCost() {
+        return ultimateCost;
     }
 
-    public void setSpecial(boolean v) {
-        special = v;
-    }
-
-    public void setAttackBox(Rectangle v) {
-        atkbox = v;
-    }
-
-    public void setLastUltCastTime(long v) {
-        lastUltCastTime = v;
+    public int getUltimateDamage() {
+        return ultimateDamage;
     }
 
     public boolean isFrozen() {
         return frozen;
     }
 
-    public int getSpecialCost() {
-        return specialCost;
+    public void setLastNormalAtk(long lastNormalAtk) {
+        this.lastNormalAtk = lastNormalAtk;
+    }
+
+    public void setLastUltCastTime(long lastUltCastTime) {
+        this.lastUltCastTime = lastUltCastTime;
+    }
+
+    public void setAtkbox(Rectangle atkbox) {
+        this.atkbox = atkbox;
+    }
+
+    public void setAniIndex(int aniIndex) {
+        this.aniIndex = aniIndex;
+    }
+
+    public void setFacingRight(boolean facingRight) {
+        this.facingRight = facingRight;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    public void setAtking(boolean atking) {
+        this.atking = atking;
+    }
+
+    public void setUltimate(boolean ultimate) {
+        this.ultimate = ultimate;
+    }
+
+    public void setSpecial(boolean special) {
+        this.special = special;
+    }
+
+    public void setLastSpecialCastTime(long lastSpecialCastTime) {
+        this.lastSpecialCastTime = lastSpecialCastTime;
     }
 
 }

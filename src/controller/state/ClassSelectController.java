@@ -24,10 +24,8 @@ public class ClassSelectController {
     public void update(AudioController audio) {
         if (!input.isMouseRelease())
             return;
-
         int mx = input.getMouseX();
         int my = input.getMouseY();
-
         int x = renderer.getBoardX();
         int y = renderer.getBoardY();
         int w = renderer.getBoardW();
@@ -47,4 +45,5 @@ public class ClassSelectController {
         input.resetMouse();
         input.resetKeys();
     }
+    
 }

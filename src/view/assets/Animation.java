@@ -49,4 +49,5 @@ public class Animation {
     public boolean isFinished() {
         return !loop && index == frames.length - 1;
     }
+
 }

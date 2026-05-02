@@ -128,4 +128,5 @@ public class EnemyController {
     public List<EnemyModel> getListEnemy() {
         return listEnemy;
     }
+    
 }

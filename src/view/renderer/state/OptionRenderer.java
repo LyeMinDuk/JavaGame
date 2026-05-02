@@ -82,7 +82,6 @@ public class OptionRenderer {
     public void render(Graphics g, SettingsModel settingsModel) {
         g.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
         g.drawImage(optionBoardImg, boardX, boardY, boardWidth, boardHeight, null);
-
         audioButtons[0].setMuted(settingsModel.isMusicMuted());
         audioButtons[1].setMuted(settingsModel.isSFXMuted());
         for (AudioButton btn : audioButtons) {
@@ -110,4 +109,5 @@ public class OptionRenderer {
     public MenuButton getHomeButton() {
         return homeBtn;
     }
+    
 }

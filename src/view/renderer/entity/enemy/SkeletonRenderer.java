@@ -56,7 +56,6 @@ public class SkeletonRenderer extends EnemyRenderer {
     protected void update(EnemyModel enemy) {
         if (!(enemy instanceof SkeletonModel skeleton))
             return;
-
         int type = skeleton.getType();
         int state = skeleton.getAniState();
 
@@ -64,7 +63,6 @@ public class SkeletonRenderer extends EnemyRenderer {
             aniSet[type][state].reset();
             skeleton.setLastState(state);
         }
-
         Animation cur = aniSet[type][state];
         cur.runAni();
         skeleton.setAniIndex(cur.getFrameIdx());
@@ -85,4 +83,5 @@ public class SkeletonRenderer extends EnemyRenderer {
                     -skeleton.getWidth(), skeleton.getHeight(), null);
         }
     }
+    
 }

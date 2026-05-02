@@ -138,4 +138,5 @@ public class PlayingRenderer {
         g.drawString("Diệt quái (" + quest.getKilledEnemies() + "/" + quest.getTotalEnemies() + ")", questX, questY);
         g.drawString("Diệt boss (" + quest.getKilledBosses() + "/" + quest.getTotalBosses() + ")", questX, questY + 20);
     }
+
 }

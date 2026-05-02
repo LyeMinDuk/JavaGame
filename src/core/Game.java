@@ -115,7 +115,7 @@ public class Game implements Runnable {
         menuController = new MenuController(this, input, gameState, renderer.getMenuRenderer(), saveLoad);
         classSelectController = new ClassSelectController(this, input, gameState, renderer.getClassSelectRenderer());
         playingController = new PlayingController(input, gameState, worldController, player, renderer);
-        victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer());
+        victoryController = new VictoryController(this, input, gameState, renderer.getVictoryRenderer(), saveLoad);
         gameOverController = new GameOverController(this, input, gameState, renderer.getGameOverRenderer());
         optionController = new OptionController(input, gameState, renderer.getOptionRenderer(), settingsModel,
                 audioController, saveLoad);
@@ -237,4 +237,5 @@ public class Game implements Runnable {
     public void setSelectedClassKnight() {
         selectedMage = false;
     }
+
 }

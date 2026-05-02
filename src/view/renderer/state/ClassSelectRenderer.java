@@ -52,4 +52,5 @@ public class ClassSelectRenderer {
     public int getBoardH() {
         return boardH;
     }
+
 }

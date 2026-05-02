@@ -78,14 +78,11 @@ public class MageModel extends PlayerModel {
         curSkillType = type;
         switch (type) {
             case SKILL_NORMAL -> curSkillIndex = 0;
-            case SKILL_ULT -> curSkillIndex = rand.nextInt(8);
-            case SKILL_SPECIAL -> curSkillIndex = rand.nextInt(3);
+            case SKILL_ULT -> curSkillIndex = rand.nextInt(9);
+            case SKILL_SPECIAL -> curSkillIndex = rand.nextInt(5);
         }
         skillAniIndex = -1;
-
-        Rectangle hb = getHitbox();
         int offset = TILE_SIZE * 3;
-
         int w, h;
         if (type == SKILL_NORMAL) {
             w = h = (int) (NORMAL_SIZE * SCALE);
@@ -95,9 +92,8 @@ public class MageModel extends PlayerModel {
             w = (int) (SPECIAL_W * SCALE);
             h = (int) (SPECIAL_H * SCALE);
         }
-
-        int x = isFacingRight() ? hb.x + hb.width + offset : hb.x - w - offset;
-        int y = hb.y + hb.height / 2 - h / 2;
+        int x = isFacingRight() ? hitbox.x + hitbox.width + offset : hitbox.x - w - offset;
+        int y = hitbox.y + hitbox.height / 2 - h / 2;
         skillBox = new Rectangle(x, y, w, h);
     }
 
@@ -127,4 +123,5 @@ public class MageModel extends PlayerModel {
     public void setSkillAniIndex(int idx) {
         skillAniIndex = idx;
     }
+    
 }

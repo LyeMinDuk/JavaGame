@@ -30,11 +30,11 @@ public class SpikeModel {
 
     private void changeHitbox() {
         switch (direction) {
-            case DIR_UP -> setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
-            case DIR_RIGHT -> setHitBox(0, 0, (int) (16 * SCALE), (int) (32 * SCALE));
-            case DIR_DOWN -> setHitBox(0, 0, (int) (32 * SCALE), (int) (16 * SCALE));
-            case DIR_LEFT -> setHitBox((int) (16 * SCALE), 0, (int) (16 * SCALE), (int) (32 * SCALE));
-            default -> setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
+            case DIR_UP -> this.setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
+            case DIR_RIGHT -> this.setHitBox(0, 0, (int) (16 * SCALE), (int) (32 * SCALE));
+            case DIR_DOWN -> this.setHitBox(0, 0, (int) (32 * SCALE), (int) (16 * SCALE));
+            case DIR_LEFT -> this.setHitBox((int) (16 * SCALE), 0, (int) (16 * SCALE), (int) (32 * SCALE));
+            default -> this.setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
         }
     }
 

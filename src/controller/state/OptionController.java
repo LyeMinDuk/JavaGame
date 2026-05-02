@@ -32,9 +32,9 @@ public class OptionController {
         AudioButton[] audioBtns = renderer.getAudioButtons();
         MenuButton[] diffBtns = renderer.getDiffButtons();
         MenuButton homeBtn = renderer.getHomeButton();
-
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
+
         for (AudioButton btn : audioBtns) {
             checkAudioButtonStatus(btn, mouseX, mouseY);
         }
@@ -76,6 +76,7 @@ public class OptionController {
             input.resetMouse();
         }
     }
+
     private void checkAudioButtonStatus(AudioButton btn, int mouseX, int mouseY) {
         if (btn.isHit(mouseX, mouseY)) {
             btn.setHovered(true);
@@ -97,4 +98,5 @@ public class OptionController {
             btn.setPressed(false);
         }
     }
+    
 }

@@ -58,11 +58,9 @@ public class CthuluRenderer extends EnemyRenderer {
         if (cthulu.getMagicBox() != null && cthulu.getCurSkill() >= 0) {
             int skill = cthulu.getCurSkill();
             Animation magic = magicAni[skill];
-
             if (cthulu.getMagicAniIndex() == -1) {
                 magic.reset();
             }
-
             magic.runAni();
             cthulu.setMagicAniIndex(magic.getFrameIdx());
         } else {
@@ -78,10 +76,8 @@ public class CthuluRenderer extends EnemyRenderer {
         if (cthulu.getMagicBox() != null && cthulu.getCurSkill() >= 0) {
             Animation magic = magicAni[cthulu.getCurSkill()];
             Rectangle magicBox = cthulu.getMagicBox();
-
             int drawX = x + (magicBox.x - (int) cthulu.getX());
             int drawY = y + (magicBox.y - (int) cthulu.getY());
-
             g.drawImage(magic.getCurFrame(), drawX, drawY, magicBox.width, magicBox.height, null);
         }
         if (cthulu.isFacingRight()) {
@@ -90,4 +86,5 @@ public class CthuluRenderer extends EnemyRenderer {
             g.drawImage(cur.getCurFrame(), x + cthulu.getWidth(), y, -cthulu.getWidth(), cthulu.getHeight(), null);
         }
     }
+
 }

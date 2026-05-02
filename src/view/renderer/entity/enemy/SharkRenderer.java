@@ -26,4 +26,5 @@ public class SharkRenderer extends EnemyRenderer {
                 ResourceManager.loadSprite(sharkAttack, SHARK_FRAME.get(ATTACK), 34, 30),
                 14, false);
     }
+
 }

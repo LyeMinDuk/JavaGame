@@ -35,7 +35,6 @@ public class MapRenderer {
         if (lastRow > tileHigh) {
             lastRow = tileHigh;
         }
-
         for (int i = firstRow; i < lastRow; ++i) {
             for (int j = firstCol; j < lastCol; ++j) {
                 int idx = map.getTile(j, i);
@@ -43,4 +42,5 @@ public class MapRenderer {
             }
         }
     }
+
 }

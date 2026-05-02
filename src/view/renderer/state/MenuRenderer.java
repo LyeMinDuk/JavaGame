@@ -37,18 +37,15 @@ public class MenuRenderer {
         boardHeight = (int) (350 * UI_SCALE);
         boardX = GAME_WIDTH / 2 - boardWidth / 2;
         boardY = GAME_HEIGHT / 2 - boardHeight / 2;
-        
+
         int butWidth = (int) (140 * UI_SCALE);
         int butHeight = (int) (56 * UI_SCALE);
         int butX = GAME_WIDTH / 2 - butWidth / 2;
-
         int headerHeight = (int) (90 * UI_SCALE);
         int paddingBottom = (int) (20 * UI_SCALE);
-
         int availableHeight = boardHeight - headerHeight - paddingBottom;
         int totalButtonHeight = 3 * butHeight;
         int gap = (availableHeight - totalButtonHeight) / 4;
-
         int startY = boardY + headerHeight + gap;
 
         for (int i = 0; i < buttons.length; ++i) {
@@ -60,7 +57,6 @@ public class MenuRenderer {
     public void render(Graphics g) {
         g.drawImage(backgroundImg, 0, 0, GAME_WIDTH, GAME_HEIGHT, null);
         g.drawImage(menuBoardImg, boardX, boardY, boardWidth, boardHeight, null);
-
         for (MenuButton mb : buttons) {
             mb.draw(g);
         }
@@ -69,4 +65,5 @@ public class MenuRenderer {
     public MenuButton[] getButtons() {
         return buttons;
     }
+
 }

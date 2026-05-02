@@ -35,14 +35,12 @@ public class PausedController {
             resumeGame();
             return;
         }
-
         AudioButton[] audioBtns = renderer.getAudioButtons();
         MenuButton home = renderer.getHomeBtn();
         MenuButton resume = renderer.getResumeBtn();
-
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
-        
+
         checkButtonStatus(home, mouseX, mouseY);
         checkButtonStatus(resume, mouseX, mouseY);
         for (AudioButton btn : audioBtns) {
@@ -92,4 +90,5 @@ public class PausedController {
         gameState.setGameState(GameState.PLAYING);
         input.resetKeys();
     }
+
 }

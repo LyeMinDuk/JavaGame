@@ -39,7 +39,7 @@ public abstract class UIButton {
     }
 
     public void resetState() {
-        hovered = false;
-        pressed = false;
+        hovered = pressed = false;
     }
+
 }

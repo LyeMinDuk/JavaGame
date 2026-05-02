@@ -24,7 +24,6 @@ public class GameOverController {
     public void update(AudioController audio) {
         MenuButton home = renderer.getHomeBtn();
         MenuButton restart = renderer.getRestartBtn();
-
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
 
@@ -36,7 +35,6 @@ public class GameOverController {
             home.setHovered(false);
             home.setPressed(false);
         }
-
         if (restart.isHit(mouseX, mouseY)) {
             restart.setHovered(true);
             if (input.isMousePress())
@@ -45,11 +43,10 @@ public class GameOverController {
             restart.setHovered(false);
             restart.setPressed(false);
         }
-
         if (input.isMouseRelease()) {
             if (home.isPressed()) {
                 audio.playSFX(AudioController.SFX_CLICK);
-                game.resetPlaying();;
+                game.resetPlaying();
                 gameState.setGameState(GameState.MENU);
                 input.resetKeys();
             } else if (restart.isPressed()) {
@@ -58,9 +55,9 @@ public class GameOverController {
                 gameState.setGameState(GameState.PLAYING);
                 input.resetKeys();
             }
-            
             home.resetState();
             restart.resetState();
         }
     }
+    
 }

@@ -49,13 +49,13 @@ public class CthuluModel extends EnemyModel {
             refreshState();
             return;
         }
-        if (!phase2 && (1.0 * getCurHealth() / getMaxHealth() <= 0.5)) {
+        if (!phase2 && ((1.0 * getCurHealth() / getMaxHealth()) <= 0.5)) {
             phase2 = true;
             damage *= 2;
-            atkRange *= 3;
+            atkRange *= 4;
         }
 
-        if (!phase3 && (1.0 * getCurHealth() / getMaxHealth() <= 0.3)) {
+        if (!phase3 && ((1.0 * getCurHealth() / getMaxHealth()) <= 0.3)) {
             phase3 = true;
             curHealth = maxHealth;
             damage *= 2;
@@ -67,7 +67,6 @@ public class CthuluModel extends EnemyModel {
         double centerEnemy = hitbox.x + hitbox.width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
-
         if (phase2) {
             if (aiState == ATTACK) {
                 dx = 0;
@@ -83,18 +82,17 @@ public class CthuluModel extends EnemyModel {
                     dx = 0;
                     magicDone = false;
                     curSkill = rand.nextInt(3);
-
                     int size = (int) (128 * SCALE);
                     int mx = playerBox.x + playerBox.width / 2 - size / 2;
                     int my = playerBox.y + playerBox.height / 2 - size / 2;
                     magicBox = new Rectangle(mx, my, size, size);
-
                     aniIndex = 0;
                     magicAniIndex = -1;
                     lastAtkTime = now;
                     facingRight = distX > 0;
                 } else if (absX <= detectRange) {
                     dx = distX > 0 ? moveSpeed : -moveSpeed;
+                    facingRight = distX > 0;
                     aiState = CHASE;
                 } else {
                     dx = 0;
@@ -234,4 +232,5 @@ public class CthuluModel extends EnemyModel {
     public boolean isBoss() {
         return true;
     }
+    
 }

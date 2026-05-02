@@ -25,7 +25,7 @@ public class PlayingController {
     }
 
     public void update(AudioController audio) {
-        if(!player.isAlive()){
+        if (!player.isAlive()) {
             audio.playSFX(AudioController.SFX_DIE);
             gameState.setGameState(GameState.GAME_OVER);
             input.resetKeys();
@@ -40,8 +40,8 @@ public class PlayingController {
             gameState.setGameState(GameState.VICTORY);
             return;
         }
-
         worldController.update(player, audio);
         renderer.getPlayingRenderer().update();
     }
+
 }

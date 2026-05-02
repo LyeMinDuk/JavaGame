@@ -124,4 +124,5 @@ public class GameRenderer {
     public ClassSelectRenderer getClassSelectRenderer() {
         return classSelectRenderer;
     }
+
 }

@@ -31,4 +31,5 @@ public class AudioButton extends UIButton {
         int imgIdx = muted ? 1 : 0;
         g.drawImage(buttonImgs[imgIdx][state], x, y, width, height, null);
     }
+    
 }

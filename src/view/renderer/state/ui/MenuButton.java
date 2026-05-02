@@ -23,4 +23,5 @@ public class MenuButton extends UIButton {
 
         g.drawImage(buttonImgs[rowIndex][state], x, y, width, height, null);
     }
+    
 }

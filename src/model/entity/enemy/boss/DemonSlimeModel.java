@@ -36,14 +36,13 @@ public class DemonSlimeModel extends EnemyModel {
             refreshState();
             return;
         }
-        if (!phase2 && (1.0 * getCurHealth() / getMaxHealth() < 0.5)) {
+        if (!phase2 && ((1.0 * getCurHealth() / getMaxHealth()) <= 0.5)) {
             phase2 = true;
             damage *= 2;
             moveSpeed = 0.9 * SCALE;
             atkCD /= 2;
         }
-
-        if (!phase3 && (1.0 * getCurHealth() / getMaxHealth() < 0.3)) {
+        if (!phase3 && ((1.0 * getCurHealth() / getMaxHealth()) <= 0.3)) {
             phase3 = true;
             damage *= 2;
             curHealth = maxHealth;
@@ -54,7 +53,6 @@ public class DemonSlimeModel extends EnemyModel {
         double centerEnemy = hitbox.x + hitbox.width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
-
         if (aiState == ATTACK) {
             dx = 0;
             if (aniIndex >= 14) {
@@ -128,4 +126,5 @@ public class DemonSlimeModel extends EnemyModel {
     public boolean isBoss() {
         return true;
     }
+
 }
