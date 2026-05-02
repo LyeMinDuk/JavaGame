@@ -24,7 +24,7 @@ public class MageModel extends PlayerModel {
     public MageModel(double x, double y, int maxHealth) {
         super(x, y, 128, 128, maxHealth);
         this.setHitBox(46, 62, 35, 66);
-        normalAtkCd = 2000;
+        this.normalAtkCd = 1500;
     }
 
     @Override
@@ -41,12 +41,12 @@ public class MageModel extends PlayerModel {
             case 1 -> {
                 this.maxHealth = 150;
                 this.damage = 60;
-                this.maxMana = 600;
-                this.ultimateDamage = 60;
+                this.maxMana = 500;
+                this.ultimateDamage = 180;
                 this.ultCooldown = 6000;
-                this.ultimateCost = 50;
-                this.specialDamage = 100;
-                this.specialCost = 70;
+                this.ultimateCost = 120;
+                this.specialDamage = 150;
+                this.specialCost = 80;
                 this.specialCooldown = 8000;
             }
             case 2 -> {

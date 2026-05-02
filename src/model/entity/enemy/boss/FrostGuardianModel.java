@@ -47,8 +47,8 @@ public class FrostGuardianModel extends EnemyModel {
         }
         Rectangle hitbox = getHitbox();
         Rectangle playerBox = player.getHitbox();
-        double centerPlayer = (playerBox.x + playerBox.width) / 2.0;
-        double centerEnemy = (hitbox.x + hitbox.width) / 2.0;
+        double centerPlayer = playerBox.x + playerBox.width / 2.0;
+        double centerEnemy = hitbox.x + hitbox.width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
 

@@ -16,12 +16,12 @@ public class PlayerController {
     private final InputController input;
     private final int atkHitFrame = 3;
     private final int[] knightUltHitFrames = { 4, 9, 13 };
-    private final int[] knightSpecialHitFrames = { 3, 8, 14 };
+    private final int[] knightSpecialHitFrames = { 3, 6, 8, 14 };
     private final int[] mageUltHitFrames = { 7, 3, 7, 12, 12, 9, 2, 7 };
     private final int[] mageSpecialHitFrames = { 7, 4, 6 };
 
-    private boolean[] ultFrameChecked = new boolean[32];
-    private boolean[] specialFrameChecked = new boolean[32];
+    private boolean[] ultFrameChecked = new boolean[20];
+    private boolean[] specialFrameChecked = new boolean[20];
 
     public PlayerController(InputController input) {
         this.input = input;
@@ -48,21 +48,21 @@ public class PlayerController {
 
             if (mageSkillActive) {
                 if (mage.getCurSkillType() == MageModel.SKILL_ULT) {
-                    handleUltimateDamage(player, enemies);
+                    handleUltimateDamage(player, enemies, audio);
                 } else if (mage.getCurSkillType() == MageModel.SKILL_SPECIAL) {
-                    handleSpecialDamage(player, enemies);
+                    handleSpecialDamage(player, enemies, audio);
                 } else {
-                    handleAttack(player, enemies);
+                    handleAttack(player, enemies, audio);
                 }
                 return;
             }
 
             if (player.isUltimate())
-                handleUltimateDamage(player, enemies);
+                handleUltimateDamage(player, enemies, audio);
             if (player.isSpecial())
-                handleSpecialDamage(player, enemies);
+                handleSpecialDamage(player, enemies, audio);
             if (player.isAtking())
-                handleAttack(player, enemies);
+                handleAttack(player, enemies, audio);
             return;
         }
 
@@ -89,13 +89,13 @@ public class PlayerController {
         handleAttackInput(player, audio);
 
         if (player.isAtking() && !(player instanceof MageModel)) {
-            handleAttack(player, enemies);
+            handleAttack(player, enemies, audio);
         }
         if (player.isUltimate() && !(player instanceof MageModel)) {
-            handleUltimateDamage(player, enemies);
+            handleUltimateDamage(player, enemies, audio);
         }
         if (player.isSpecial() && !(player instanceof MageModel)) {
-            handleSpecialDamage(player, enemies);
+            handleSpecialDamage(player, enemies, audio);
         }
     }
 
@@ -113,8 +113,13 @@ public class PlayerController {
                     player.setAniIndex(0);
                     player.setLastUltCastTime(System.currentTimeMillis());
                     Arrays.fill(ultFrameChecked, false);
-                    if (player instanceof MageModel mage)
+
+                    if (player instanceof MageModel mage) {
                         mage.startSkill(MageModel.SKILL_ULT);
+                        audio.playSFX(AudioController.SFX_MAGE_ULT);
+                    } else {
+                        audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+                    }
                 }
             }
         }
@@ -132,8 +137,13 @@ public class PlayerController {
             player.setAniIndex(0);
             player.setLastSpecialCastTime(System.currentTimeMillis());
             Arrays.fill(specialFrameChecked, false);
-            if (player instanceof MageModel mage)
+
+            if (player instanceof MageModel mage) {
                 mage.startSkill(MageModel.SKILL_SPECIAL);
+                audio.playSFX(AudioController.SFX_MAGE_SPECIAL);
+            } else {
+                audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+            }
         }
     }
 
@@ -149,52 +159,77 @@ public class PlayerController {
             player.setAtking(true);
             player.setAniIndex(0);
             player.setLastNormalAttack(now);
-            if (player instanceof MageModel mage)
+
+            if (player instanceof MageModel mage) {
                 mage.startSkill(MageModel.SKILL_NORMAL);
+                audio.playSFX(AudioController.SFX_MAGE_ATTACK);
+            } else {
+                audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+            }
         }
     }
 
-    private void handleUltimateDamage(PlayerModel player, List<EnemyModel> enemies) {
+    private void handleUltimateDamage(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
         int frame = player.getAniIndex();
         Rectangle ultBox = player.getUltimateBox();
-
         if (player instanceof MageModel mage && mage.getSkillBox() != null) {
             ultBox = mage.getSkillBox();
             frame = mage.getSkillAniIndex();
-        }
 
-        int hitFrame = getUltHitFrame(player);
-        if (frame == hitFrame && frame >= 0 && frame < ultFrameChecked.length && !ultFrameChecked[frame]) {
-            for (EnemyModel enemy : enemies) {
-                if (enemy.isAlive() && ultBox.intersects(enemy.getHitbox())) {
-                    enemy.takeDamage(player.getUltimateDamage());
+            int hitFrame = getUltHitFrame(player);
+            if (frame == hitFrame && !ultFrameChecked[frame]) {
+                for (EnemyModel enemy : enemies) {
+                    if (enemy.isAlive() && ultBox.intersects(enemy.getHitbox())) {
+                        enemy.takeDamage(player.getUltimateDamage());
+                    }
                 }
+                ultFrameChecked[frame] = true;
             }
-            ultFrameChecked[frame] = true;
+            return;
+        }
+        for (int hitFrame : knightUltHitFrames) {
+            if (frame == hitFrame && !ultFrameChecked[frame]) {
+                for (EnemyModel enemy : enemies) {
+                    if (enemy.isAlive() && ultBox.intersects(enemy.getHitbox())) {
+                        enemy.takeDamage(player.getUltimateDamage());
+                    }
+                }
+                ultFrameChecked[frame] = true;
+            }
         }
     }
 
-    private void handleSpecialDamage(PlayerModel player, List<EnemyModel> enemies) {
+    private void handleSpecialDamage(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
         int frame = player.getAniIndex();
         Rectangle skillBox = player.getSpecialBox();
-
         if (player instanceof MageModel mage && mage.getSkillBox() != null) {
             skillBox = mage.getSkillBox();
             frame = mage.getSkillAniIndex();
-        }
 
-        int hitFrame = getSpecialHitFrame(player);
-        if (frame == hitFrame && frame >= 0 && frame < specialFrameChecked.length && !specialFrameChecked[frame]) {
-            for (EnemyModel enemy : enemies) {
-                if (enemy.isAlive() && skillBox.intersects(enemy.getHitbox())) {
-                    enemy.takeDamage(player.getSpecialDamage());
+            int hitFrame = getSpecialHitFrame(player);
+            if (frame == hitFrame && !specialFrameChecked[frame]) {
+                for (EnemyModel enemy : enemies) {
+                    if (enemy.isAlive() && skillBox.intersects(enemy.getHitbox())) {
+                        enemy.takeDamage(player.getSpecialDamage());
+                    }
                 }
+                specialFrameChecked[frame] = true;
             }
-            specialFrameChecked[frame] = true;
+            return;
+        }
+        for (int hitFrame : knightSpecialHitFrames) {
+            if (frame == hitFrame && !specialFrameChecked[frame]) {
+                for (EnemyModel enemy : enemies) {
+                    if (enemy.isAlive() && skillBox.intersects(enemy.getHitbox())) {
+                        enemy.takeDamage(player.getSpecialDamage());
+                    }
+                }
+                specialFrameChecked[frame] = true;
+            }
         }
     }
 
-    private void handleAttack(PlayerModel player, List<EnemyModel> enemies) {
+    private void handleAttack(PlayerModel player, List<EnemyModel> enemies, AudioController audio) {
         int frame = player.getAniIndex();
         Rectangle atkBox = player.getDefaultAttackBox();
 
@@ -207,6 +242,11 @@ public class PlayerController {
         if (frame == atkHitFrame) {
             for (EnemyModel enemy : enemies) {
                 if (enemy.isAlive() && enemy.getAiState() != HURT && atkBox.intersects(enemy.getHitbox())) {
+                    if (player instanceof MageModel) {
+                        audio.playSFX(AudioController.SFX_MAGE_ATTACK);
+                    } else {
+                        audio.playSFX(AudioController.SFX_KNIGHT_ATTACK);
+                    }
                     enemy.takeDamage(player.getDamage());
                     break;
                 }

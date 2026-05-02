@@ -1,6 +1,5 @@
 package controller.object;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +18,10 @@ public class SpikeController {
     }
 
     private void spawnObject(MapModel map) {
-        for (Point p : map.getSpikeSpawns()) {
-            int x = p.x * TILE_SIZE;
-            int y = p.y * TILE_SIZE;
-            listSpike.add(new SpikeModel(x, y, (int) (32 * SCALE), (int) (32 * SCALE)));
+        for (int[] p : map.getSpikeSpawns()) {
+            int x = p[0] * TILE_SIZE;
+            int y = p[1] * TILE_SIZE;
+            listSpike.add(new SpikeModel(x, y, (int) (32 * SCALE), (int) (32 * SCALE), p[2]));
         }
     }
 

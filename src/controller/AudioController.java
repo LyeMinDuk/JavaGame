@@ -7,7 +7,7 @@ import javax.sound.sampled.FloatControl;
 import view.assets.ResourceManager;
 
 public class AudioController {
-    private float musicVolume = 0.6f;
+    private float musicVolume = 0.5f;
     private float sfxVolume = 0.7f;
 
     public static final int BGM_MENU = 0;
@@ -16,12 +16,14 @@ public class AudioController {
     public static final int LV3 = 3;
     public static final int SFX_CLICK = 0;
     public static final int SFX_JUMP = 1;
-    public static final int SFX_ATTACK = 2;
-    public static final int SFX_SLASH = 3;
+    public static final int SFX_KNIGHT_ATTACK = 2;
+    public static final int SFX_KNIGHT_SLASH = 3;
     public static final int SFX_DIE = 4;
     public static final int SFX_WIN = 5;
-    public static final int SFX_MAGE_ATTACK = 6;
-    public static final int SFX_MAGE_ULT = 7;
+    public static final int SFX_LOSE = 6;
+    public static final int SFX_MAGE_ATTACK = 7;
+    public static final int SFX_MAGE_ULT = 8;
+    public static final int SFX_MAGE_SPECIAL = 9;
 
     private Clip[] music;
     private Clip[] sfx;
@@ -47,7 +49,8 @@ public class AudioController {
     }
 
     private void loadSFX() {
-        String[] names = { "click", "jump", "attack", "slash", "die", "lvlcompleted", "mage_attack", "mage_ult" };
+        String[] names = { "click", "jump", "attack", "slash", "die", "lvlcompleted", "gameover", "mage_atk",
+                "mage_ult", "mage_special" };
         sfx = new Clip[names.length];
         for (int i = 0; i < names.length; i++) {
             sfx[i] = ResourceManager.loadClip("/audio/" + names[i] + ".wav");
@@ -67,6 +70,16 @@ public class AudioController {
         applyVolume(music[id], musicVolume);
         music[id].setMicrosecondPosition(0);
         music[id].loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    public void pauseMusic() {
+        if (music[currentMusicId].isRunning()) {
+            music[currentMusicId].stop();
+        }
+    }
+
+    public void resumeMusic() {
+        music[currentMusicId].loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     public void setLevelMusic(int lvlIndex) {

@@ -36,6 +36,7 @@ public class PlayerModel extends EntityModel {
     protected long lastManaRegenTime;
     protected long lastUltCastTime = 0;
     protected long ultCooldown;
+
     private static final long HURT_DURATION = 500;
     private long hurtUntil = 0;
     private boolean frozen = false;
@@ -55,9 +56,8 @@ public class PlayerModel extends EntityModel {
     }
 
     public void refreshState() {
-        if (frozen && System.currentTimeMillis() > frozenUntil) {
+        if (frozen && System.currentTimeMillis() > frozenUntil)
             frozen = false;
-        }
         if (frozen)
             state = FROZEN;
         else if (ultimate)
@@ -104,12 +104,12 @@ public class PlayerModel extends EntityModel {
             }
             case 1 -> {
                 this.maxHealth = 300;
-                this.damage = 20;
+                this.damage = 50;
                 this.maxMana = 200;
                 this.ultimateDamage = 50;
                 this.ultimateCost = 40;
                 this.ultCooldown = 3000;
-                this.specialDamage = 80;
+                this.specialDamage = 70;
                 this.specialCost = 60;
                 this.specialCooldown = 5000;
             }

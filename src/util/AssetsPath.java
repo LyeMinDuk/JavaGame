@@ -177,7 +177,7 @@ public class AssetsPath {
     };
 
     public static final String[] minimap = {
-            "/level/lv1.png", // 960x200
+            "/level/lv1.png",
             "/level/lv2.png"
     };
 

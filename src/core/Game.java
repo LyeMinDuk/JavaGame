@@ -156,11 +156,26 @@ public class Game implements Runnable {
     private void onEnterState(GameState state) {
         switch (state) {
             case GameState.MENU -> audioController.playMusic(AudioController.BGM_MENU);
-            case GameState.PLAYING -> audioController.setLevelMusic(curMapIdx);
-            // case GameState.PAUSED -> pausedController.update(audioController);
-            // case GameState.GAME_OVER -> gameOverController.update(audioController);
-            // case GameState.OPTIONS -> optionController.update();
-            case GameState.VICTORY -> audioController.playSFX(AudioController.SFX_WIN);
+            case GameState.PLAYING -> {
+                if (lastState == GameState.PAUSED) {
+                    audioController.resumeMusic();
+                } else {
+                    audioController.setLevelMusic(curMapIdx);
+                }
+            }
+            case GameState.PAUSED -> audioController.pauseMusic();
+            case GameState.GAME_OVER -> {
+                audioController.stopMusic();
+                audioController.playSFX(AudioController.SFX_LOSE);
+            }
+            case GameState.OPTIONS -> {
+            }
+            case GameState.CHOOSE_CLASS -> {
+            }
+            case GameState.VICTORY -> {
+                audioController.stopMusic();
+                audioController.playSFX(AudioController.SFX_WIN);
+            }
         }
     }
 

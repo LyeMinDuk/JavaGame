@@ -1,23 +1,41 @@
 package model.object;
 
-import static core.GameConfig.SCALE;
-
 import java.awt.Rectangle;
 
-public class SpikeModel {
-    protected int x, y;
-    protected int width, height;
-    protected Rectangle hitbox;
-    protected int hbOffsetX, hbOffsetY, hbWidth, hbHeight;
+import static core.GameConfig.SCALE;
 
-    public SpikeModel(int x, int y, int width, int height) {
+public class SpikeModel {
+    public static final int DIR_UP = 0;
+    public static final int DIR_RIGHT = 1;
+    public static final int DIR_DOWN = 2;
+    public static final int DIR_LEFT = 3;
+
+    private int x, y;
+    private int width, height;
+    private Rectangle hitbox;
+    private int hbOffsetX, hbOffsetY, hbWidth, hbHeight;
+    private int direction;
+
+    public SpikeModel(int x, int y, int width, int height, int direction) {
         this.x = x;
         this.y = y;
         this.width = hbWidth = width;
         this.height = hbHeight = height;
+        this.direction = direction;
         hbOffsetX = hbOffsetY = 0;
         this.hitbox = new Rectangle(x, y, width, height);
         this.setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (32 * SCALE));
+        changeHitbox();
+    }
+
+    private void changeHitbox() {
+        switch (direction) {
+            case DIR_UP -> setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
+            case DIR_RIGHT -> setHitBox(0, 0, (int) (16 * SCALE), (int) (32 * SCALE));
+            case DIR_DOWN -> setHitBox(0, 0, (int) (32 * SCALE), (int) (16 * SCALE));
+            case DIR_LEFT -> setHitBox((int) (16 * SCALE), 0, (int) (16 * SCALE), (int) (32 * SCALE));
+            default -> setHitBox(0, (int) (16 * SCALE), (int) (32 * SCALE), (int) (16 * SCALE));
+        }
     }
 
     protected void setHitBox(int offsetX, int offsetY, int width, int height) {
@@ -53,6 +71,10 @@ public class SpikeModel {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getDirection() {
+        return direction;
     }
 
 }

@@ -31,8 +31,8 @@ public class SharkModel extends EnemyModel {
             return;
         }
         Rectangle playerBox = player.getHitbox();
-        double centerPlayer = (playerBox.x + playerBox.width) / 2.0;
-        double centerEnemy = (x + width) / 2.0;
+        double centerPlayer = playerBox.x + playerBox.width / 2.0;
+        double centerEnemy = x + width / 2.0;
         double distX = centerPlayer - centerEnemy;
         double absX = Math.abs(distX);
 

@@ -14,7 +14,6 @@ import model.entity.enemy.boss.CthuluModel;
 import model.entity.enemy.boss.DemonSlimeModel;
 import model.entity.enemy.boss.FrostGuardianModel;
 import model.entity.enemy.boss.MinotaurModel;
-import util.enemy.EnemyStateIndex.Golem;
 
 import static core.GameConfig.*;
 

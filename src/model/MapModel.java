@@ -24,7 +24,7 @@ public class MapModel {
     private Point playerLocation;
     private int bossCheckpoint = -1;
     private List<int[]> enemySpawns = new ArrayList<>();
-    private List<Point> spikeSpawns = new ArrayList<>();
+    private List<int[]> spikeSpawns = new ArrayList<>();
 
     public MapModel(String path) {
         initLevel(path);
@@ -43,7 +43,8 @@ public class MapModel {
                 Color c = new Color(levelImg.getRGB(j, i));
                 if (c.getRed() == 100) {
                     map[i][j] = 11;
-                    spikeSpawns.add(new Point(j, i));
+                    int dir = c.getBlue();
+                    spikeSpawns.add(new int[] { j, i, dir });
                 } else {
                     map[i][j] = c.getRed();
                 }
@@ -86,7 +87,7 @@ public class MapModel {
         return enemySpawns;
     }
 
-    public List<Point> getSpikeSpawns() {
+    public List<int[]> getSpikeSpawns() {
         return spikeSpawns;
     }
 

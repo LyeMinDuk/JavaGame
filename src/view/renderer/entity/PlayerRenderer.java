@@ -29,7 +29,7 @@ public class PlayerRenderer {
     private static final int[] SKILL_FRAMES_ULT = { 15, 6, 15, 20, 20, 15, 7, 12 };
     private static final int[] SKILL_FRAMES_SPECIAL = { 11, 9, 11 };
     private int lastState = -1;
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     public PlayerRenderer() {
         loadAnimation();
@@ -66,25 +66,25 @@ public class PlayerRenderer {
         mageAni[HURT] = new Animation(ResourceManager.loadSprite(mageHurt, MageFrames.FRAMES.get(HURT), 128, 128), 15,
                 false);
         mageAni[ATTACK] = new Animation(ResourceManager.loadSprite(mageAttack, MageFrames.FRAMES.get(ATTACK), 128, 128),
-                15, false);
+                27, false);
         mageAni[ULTIMATE] = new Animation(
-                ResourceManager.loadSprite(mageUltimate, MageFrames.FRAMES.get(ULTIMATE), 128, 128), 10, false);
+                ResourceManager.loadSprite(mageUltimate, MageFrames.FRAMES.get(ULTIMATE), 128, 128), 18, false);
         mageAni[SPECIAL] = new Animation(
-                ResourceManager.loadSprite(mageSpecialAni, MageFrames.FRAMES.get(SPECIAL), 128, 128), 10, false);
-        mageNormal = new Animation(ResourceManager.loadSprite(mageSkill, SKILL_FRAMES_NORMAL[0], 80, 80), 10, false);
+                ResourceManager.loadSprite(mageSpecialAni, MageFrames.FRAMES.get(SPECIAL), 128, 128), 20, false);
+        mageNormal = new Animation(ResourceManager.loadSprite(mageSkill, SKILL_FRAMES_NORMAL[0], 80, 80), 27, false);
 
         mageUlt[0] = new Animation(ResourceManager.loadSprite(mageSkill1, SKILL_FRAMES_ULT[0], 128, 128), 20, false);
-        mageUlt[1] = new Animation(ResourceManager.loadSprite(mageSkill2, SKILL_FRAMES_ULT[1], 128, 128), 20, false);
+        mageUlt[1] = new Animation(ResourceManager.loadSprite(mageSkill2, SKILL_FRAMES_ULT[1], 128, 128), 50, false);
         mageUlt[2] = new Animation(ResourceManager.loadSprite(mageSkill3, SKILL_FRAMES_ULT[2], 128, 128), 20, false);
-        mageUlt[3] = new Animation(ResourceManager.loadSprite(mageSkill4, SKILL_FRAMES_ULT[3], 128, 128), 20, false);
-        mageUlt[4] = new Animation(ResourceManager.loadSprite(mageSkill5, SKILL_FRAMES_ULT[4], 128, 128), 20, false);
+        mageUlt[3] = new Animation(ResourceManager.loadSprite(mageSkill4, SKILL_FRAMES_ULT[3], 128, 128), 15, false);
+        mageUlt[4] = new Animation(ResourceManager.loadSprite(mageSkill5, SKILL_FRAMES_ULT[4], 128, 128), 15, false);
         mageUlt[5] = new Animation(ResourceManager.loadSprite(mageSkill6, SKILL_FRAMES_ULT[5], 128, 128), 20, false);
-        mageUlt[6] = new Animation(ResourceManager.loadSprite(mageSkill7, SKILL_FRAMES_ULT[6], 128, 128), 20, false);
-        mageUlt[7] = new Animation(ResourceManager.loadSprite(mageSkill8, SKILL_FRAMES_ULT[7], 128, 128), 20, false);
+        mageUlt[6] = new Animation(ResourceManager.loadSprite(mageSkill7, SKILL_FRAMES_ULT[6], 128, 128), 40, false);
+        mageUlt[7] = new Animation(ResourceManager.loadSprite(mageSkill8, SKILL_FRAMES_ULT[7], 128, 128), 25, false);
 
         mageSpecial[0] = new Animation(ResourceManager.loadSprite(mageSkill9, SKILL_FRAMES_SPECIAL[0], 192, 128), 20,
                 false);
-        mageSpecial[1] = new Animation(ResourceManager.loadSprite(mageSkill10, SKILL_FRAMES_SPECIAL[1], 192, 128), 20,
+        mageSpecial[1] = new Animation(ResourceManager.loadSprite(mageSkill10, SKILL_FRAMES_SPECIAL[1], 192, 128), 22,
                 false);
         mageSpecial[2] = new Animation(ResourceManager.loadSprite(mageSkill11, SKILL_FRAMES_SPECIAL[2], 192, 128), 20,
                 false);
@@ -171,7 +171,6 @@ public class PlayerRenderer {
                 int skillX = player.isFacingRight() ? drawX + drawW : drawX - skillW;
                 int drawSkillX = player.isFacingRight() ? skillX : skillX + skillW;
                 int drawSkillW = player.isFacingRight() ? skillW : -skillW;
-                g.drawRect(drawSkillX, skillY, drawSkillW, skillH);
                 g.drawImage(knightSpecial.getCurFrame(), drawSkillX, skillY, drawSkillW, skillH, null);
             }
         } else {
