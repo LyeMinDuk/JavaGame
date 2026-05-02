@@ -19,11 +19,9 @@ public class PlayerModel extends EntityModel {
     private final double speed = 2.0 * SCALE;
     private final double jumpPow = -4 * SCALE;
 
-    private int atkW = (int) (14 * SCALE);
-    private int atkH = (int) (10 * SCALE);
-    private int atkOffset = (int) (3 * SCALE);
     private long lastNormalAtk = 0;
     protected long normalAtkCd = 500;
+    protected int manaRegeneraion;
 
     protected int specialCost;
     protected int specialDamage;
@@ -95,34 +93,43 @@ public class PlayerModel extends EntityModel {
     public void applyDifficult(int difficult) {
         switch (difficult) {
             case 0 -> {
-                this.maxHealth = 10000;
-                this.damage = 10000;
-                this.maxMana = 10000;
-                this.ultimateDamage = this.specialDamage = 50000;
-                this.ultimateCost = this.specialCost = 1;
-                this.ultCooldown = this.specialCooldown = 1000;
-            }
-            case 1 -> {
-                this.maxHealth = 300;
-                this.damage = 50;
-                this.maxMana = 200;
-                this.ultimateDamage = 50;
+                this.maxHealth = 320;
+                this.damage = 28;
+                this.maxMana = 120;
+                this.manaRegeneraion = 10;
+                this.normalAtkCd = 500;
+                this.ultimateDamage = 30;
                 this.ultimateCost = 40;
-                this.ultCooldown = 3000;
-                this.specialDamage = 70;
-                this.specialCost = 60;
+                this.ultCooldown = 4000;
+                this.specialDamage = 30;
+                this.specialCost = 50;
                 this.specialCooldown = 5000;
             }
-            case 2 -> {
-                this.maxHealth = 100;
-                this.damage = 10;
+            case 1 -> {
+                this.maxHealth = 220;
+                this.damage = 22;
                 this.maxMana = 100;
-                this.ultimateDamage = 30;
-                this.ultimateCost = 100;
-                this.ultCooldown = 10000;
-                this.specialDamage = 50;
+                this.manaRegeneraion = 8;
+                this.normalAtkCd = 550;
+                this.ultimateDamage = 25;
+                this.ultimateCost = 50;
+                this.ultCooldown = 5000;
+                this.specialDamage = 25;
+                this.specialCost = 60;
+                this.specialCooldown = 6000;
+            }
+            case 2 -> {
+                this.maxHealth = 160;
+                this.damage = 18;
+                this.maxMana = 80;
+                this.manaRegeneraion = 6;
+                this.normalAtkCd = 600;
+                this.ultimateDamage = 20;
+                this.ultimateCost = 60;
+                this.ultCooldown = 6000;
+                this.specialDamage = 20;
                 this.specialCost = 70;
-                this.specialCooldown = 12000;
+                this.specialCooldown = 7000;
             }
         }
         this.curHealth = this.maxHealth;
@@ -140,7 +147,7 @@ public class PlayerModel extends EntityModel {
     public void regenMana() {
         long now = System.currentTimeMillis();
         if (now - lastManaRegenTime >= 1000) {
-            curMana = Math.min(maxMana, curMana + 10);
+            curMana = Math.min(maxMana, curMana + manaRegeneraion);
             lastManaRegenTime = now;
         }
     }
@@ -180,22 +187,13 @@ public class PlayerModel extends EntityModel {
     }
 
     public Rectangle getDefaultAttackBox() {
+        int atkW = (int) (18 * SCALE);
+        int atkH = (int) (15 * SCALE);
+        int atkOffset = (int) (-1 * SCALE);
         Rectangle hb = getHitbox();
         int atkX = isFacingRight() ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int atkY = hb.y + (hb.height - getAtkH()) / 2;
-        return new Rectangle(atkX, atkY, getAtkW(), getAtkH());
-    }
-
-    public int getAtkW() {
-        return atkW;
-    }
-
-    public int getAtkH() {
-        return atkH;
-    }
-
-    public int getAtkOffset() {
-        return atkOffset;
+        int atkY = hb.y + (int) (13 * SCALE);
+        return new Rectangle(atkX, atkY, atkW, atkH);
     }
 
     public void setLastNormalAttack(long lastNormalAtk) {
@@ -312,6 +310,10 @@ public class PlayerModel extends EntityModel {
 
     public boolean isFrozen() {
         return frozen;
+    }
+
+    public int getSpecialCost() {
+        return specialCost;
     }
 
 }

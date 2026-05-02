@@ -28,7 +28,7 @@ import static util.AssetsPath.playingBG;
 
 public class PlayingRenderer {
     private BufferedImage[] bgLayers;
-    private final double[] parallaxFactors = { 0.0, 0.15, 0.3, 0.5, 0.7 };
+    private final double[] parallaxFactors = { 0.0, 0.15, 0.25, 0.4, 0.6, 0.8 };
     private CameraModel camera;
     private MapModel map;
     private PlayerModel player;
@@ -63,10 +63,10 @@ public class PlayingRenderer {
     private void loadResource(int levelIdx) {
         int frame = 0;
         switch (levelIdx) {
-            case 0 -> frame = 5;
-            case 1 -> frame = 4;
-            // case 2 -> frame = 5;
-            // case 0 -> frame = 5;
+            case 0 -> frame = 6;
+            case 1 -> frame = 6;
+            case 2 -> frame = 6;
+            case 3 -> frame = 5;
         }
         bgLayers = new BufferedImage[frame];
 
@@ -110,7 +110,7 @@ public class PlayingRenderer {
         drawBackground(g, xOffset);
         mapRenderer.render(g, map, xOffset, yOffset);
         spikeRenderer.render(g, spikes, xOffset, yOffset);
-        
+
         playerRenderer.render(g, player, xOffset, yOffset);
         enemyRenderer.renderAll(g, enemies, xOffset, yOffset);
 

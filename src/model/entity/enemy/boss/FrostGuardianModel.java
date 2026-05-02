@@ -11,12 +11,12 @@ import static util.enemy.EnemyAIState.*;
 
 public class FrostGuardianModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
-    private final double atkRange = TILE_SIZE * 1.5;
-    private long atkCD = 1000;
+    private final double atkRange = TILE_SIZE * 3;
+    private long atkCD = 1500;
     private long lastAtkTime = 0;
 
     private final int atkStartFrame = 6;
-    private final int atkEndFrame = 7;
+    private final int atkEndFrame = 8;
 
     private boolean phase2 = false;
     private boolean phase3 = false;
@@ -24,8 +24,8 @@ public class FrostGuardianModel extends EnemyModel {
     public FrostGuardianModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
         this.aiState = IDLE;
-        this.moveSpeed = 0.8 * SCALE;
-        this.setHitBox((int) (64 * SCALE), (int) (32 * SCALE), (int) (71 * SCALE), (int) (78 * SCALE));
+        this.moveSpeed = 0.7 * SCALE;
+        this.setHitBox((int) (56 * SCALE), (int) (32 * SCALE), (int) (78 * SCALE), (int) (78 * SCALE));
     }
 
     @Override
@@ -119,11 +119,11 @@ public class FrostGuardianModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (50 * SCALE);
-        int atkH = (int) (50 * SCALE);
-        int atkOffset = (int) (20 * SCALE);
+        int atkW = (int) (68 * SCALE);
+        int atkH = (int) (22 * SCALE);
+        int atkOffset = (int) (-17 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y + (hb.height - atkH);
+        int y = hb.y + (int) (26 * SCALE);
         return new Rectangle(x, y, atkW, atkH);
     }
 

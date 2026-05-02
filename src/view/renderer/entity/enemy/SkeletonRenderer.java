@@ -21,35 +21,35 @@ public class SkeletonRenderer extends EnemyRenderer {
     private void loadAnimation() {
         aniSet[SkeletonModel.WHITE][IDLE] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonIdle, SKELETON_FRAME.get(IDLE), 96, 64),
-                24, true);
+                22, true);
         aniSet[SkeletonModel.WHITE][RUN] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonRun, SKELETON_FRAME.get(RUN), 96, 64),
                 18, true);
         aniSet[SkeletonModel.WHITE][ATTACK] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonAttack, SKELETON_FRAME.get(ATTACK), 96, 64),
-                15, false);
+                13, false);
         aniSet[SkeletonModel.WHITE][HURT] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonHurt, SKELETON_FRAME.get(HURT), 96, 64),
-                20, false);
+                19, false);
         aniSet[SkeletonModel.WHITE][DIE] = new Animation(
                 ResourceManager.loadSprite(whiteSkeletonDie, SKELETON_FRAME.get(DIE), 96, 64),
-                16, false);
+                11, false);
 
         aniSet[SkeletonModel.YELLOW][IDLE] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonIdle, SKELETON_FRAME.get(IDLE), 96, 64),
-                24, true);
+                22, true);
         aniSet[SkeletonModel.YELLOW][RUN] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonRun, SKELETON_FRAME.get(RUN), 96, 64),
                 18, true);
         aniSet[SkeletonModel.YELLOW][ATTACK] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonAttack, SKELETON_FRAME.get(ATTACK), 96, 64),
-                15, false);
+                13, false);
         aniSet[SkeletonModel.YELLOW][HURT] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonHurt, SKELETON_FRAME.get(HURT), 96, 64),
-                20, false);
+                19, false);
         aniSet[SkeletonModel.YELLOW][DIE] = new Animation(
                 ResourceManager.loadSprite(yellowSkeletonDie, SKELETON_FRAME.get(DIE), 96, 64),
-                16, false);
+                11, false);
     }
 
     @Override

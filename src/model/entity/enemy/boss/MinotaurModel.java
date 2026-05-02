@@ -11,8 +11,8 @@ import static util.enemy.EnemyAIState.*;
 
 public class MinotaurModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
-    private final double atkRange = TILE_SIZE * 1.5;
-    private final long atkCD = 2000;
+    private final double atkRange = TILE_SIZE * 3.5;
+    private final long atkCD = 1500;
     private long lastAtkTime = 0;
     private boolean invulnerable = false;
     private long invulnerableUntil = 0;
@@ -140,11 +140,11 @@ public class MinotaurModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (50 * SCALE);
-        int atkH = (int) (50 * SCALE);
-        int atkOffset = (int) (20 * SCALE);
+        int atkW = (int) (115 * SCALE);
+        int atkH = (int) (57 * SCALE);
+        int atkOffset = (int) (-37 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y + (hb.height - atkH);
+        int y = hb.y + (int) (27 * SCALE);
         return new Rectangle(x, y, atkW, atkH);
     }
 

@@ -17,19 +17,19 @@ public class MinotaurRenderer extends EnemyRenderer {
     private void loadAnimation() {
         aniState[IDLE] = new Animation(
                 ResourceManager.loadSprite(minotaurIdle, MINOTAUR_FRAME.get(IDLE), 256, 128),
-                20, true);
+                11, true);
         aniState[RUN] = new Animation(
                 ResourceManager.loadSprite(minotaurRun, MINOTAUR_FRAME.get(RUN), 256, 128),
-                10, true);
+                15, true);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(minotaurAttack, MINOTAUR_FRAME.get(ATTACK), 256, 128),
-                11, false);
+                12, false);
         aniState[HURT] = new Animation(
                 ResourceManager.loadSprite(minotaurHurt, MINOTAUR_FRAME.get(HURT), 256, 128),
-                20, false);
+                16, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(minotaurDie, MINOTAUR_FRAME.get(DIE), 256, 128),
-                21, false);
+                14, false);
     }
 
 }

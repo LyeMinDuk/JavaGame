@@ -33,7 +33,7 @@ public class PlayerStateIndex {
                 HURT, 4,
                 ATTACK, 7,
                 ULTIMATE, 16,
-                FROZEN, 8,
+                FROZEN, 12,
                 SPECIAL, 9);
     }
 }

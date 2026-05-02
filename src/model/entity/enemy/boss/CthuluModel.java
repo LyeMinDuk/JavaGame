@@ -13,7 +13,7 @@ import static util.enemy.EnemyAIState.*;
 
 public class CthuluModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
-    private double atkRange = TILE_SIZE * 1.5;
+    private double atkRange = TILE_SIZE * 2.5;
     private long atkCD = 2000;
     private long lastAtkTime = 0;
     private boolean hit1Done = false;
@@ -38,7 +38,7 @@ public class CthuluModel extends EnemyModel {
         super(x, y, width, height, maxHealth, damage);
         this.aiState = IDLE;
         this.moveSpeed = 1 * SCALE;
-        this.setHitBox((int) (79 * SCALE), (int) (47 * SCALE), (int) (24 * SCALE), (int) (50 * SCALE));
+        this.setHitBox((int) (78 * SCALE), (int) (43 * SCALE), (int) (36 * SCALE), (int) (53 * SCALE));
     }
 
     @Override
@@ -206,11 +206,11 @@ public class CthuluModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (50 * SCALE);
-        int atkH = (int) (50 * SCALE);
-        int atkOffset = (int) (20 * SCALE);
+        int atkW = (int) (75 * SCALE);
+        int atkH = (int) (25 * SCALE);
+        int atkOffset = (int) (-1 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y + (hb.height - atkH);
+        int y = hb.y + (int) (5 * SCALE);
         return new Rectangle(x, y, atkW, atkH);
     }
 

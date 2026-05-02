@@ -15,15 +15,15 @@ public class SharkRenderer extends EnemyRenderer {
 
     private void loadAnimation() {
         aniState[IDLE] = new Animation(ResourceManager.loadSprite(sharkIdle, SHARK_FRAME.get(IDLE), 34, 30),
-                24, true);
+                22, true);
         aniState[HURT] = new Animation(ResourceManager.loadSprite(sharkHurt, SHARK_FRAME.get(HURT), 34, 30),
-                30, false);
-        aniState[RUN] = new Animation(ResourceManager.loadSprite(sharkRun, SHARK_FRAME.get(RUN), 34, 30),
-                24, true);
-        aniState[DIE] = new Animation(ResourceManager.loadSprite(sharkDie, SHARK_FRAME.get(DIE), 34, 30),
                 24, false);
+        aniState[RUN] = new Animation(ResourceManager.loadSprite(sharkRun, SHARK_FRAME.get(RUN), 34, 30),
+                30, true);
+        aniState[DIE] = new Animation(ResourceManager.loadSprite(sharkDie, SHARK_FRAME.get(DIE), 34, 30),
+                28, false);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(sharkAttack, SHARK_FRAME.get(ATTACK), 34, 30),
-                15, false);
+                14, false);
     }
 }

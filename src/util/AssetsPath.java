@@ -173,12 +173,16 @@ public class AssetsPath {
 
     public static final String[] levelMap = {
             "/level/1.png",
-            "/level/2.png"
+            "/level/2.png",
+            "/level/3.png",
+            "/level/4.png"
     };
 
     public static final String[] minimap = {
             "/level/lv1.png",
-            "/level/lv2.png"
+            "/level/lv2.png",
+            "/level/lv3.png",
+            "/level/lv4.png"
     };
 
 }

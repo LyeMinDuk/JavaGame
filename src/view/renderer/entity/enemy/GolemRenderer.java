@@ -21,35 +21,35 @@ public class GolemRenderer extends EnemyRenderer {
     private void loadAnimation() {
         aniSet[GolemModel.BLUE][IDLE] = new Animation(
                 ResourceManager.loadSprite(blueGolemIdle, GOLEM_FRAME.get(IDLE), 90, 64),
-                24, true);
+                22, true);
         aniSet[GolemModel.BLUE][RUN] = new Animation(
                 ResourceManager.loadSprite(blueGolemRun, GOLEM_FRAME.get(RUN), 90, 64),
-                18, true);
+                20, true);
         aniSet[GolemModel.BLUE][ATTACK] = new Animation(
                 ResourceManager.loadSprite(blueGolemAttack, GOLEM_FRAME.get(ATTACK), 90, 64),
-                15, false);
+                10, false);
         aniSet[GolemModel.BLUE][HURT] = new Animation(
                 ResourceManager.loadSprite(blueGolemHurt, GOLEM_FRAME.get(HURT), 90, 64),
-                20, false);
+                24, false);
         aniSet[GolemModel.BLUE][DIE] = new Animation(
                 ResourceManager.loadSprite(blueGolemDie, GOLEM_FRAME.get(DIE), 90, 64),
-                18, false);
+                12, false);
 
         aniSet[GolemModel.ORANGE][IDLE] = new Animation(
                 ResourceManager.loadSprite(orangeGolemIdle, GOLEM_FRAME.get(IDLE), 90, 64),
-                24, true);
+                22, true);
         aniSet[GolemModel.ORANGE][RUN] = new Animation(
                 ResourceManager.loadSprite(orangeGolemRun, GOLEM_FRAME.get(RUN), 90, 64),
-                18, true);
+                20, true);
         aniSet[GolemModel.ORANGE][ATTACK] = new Animation(
                 ResourceManager.loadSprite(orangeGolemAttack, GOLEM_FRAME.get(ATTACK), 90, 64),
-                15, false);
+                10, false);
         aniSet[GolemModel.ORANGE][HURT] = new Animation(
                 ResourceManager.loadSprite(orangeGolemHurt, GOLEM_FRAME.get(HURT), 90, 64),
-                20, false);
+                24, false);
         aniSet[GolemModel.ORANGE][DIE] = new Animation(
                 ResourceManager.loadSprite(orangeGolemDie, GOLEM_FRAME.get(DIE), 90, 64),
-                18, false);
+                12, false);
     }
 
     @Override

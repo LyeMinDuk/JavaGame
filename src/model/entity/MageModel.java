@@ -24,69 +24,62 @@ public class MageModel extends PlayerModel {
     public MageModel(double x, double y, int maxHealth) {
         super(x, y, 128, 128, maxHealth);
         this.setHitBox(46, 62, 35, 66);
-        this.normalAtkCd = 1500;
+
     }
 
     @Override
     public void applyDifficult(int difficult) {
         switch (difficult) {
             case 0 -> {
-                this.maxHealth = 10000;
-                this.damage = 10000;
-                this.maxMana = 10000;
-                this.ultimateDamage = this.specialDamage = 50000;
-                this.ultimateCost = this.specialCost = 1;
-                this.ultCooldown = this.specialCooldown = 1000;
+                this.maxHealth = 260;
+                this.damage = 40;
+                this.normalAtkCd = 800;
+                this.maxMana = 200;
+                this.manaRegeneraion = 12;
+                this.ultimateDamage = 160;
+                this.ultimateCost = 50;
+                this.specialDamage = 220;
+                this.specialCost = 60;
+                this.ultCooldown = 1500;
+                this.specialCooldown = 2000;
             }
             case 1 -> {
-                this.maxHealth = 150;
-                this.damage = 60;
-                this.maxMana = 500;
-                this.ultimateDamage = 180;
-                this.ultCooldown = 6000;
-                this.ultimateCost = 120;
-                this.specialDamage = 150;
+                this.maxHealth = 180;
+                this.damage = 32;
+                this.maxMana = 160;
+                this.manaRegeneraion = 10;
+                this.normalAtkCd = 1000;
+                this.ultimateDamage = 130;
+                this.ultCooldown = 2500;
+                this.ultimateCost = 70;
+                this.specialDamage = 180;
                 this.specialCost = 80;
-                this.specialCooldown = 8000;
+                this.specialCooldown = 3500;
             }
             case 2 -> {
-                this.maxHealth = 50;
-                this.damage = 30;
-                this.maxMana = 300;
-                this.ultimateDamage = 50;
-                this.ultimateCost = 100;
-                this.ultCooldown = 12000;
-                this.specialDamage = 80;
-                this.specialCost = 150;
-                this.specialCooldown = 15000;
+                this.maxHealth = 120;
+                this.damage = 26;
+                this.maxMana = 130;
+                this.manaRegeneraion = 8;
+                this.normalAtkCd = 1500;
+                this.ultimateDamage = 110;
+                this.ultimateCost = 90;
+                this.ultCooldown = 5000;
+                this.specialDamage = 140;
+                this.specialCost = 100;
+                this.specialCooldown = 6500;
             }
         }
         this.curHealth = this.maxHealth;
         this.curMana = this.maxMana;
     }
 
-    @Override
-    public Rectangle getDefaultAttackBox() {
-        Rectangle hb = getHitbox();
-        int atkW = (int) (32 * SCALE);
-        int atkH = (int) (20 * SCALE);
-        int offset = TILE_SIZE * 3;
-        int atkX = isFacingRight() ? hb.x + hb.width + offset : hb.x - atkW - offset;
-        int atkY = hb.y + (hb.height - atkH) / 2;
-        return new Rectangle(atkX, atkY, atkW, atkH);
-    }
-
-    @Override
-    public Rectangle getSpecialBox() {
-        return getDefaultAttackBox();
-    }
-
     public void startSkill(int type) {
         curSkillType = type;
         switch (type) {
-            case SKILL_NORMAL -> curSkillIndex = 0; // SKILL.png
-            case SKILL_ULT -> curSkillIndex = rand.nextInt(8); // SKILL1..8
-            case SKILL_SPECIAL -> curSkillIndex = rand.nextInt(3); // SKILL9..11
+            case SKILL_NORMAL -> curSkillIndex = 0;
+            case SKILL_ULT -> curSkillIndex = rand.nextInt(8);
+            case SKILL_SPECIAL -> curSkillIndex = rand.nextInt(3);
         }
         skillAniIndex = -1;
 

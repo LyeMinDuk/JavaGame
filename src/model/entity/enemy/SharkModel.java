@@ -8,7 +8,7 @@ import static util.enemy.EnemyAIState.*;
 import static util.enemy.EnemyStateIndex.Shark;
 
 public class SharkModel extends EnemyModel {
-    private final double detectRange = TILE_SIZE * 2;
+    private final double detectRange = TILE_SIZE * 3;
     private final long atkCD = 1000;
     private long lastAtkTime = 0;
     private final int atkStartFrame = 3;
@@ -16,7 +16,7 @@ public class SharkModel extends EnemyModel {
 
     public SharkModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
-        this.moveSpeed = 0.5 * SCALE;
+        this.moveSpeed = 0.6 * SCALE;
         this.patrolLeftX = x - (TILE_SIZE * 3);
         this.patrolRightX = x + (TILE_SIZE * 3);
         this.setHitBox((int) (7 * SCALE), (int) (5 * SCALE), (int) (18 * SCALE), (int) (23 * SCALE));

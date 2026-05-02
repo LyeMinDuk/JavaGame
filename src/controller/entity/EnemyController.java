@@ -31,28 +31,28 @@ public class EnemyController {
         int normalHp, normalDmg, bossHp, bossDmg;
         switch (difficult) {
             case 0 -> {
-                normalHp = 20;
-                normalDmg = 1;
-                bossHp = 100;
-                bossDmg = 10;
+                normalHp = 70;
+                normalDmg = 6;
+                bossHp = 1200;
+                bossDmg = 20;
             }
             case 1 -> {
-                normalHp = 80;
-                normalDmg = 10;
-                bossHp = 1000;
-                bossDmg = 20;
+                normalHp = 110;
+                normalDmg = 12;
+                bossHp = 1500;
+                bossDmg = 30;
             }
             case 2 -> {
-                normalHp = 100;
-                normalDmg = 100;
-                bossHp = 3000;
-                bossDmg = 1000;
+                normalHp = 150;
+                normalDmg = 18;
+                bossHp = 2000;
+                bossDmg = 40;
             }
             default -> {
-                normalHp = 80;
-                normalDmg = 10;
-                bossHp = 1000;
-                bossDmg = 20;
+                normalHp = 110;
+                normalDmg = 12;
+                bossHp = 1500;
+                bossDmg = 30;
             }
         }
 
@@ -64,13 +64,14 @@ public class EnemyController {
                 case MapModel.ENEMY_TYPE_SHARK -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 1) * TILE_SIZE;
-                    listEnemy.add(new SharkModel(x, y, (int) (34 * SCALE), (int) (30 * SCALE), normalHp, normalDmg));
+                    listEnemy.add(new SharkModel(x, y, (int) (34 * SCALE), (int) (30 * SCALE), (int) (normalHp * 0.8),
+                            (int) (normalHp * 1.2)));
                 }
                 case MapModel.ENEMY_TYPE_SKELETON -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 1) * TILE_SIZE;
-                    listEnemy.add(new SkeletonModel(x, y, (int) (96 * SCALE), (int) (64 * SCALE), normalHp - 10,
-                            normalDmg + 20));
+                    listEnemy.add(new SkeletonModel(x, y, (int) (96 * SCALE), (int) (64 * SCALE), normalHp,
+                            normalDmg));
                 }
                 case MapModel.ENEMY_TYPE_DEMON_SLIME -> {
                     double x = tileX * TILE_SIZE;
@@ -80,24 +81,27 @@ public class EnemyController {
                 case MapModel.ENEMY_TYPE_MINOTAUR -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
-                    listEnemy.add(new MinotaurModel(x, y, (int) (256 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                    listEnemy.add(new MinotaurModel(x, y, (int) (256 * SCALE), (int) (128 * SCALE),
+                            (int) (bossHp * 1.2), (int) (bossDmg * 1.2)));
                 }
                 case MapModel.ENEMY_TYPE_FROST_GUARDIAN -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
                     listEnemy.add(
-                            new FrostGuardianModel(x, y, (int) (192 * SCALE), (int) (128 * SCALE), bossHp, bossDmg));
+                            new FrostGuardianModel(x, y, (int) (192 * SCALE), (int) (128 * SCALE), (int) (bossHp * 1.5),
+                                    (int) (bossDmg * 1.5)));
                 }
                 case MapModel.ENEMY_TYPE_CTHULU -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 4) * TILE_SIZE;
-                    listEnemy.add(new CthuluModel(x, y, (int) (192 * SCALE), (int) (112 * SCALE), bossHp, bossDmg));
+                    listEnemy.add(new CthuluModel(x, y, (int) (192 * SCALE), (int) (112 * SCALE), (int) (bossHp * 1.8),
+                            (int) (bossDmg * 1.8)));
                 }
                 case MapModel.ENEMY_TYPE_GOLEM -> {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 1) * TILE_SIZE;
-                    listEnemy.add(new GolemModel(x, y, (int) (90 * SCALE), (int) (64 * SCALE), normalHp + 30,
-                            normalDmg - 20));
+                    listEnemy.add(new GolemModel(x, y, (int) (90 * SCALE), (int) (64 * SCALE), (int) (normalHp * 1.5),
+                            (int) (normalHp * 0.7)));
                 }
             }
         }

@@ -17,19 +17,19 @@ public class DemonSlimeRenderer extends EnemyRenderer {
     private void loadAnimation() {
         aniState[IDLE] = new Animation(
                 ResourceManager.loadSprite(demonSlimeIdle, DEMON_SLIME_FRAME.get(IDLE), 256, 128),
-                20, true);
+                25, true);
         aniState[RUN] = new Animation(
                 ResourceManager.loadSprite(demonSlimeRun, DEMON_SLIME_FRAME.get(RUN), 256, 128),
-                10, true);
+                13, true);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(demonSlimeAttack, DEMON_SLIME_FRAME.get(ATTACK), 256, 128),
-                7, false);
+                10, false);
         aniState[HURT] = new Animation(
                 ResourceManager.loadSprite(demonSlimeHurt, DEMON_SLIME_FRAME.get(HURT), 256, 128),
-                20, false);
+                19, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(demonSlimeDie, DEMON_SLIME_FRAME.get(DIE), 256, 128),
-                9, false);
+                6, false);
     }
 
 }

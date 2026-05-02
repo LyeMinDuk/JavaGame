@@ -11,8 +11,8 @@ public class GolemModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 3;
     private final long atkCD = 1000;
     private long lastAtkTime = 0;
-    private final int atkStartFrame = 5;
-    private final int atkEndFrame = 7;
+    private final int atkStartFrame = 6;
+    private final int atkEndFrame = 8;
 
     public static final int BLUE = 0;
     public static final int ORANGE = 1;
@@ -20,11 +20,11 @@ public class GolemModel extends EnemyModel {
 
     public GolemModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
-        this.moveSpeed = 0.7 * SCALE;
+        this.moveSpeed = 0.6 * SCALE;
         this.type = Math.random() < 0.5 ? BLUE : ORANGE;
         this.patrolLeftX = x - (TILE_SIZE * 3);
         this.patrolRightX = x + (TILE_SIZE * 3);
-        this.setHitBox((int) (33 * SCALE), (int) (18 * SCALE), (int) (24 * SCALE), (int) (46 * SCALE));
+        this.setHitBox((int) (25 * SCALE), (int) (33 * SCALE), (int) (38 * SCALE), (int) (31 * SCALE));
     }
 
     @Override
@@ -126,11 +126,11 @@ public class GolemModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (32 * SCALE);
-        int atkH = (int) (15 * SCALE);
-        int atkOffset = (int) (2 * SCALE);
+        int atkW = (int) (30 * SCALE);
+        int atkH = (int) (24 * SCALE);
+        int atkOffset = (int) (-12 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y + hb.height / 2 - atkH / 2;
+        int y = hb.y + (int) (7 * SCALE);
         return new Rectangle(x, y, atkW, atkH);
     }
 

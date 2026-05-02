@@ -11,7 +11,7 @@ import static util.enemy.EnemyAIState.*;
 
 public class DemonSlimeModel extends EnemyModel {
     private final double detectRange = TILE_SIZE * 10;
-    private final double atkRange = TILE_SIZE * 1.5;
+    private final double atkRange = TILE_SIZE * 3;
     private long atkCD = 2000;
     private long lastAtkTime = 0;
 
@@ -24,7 +24,7 @@ public class DemonSlimeModel extends EnemyModel {
     public DemonSlimeModel(double x, double y, int width, int height, int maxHealth, int damage) {
         super(x, y, width, height, maxHealth, damage);
         this.aiState = IDLE;
-        this.moveSpeed = 0.6 * SCALE;
+        this.moveSpeed = 0.65 * SCALE;
         this.setHitBox((int) (81 * SCALE), (int) (52 * SCALE), (int) (70 * SCALE), (int) (75 * SCALE));
     }
 
@@ -116,11 +116,11 @@ public class DemonSlimeModel extends EnemyModel {
     @Override
     public Rectangle getAttackBox() {
         Rectangle hb = getHitbox();
-        int atkW = (int) (50 * SCALE);
-        int atkH = (int) (50 * SCALE);
-        int atkOffset = (int) (20 * SCALE);
+        int atkW = (int) (57 * SCALE);
+        int atkH = (int) (49 * SCALE);
+        int atkOffset = (int) (23 * SCALE);
         int x = facingRight ? hb.x + hb.width + atkOffset : hb.x - atkW - atkOffset;
-        int y = hb.y + (hb.height - atkH);
+        int y = hb.y + (int) (27 * SCALE);
         return new Rectangle(x, y, atkW, atkH);
     }
 

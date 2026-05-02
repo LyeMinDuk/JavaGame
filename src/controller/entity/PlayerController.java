@@ -100,8 +100,7 @@ public class PlayerController {
     }
 
     private void handleUltimateInput(PlayerModel player, AudioController audio) {
-        if (input.isUltimate() && !player.isUltimate() && !player.isAtking() && !player.isSpecial()
-                && player.isOnGround()) {
+        if (input.isUltimate() && !player.isUltimate() && !player.isAtking() && !player.isSpecial()) {
             if (player.isUltReady()) {
                 if (player.useMana(player.getUltimateCost())) {
                     if (player instanceof MageModel) {
@@ -118,7 +117,7 @@ public class PlayerController {
                         mage.startSkill(MageModel.SKILL_ULT);
                         audio.playSFX(AudioController.SFX_MAGE_ULT);
                     } else {
-                        audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+                        audio.playSFX(AudioController.SFX_KNIGHT_ULT);
                     }
                 }
             }
@@ -126,23 +125,26 @@ public class PlayerController {
     }
 
     private void handleSpecialInput(PlayerModel player, AudioController audio) {
-        if (input.isSpecial() && !player.isSpecial() && !player.isAtking() && !player.isUltimate()
-                && player.isSpecialReady()) {
-            if (player instanceof MageModel) {
-                player.setDx(0);
-                player.setMoving(false);
-                player.setJumping(false);
-            }
-            player.setSpecial(true);
-            player.setAniIndex(0);
-            player.setLastSpecialCastTime(System.currentTimeMillis());
-            Arrays.fill(specialFrameChecked, false);
+        if (input.isSpecial() && !player.isSpecial() && !player.isAtking() && !player.isUltimate()) {
+            if (player.isSpecialReady()) {
+                if (player.useMana(player.getSpecialCost())) {
+                    if (player instanceof MageModel) {
+                        player.setDx(0);
+                        player.setMoving(false);
+                        player.setJumping(false);
+                    }
+                    player.setSpecial(true);
+                    player.setAniIndex(0);
+                    player.setLastSpecialCastTime(System.currentTimeMillis());
+                    Arrays.fill(specialFrameChecked, false);
 
-            if (player instanceof MageModel mage) {
-                mage.startSkill(MageModel.SKILL_SPECIAL);
-                audio.playSFX(AudioController.SFX_MAGE_SPECIAL);
-            } else {
-                audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+                    if (player instanceof MageModel mage) {
+                        mage.startSkill(MageModel.SKILL_SPECIAL);
+                        audio.playSFX(AudioController.SFX_MAGE_SPECIAL);
+                    } else {
+                        audio.playSFX(AudioController.SFX_KNIGHT_SPECIAL);
+                    }
+                }
             }
         }
     }
@@ -164,7 +166,7 @@ public class PlayerController {
                 mage.startSkill(MageModel.SKILL_NORMAL);
                 audio.playSFX(AudioController.SFX_MAGE_ATTACK);
             } else {
-                audio.playSFX(AudioController.SFX_KNIGHT_SLASH);
+                audio.playSFX(AudioController.SFX_KNIGHT_ATTACK);
             }
         }
     }
@@ -242,11 +244,6 @@ public class PlayerController {
         if (frame == atkHitFrame) {
             for (EnemyModel enemy : enemies) {
                 if (enemy.isAlive() && enemy.getAiState() != HURT && atkBox.intersects(enemy.getHitbox())) {
-                    if (player instanceof MageModel) {
-                        audio.playSFX(AudioController.SFX_MAGE_ATTACK);
-                    } else {
-                        audio.playSFX(AudioController.SFX_KNIGHT_ATTACK);
-                    }
                     enemy.takeDamage(player.getDamage());
                     break;
                 }

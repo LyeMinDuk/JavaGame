@@ -23,31 +23,31 @@ public class CthuluRenderer extends EnemyRenderer {
     private void loadAnimation() {
         aniState[IDLE] = new Animation(
                 ResourceManager.loadSprite(cthuluIdle, CTHULU_FRAME.get(IDLE), 192, 112),
-                20, true);
+                12, true);
         aniState[RUN] = new Animation(
                 ResourceManager.loadSprite(cthuluRun, CTHULU_FRAME.get(RUN), 192, 112),
-                10, true);
+                15, true);
         aniState[ATTACK] = new Animation(
                 ResourceManager.loadSprite(cthuluAttack, CTHULU_FRAME.get(ATTACK), 192, 112),
-                10, false);
+                15, false);
         aniState[ATTACK1] = new Animation(
                 ResourceManager.loadSprite(cthuluAttack1, CTHULU_FRAME.get(ATTACK1), 192, 112),
-                7, false);
+                17, false);
         aniState[HURT] = new Animation(
                 ResourceManager.loadSprite(cthuluHurt, CTHULU_FRAME.get(HURT), 192, 112),
-                20, false);
+                19, false);
         aniState[DIE] = new Animation(
                 ResourceManager.loadSprite(cthuluDie, CTHULU_FRAME.get(DIE), 192, 112),
-                19, false);
+                13, false);
         aniState[FLY] = new Animation(
                 ResourceManager.loadSprite(cthuluFly, CTHULU_FRAME.get(FLY), 192, 112),
-                15, true);
+                30, true);
         magicAni[0] = new Animation(
-                ResourceManager.loadSprite(cthuluSkill1, 14, 128, 128), 20, false);
+                ResourceManager.loadSprite(cthuluSkill1, 14, 128, 128), 18, false);
         magicAni[1] = new Animation(
                 ResourceManager.loadSprite(cthuluSkill2, 12, 128, 128), 25, false);
         magicAni[2] = new Animation(
-                ResourceManager.loadSprite(cthuluSkill3, 15, 128, 128), 20, false);
+                ResourceManager.loadSprite(cthuluSkill3, 15, 128, 128), 18, false);
     }
 
     @Override
