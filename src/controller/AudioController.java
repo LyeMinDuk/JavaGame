@@ -33,7 +33,7 @@ public class AudioController {
     private int currentMusicId;
     private boolean musicMuted;
     private boolean sfxMuted;
-    private boolean premium = false;
+    private boolean premium = true;
 
     public AudioController(boolean musicMuted, boolean sfxMuted) {
         this.musicMuted = musicMuted;
@@ -48,8 +48,10 @@ public class AudioController {
         String[] vip = { "vip0", "vip1", "vip2", "vip3", "vip4" };
         String[] song;
         if (premium) {
+            musicVolume = 0.65f;
             song = vip;
         } else {
+            musicVolume = 0.75f;
             song = songs;
         }
         music = new Clip[song.length];

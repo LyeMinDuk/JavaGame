@@ -30,7 +30,7 @@ import view.GamePanel;
 import static core.GameConfig.*;
 
 public class Game implements Runnable {
-    private GameWindow gameWindow;
+    // private GameWindow gameWindow;
     private GamePanel gamePanel;
     private boolean running;
     private Thread gameThread;
@@ -125,7 +125,7 @@ public class Game implements Runnable {
 
     private void initWindow() {
         gamePanel = new GamePanel(this, input);
-        gameWindow = new GameWindow(gamePanel);
+        new GameWindow(gamePanel);
     }
 
     private void startGame() {
