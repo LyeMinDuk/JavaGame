@@ -65,7 +65,7 @@ public class EnemyController {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 1) * TILE_SIZE;
                     listEnemy.add(new SharkModel(x, y, (int) (34 * SCALE), (int) (30 * SCALE), (int) (normalHp * 0.8),
-                            (int) (normalHp * 1.2)));
+                            (int) (normalDmg * 1.2)));
                 }
                 case MapModel.ENEMY_TYPE_SKELETON -> {
                     double x = tileX * TILE_SIZE;
@@ -101,7 +101,7 @@ public class EnemyController {
                     double x = tileX * TILE_SIZE;
                     double y = (tileY - 1) * TILE_SIZE;
                     listEnemy.add(new GolemModel(x, y, (int) (90 * SCALE), (int) (64 * SCALE), (int) (normalHp * 1.5),
-                            (int) (normalHp * 0.7)));
+                            (int) (normalDmg * 0.7)));
                 }
             }
         }

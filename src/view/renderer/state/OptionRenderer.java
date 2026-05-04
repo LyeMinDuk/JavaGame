@@ -16,12 +16,14 @@ public class OptionRenderer {
     private BufferedImage optionBoardImg;
 
     private BufferedImage[][] audioImgs = new BufferedImage[2][3];
+    private BufferedImage[][] preImgs = new BufferedImage[2][3];
     private BufferedImage[][] easyImgs = new BufferedImage[1][3];
     private BufferedImage[][] mediumImgs = new BufferedImage[1][3];
     private BufferedImage[][] hardImgs = new BufferedImage[1][3];
     private BufferedImage[][] homeImgs = new BufferedImage[1][3];
 
     private AudioButton[] audioButtons = new AudioButton[2];
+    private AudioButton premiumButton;
     private MenuButton[] diffButtons = new MenuButton[3];
     private MenuButton homeBtn;
 
@@ -39,6 +41,8 @@ public class OptionRenderer {
 
         audioImgs[0] = ResourceManager.loadSprite(soundButton, 3, 42, 42);
         audioImgs[1] = ResourceManager.loadSprite(muteButton, 3, 42, 42);
+        preImgs[0] = ResourceManager.loadSprite(preButton, 3, 42, 42);
+        preImgs[1] = ResourceManager.loadSprite(preButton, 3, 42, 42);
 
         easyImgs[0] = ResourceManager.loadSprite(easyButton, 3, 56, 56);
         mediumImgs[0] = ResourceManager.loadSprite(mediumButton, 3, 56, 56);
@@ -54,7 +58,6 @@ public class OptionRenderer {
 
         int audioSize = (int) (42 * UI_SCALE);
         int normalSize = (int) (56 * UI_SCALE);
-
         int audioX = GAME_WIDTH / 2 + (int) (40 * UI_SCALE);
         int audioStartY = boardY + (int) (110 * UI_SCALE);
         int audioGap = (int) (5 * UI_SCALE);
@@ -62,6 +65,8 @@ public class OptionRenderer {
         audioButtons[0] = new AudioButton(audioX, audioStartY, audioSize, audioSize, audioImgs);
         audioButtons[1] = new AudioButton(audioX, audioStartY + audioSize + audioGap, audioSize, audioSize, audioImgs);
 
+        premiumButton = new AudioButton(audioX, audioStartY + 2 * (audioSize + audioGap), audioSize, audioSize,
+                preImgs);
         int diffY = boardY + (int) (235 * UI_SCALE);
         int diffGap = (int) (15 * UI_SCALE);
         int totalDiffWidth = 3 * normalSize + 2 * diffGap;
@@ -87,6 +92,7 @@ public class OptionRenderer {
         for (AudioButton btn : audioButtons) {
             btn.draw(g);
         }
+        premiumButton.draw(g);
         for (int i = 0; i < 3; i++) {
             if (settingsModel.getDifficult() == i) {
                 diffButtons[i].setPressed(true);
@@ -109,5 +115,9 @@ public class OptionRenderer {
     public MenuButton getHomeButton() {
         return homeBtn;
     }
-    
+
+    public AudioButton getPremiumButton() {
+        return premiumButton;
+    }
+
 }

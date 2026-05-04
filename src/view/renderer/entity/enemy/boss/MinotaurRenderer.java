@@ -63,7 +63,7 @@ public class MinotaurRenderer extends EnemyRenderer {
         }
         super.render(g, enemy, x, y);
         if (minotaur.isInvulnerable()) {
-            int shieldW= (int) (SHIELD_SIZE * SCALE);;
+            int shieldW= (int) (SHIELD_SIZE * SCALE);
             int shieldH = shieldW;
 
             if (minotaur.isFacingRight()) {

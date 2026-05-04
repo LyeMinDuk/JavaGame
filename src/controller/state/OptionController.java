@@ -30,11 +30,13 @@ public class OptionController {
 
     public void update() {
         AudioButton[] audioBtns = renderer.getAudioButtons();
+        AudioButton premiumBtn = renderer.getPremiumButton();
         MenuButton[] diffBtns = renderer.getDiffButtons();
         MenuButton homeBtn = renderer.getHomeButton();
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
 
+        checkAudioButtonStatus(premiumBtn, mouseX, mouseY);
         for (AudioButton btn : audioBtns) {
             checkAudioButtonStatus(btn, mouseX, mouseY);
         }
@@ -43,37 +45,46 @@ public class OptionController {
         }
         checkMenuButtonStatus(homeBtn, mouseX, mouseY);
         if (input.isMouseRelease()) {
-            if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
-                boolean isMuted = !settingsModel.isMusicMuted();
-                settingsModel.setMusicMuted(isMuted);
-                audioController.toggleMusic(isMuted);
-                saveLoad.saveGame();
-            } else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
-                boolean isMuted = !settingsModel.isSFXMuted();
-                settingsModel.setSFXMuted(isMuted);
-                audioController.toggleSFX(isMuted);
-                saveLoad.saveGame();
-                audioController.playSFX(AudioController.SFX_CLICK);
-            } else {
-                for (int i = 0; i < diffBtns.length; i++) {
-                    if (diffBtns[i].isHovered() && diffBtns[i].isPressed()) {
-                        settingsModel.setDifficult(i);
-                        saveLoad.saveGame();
-                        audioController.playSFX(AudioController.SFX_CLICK);
-                        break;
+            if (input.isMouseRelease()) {
+                if (premiumBtn.isHovered() && premiumBtn.isPressed()) {
+                    boolean isPremium = !settingsModel.isPremium();
+                    settingsModel.setPremium(isPremium);
+                    audioController.setPremium(isPremium);
+                    saveLoad.saveGame();
+                    audioController.playSFX(AudioController.SFX_CLICK);
+                } else if (audioBtns[0].isHovered() && audioBtns[0].isPressed()) {
+                    boolean isMuted = !settingsModel.isMusicMuted();
+                    settingsModel.setMusicMuted(isMuted);
+                    audioController.toggleMusic(isMuted);
+                    saveLoad.saveGame();
+                } else if (audioBtns[1].isHovered() && audioBtns[1].isPressed()) {
+                    boolean isMuted = !settingsModel.isSFXMuted();
+                    settingsModel.setSFXMuted(isMuted);
+                    audioController.toggleSFX(isMuted);
+                    saveLoad.saveGame();
+                    audioController.playSFX(AudioController.SFX_CLICK);
+                } else {
+                    for (int i = 0; i < diffBtns.length; i++) {
+                        if (diffBtns[i].isHovered() && diffBtns[i].isPressed()) {
+                            settingsModel.setDifficult(i);
+                            saveLoad.saveGame();
+                            audioController.playSFX(AudioController.SFX_CLICK);
+                            break;
+                        }
                     }
                 }
+                if (homeBtn.isHovered() && homeBtn.isPressed()) {
+                    gameState.setGameState(GameState.MENU);
+                    audioController.playSFX(AudioController.SFX_CLICK);
+                }
+                for (AudioButton btn : audioBtns)
+                    btn.resetState();
+                premiumBtn.resetState();
+                for (MenuButton btn : diffBtns)
+                    btn.resetState();
+                homeBtn.resetState();
+                input.resetMouse();
             }
-            if (homeBtn.isHovered() && homeBtn.isPressed()) {
-                gameState.setGameState(GameState.MENU);
-                audioController.playSFX(AudioController.SFX_CLICK);
-            }
-            for (AudioButton btn : audioBtns)
-                btn.resetState();
-            for (MenuButton btn : diffBtns)
-                btn.resetState();
-            homeBtn.resetState();
-            input.resetMouse();
         }
     }
 
@@ -98,5 +109,5 @@ public class OptionController {
             btn.setPressed(false);
         }
     }
-    
+
 }

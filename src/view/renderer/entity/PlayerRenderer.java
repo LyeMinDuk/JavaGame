@@ -29,7 +29,7 @@ public class PlayerRenderer {
     private static final int[] SKILL_FRAMES_ULT = { 15, 6, 15, 20, 20, 15, 7, 12, 15 };
     private static final int[] SKILL_FRAMES_SPECIAL = { 15, 11, 9, 11, 20 };
     private int lastState = -1;
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     public PlayerRenderer() {
         loadAnimation();

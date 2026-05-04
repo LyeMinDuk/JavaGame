@@ -25,6 +25,12 @@ public class PlayingController {
     }
 
     public void update(AudioController audio) {
+        if (input.isH()) {
+            gameState.setShowHelp(true);
+            gameState.setGameState(GameState.PAUSED);
+            input.resetKeys();
+            return;
+        }
         if (!player.isAlive()) {
             audio.playSFX(AudioController.SFX_DIE);
             gameState.setGameState(GameState.GAME_OVER);

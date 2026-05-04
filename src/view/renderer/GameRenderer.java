@@ -72,7 +72,7 @@ public class GameRenderer {
             case GameState.PLAYING -> playingRenderer.render(g);
             case GameState.PAUSED -> {
                 playingRenderer.render(g);
-                pausedRenderer.render(g, settingsModel);
+                pausedRenderer.render(g, settingsModel, gameState.isShowHelp());
             }
             case GameState.GAME_OVER -> {
                 playingRenderer.render(g);

@@ -12,7 +12,7 @@ import static core.GameConfig.TILE_SIZE;
 import static util.enemy.EnemyAIState.*;
 
 public class CthuluModel extends EnemyModel {
-    private final double detectRange = TILE_SIZE * 10;
+    private final double detectRange = TILE_SIZE * 13;
     private double atkRange = TILE_SIZE * 2.5;
     private long atkCD = 2000;
     private long lastAtkTime = 0;

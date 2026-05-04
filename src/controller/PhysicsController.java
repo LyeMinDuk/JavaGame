@@ -78,10 +78,9 @@ public class PhysicsController {
             entity.move(dx, 0);
             return;
         }
-        int newHitboxX = getXPositionNextTile(hb, dx);
-        entity.setPosition(newHitboxX - entity.getHbOffsetX(), entity.getY());
+        int newX = getXPositionNextTile(hb, dx);
+        entity.setPosition(newX - entity.getHbOffsetX(), entity.getY());
         entity.setDx(0);
-
     }
 
     private void updateOnGround(EntityModel entity) {

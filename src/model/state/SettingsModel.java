@@ -4,6 +4,7 @@ public class SettingsModel {
     private boolean musicMuted = false;
     private boolean sfxMuted = false;
     private int difficult = 0;
+    private boolean premium = false;
 
     public boolean isMusicMuted() {
         return musicMuted;
@@ -28,5 +29,13 @@ public class SettingsModel {
     public void setDifficult(int difficult) {
         this.difficult = difficult;
     }
-    
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        this.premium = premium;
+    }
+
 }

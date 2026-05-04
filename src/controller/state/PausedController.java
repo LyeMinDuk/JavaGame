@@ -31,8 +31,21 @@ public class PausedController {
     }
 
     public void update(AudioController audio) {
+        if (input.isH()) {
+            if (gameState.isShowHelp()) {
+                gameState.setShowHelp(false);
+                resumeGame();
+            } else {
+                gameState.setShowHelp(true);
+            }
+            input.resetKeys();
+            return;
+        }
         if (input.isP() || input.isEsc()) {
             resumeGame();
+            return;
+        }
+        if (gameState.isShowHelp()) {
             return;
         }
         AudioButton[] audioBtns = renderer.getAudioButtons();

@@ -25,6 +25,7 @@ public class SaveLoadController {
         raw += "music=" + !settingsModel.isMusicMuted() + '\n';
         raw += "sfx=" + !settingsModel.isSFXMuted() + '\n';
         raw += "difficult=" + settingsModel.getDifficult() + '\n';
+        raw += "premium=" + settingsModel.isPremium() + '\n';
 
         try {
             String encodedString = Base64.getEncoder().encodeToString(raw.getBytes());
@@ -54,11 +55,12 @@ public class SaveLoadController {
                     case "music" -> settingsModel.setMusicMuted(!Boolean.parseBoolean(value));
                     case "sfx" -> settingsModel.setSFXMuted(!Boolean.parseBoolean(value));
                     case "difficult" -> settingsModel.setDifficult(Integer.parseInt(value));
+                    case "premium" -> settingsModel.setPremium(Boolean.parseBoolean(value));
                 }
             }
         } catch (Exception e) {
             System.out.println("Load error");
         }
     }
-    
+
 }

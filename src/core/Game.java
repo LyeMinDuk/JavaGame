@@ -30,7 +30,6 @@ import view.GamePanel;
 import static core.GameConfig.*;
 
 public class Game implements Runnable {
-    // private GameWindow gameWindow;
     private GamePanel gamePanel;
     private boolean running;
     private Thread gameThread;
@@ -58,6 +57,7 @@ public class Game implements Runnable {
     private int curMapIdx = 0;
     private ClassSelectController classSelectController;
     private boolean selectedMage = false;
+    private boolean debug = true;
 
     public Game() {
         initInput();
@@ -67,6 +67,7 @@ public class Game implements Runnable {
         initModel();
         initController();
         audioController = new AudioController(settingsModel.isMusicMuted(), settingsModel.isSFXMuted());
+        audioController.setPremium(settingsModel.isPremium());
         audioController.toggleMusic(settingsModel.isMusicMuted());
         audioController.toggleSFX(settingsModel.isSFXMuted());
         initRenderer();
@@ -211,18 +212,28 @@ public class Game implements Runnable {
         double timePerFrame = 1_000_000_000 / FPS;
 
         long prevTime = System.nanoTime();
+        long lastCheck = System.currentTimeMillis();
         double deltaFrame = 0;
+        int frames = 0;
 
         while (running) {
             long curTime = System.nanoTime();
             deltaFrame += (curTime - prevTime) / timePerFrame;
             prevTime = curTime;
-
             if (deltaFrame >= 1) {
+                frames++;
                 update();
                 gamePanel.repaint();
                 deltaFrame--;
             }
+            if (debug) {
+                if (System.currentTimeMillis() - lastCheck >= 1000) {
+                    System.out.println("FPS: " + frames);
+                    lastCheck = System.currentTimeMillis();
+                    frames = 0;
+                }
+            }
+
         }
     }
 
@@ -236,6 +247,10 @@ public class Game implements Runnable {
 
     public void setSelectedClassKnight() {
         selectedMage = false;
+    }
+
+    public PausedController getPausedController() {
+        return pausedController;
     }
 
 }

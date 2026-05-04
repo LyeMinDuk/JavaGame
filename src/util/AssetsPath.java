@@ -155,12 +155,16 @@ public class AssetsPath {
     // 258x389
     public static final String pausedBoard = "/menu/pause/pause_menu.png";
 
+    // 256x256
+    public static final String helpBoard = "/menu/pause/help_board.png";
+
     // 235x225
     public static final String dieBoard = "/menu/game_over/death_screen.png";
 
     // 42x42
     public static final String soundButton = "/menu/option/sound_button.png";
     public static final String muteButton = "/menu/option/mute_button.png";
+    public static final String preButton = "/menu/option/premium.png";
 
     // 56x56
     public static final String resumeButton = "/menu/option/resume_button.png";

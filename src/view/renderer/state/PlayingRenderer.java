@@ -137,6 +137,7 @@ public class PlayingRenderer {
         g.setColor(Color.WHITE);
         g.drawString("Diệt quái (" + quest.getKilledEnemies() + "/" + quest.getTotalEnemies() + ")", questX, questY);
         g.drawString("Diệt boss (" + quest.getKilledBosses() + "/" + quest.getTotalBosses() + ")", questX, questY + 20);
+        g.drawString("Press H for help", questX, questY + 40);
     }
 
 }

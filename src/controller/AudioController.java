@@ -8,7 +8,7 @@ import view.assets.ResourceManager;
 
 public class AudioController {
     private float musicVolume = 0.7f;
-    private float sfxVolume = 0.75f;
+    private float sfxVolume = 0.7f;
 
     public static final int BGM_MENU = 0;
     public static final int LV1 = 1;
@@ -51,7 +51,7 @@ public class AudioController {
             musicVolume = 0.65f;
             song = vip;
         } else {
-            musicVolume = 0.75f;
+            musicVolume = 0.7f;
             song = songs;
         }
         music = new Clip[song.length];
@@ -147,6 +147,25 @@ public class AudioController {
 
     public void toggleSFX(boolean isMuted) {
         this.sfxMuted = isMuted;
+    }
+
+    public boolean isPremium() {
+        return premium;
+    }
+
+    public void setPremium(boolean premium) {
+        if (this.premium == premium) {
+            return;
+        }
+        this.premium = premium;
+        int lastMusicId = currentMusicId;
+        boolean wasRunning = music != null && music[currentMusicId].isRunning();
+        stopMusic();
+        loadMusic();
+        applyMusicMute();
+        if (wasRunning && !musicMuted) {
+            playMusic(lastMusicId);
+        }
     }
 
 }

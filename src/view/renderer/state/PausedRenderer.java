@@ -14,6 +14,7 @@ import static util.AssetsPath.*;
 
 public class PausedRenderer {
     private BufferedImage pausedBoardImg;
+    private BufferedImage helpBoardImg;
     private BufferedImage[][] audioImgs = new BufferedImage[2][3];
     private BufferedImage[][] homeImgs = new BufferedImage[1][3];
     private BufferedImage[][] resumeImgs = new BufferedImage[1][3];
@@ -24,6 +25,8 @@ public class PausedRenderer {
 
     private int boardWidth, boardHeight;
     private int boardX, boardY;
+    private int helpBoardW, helpBoardH;
+    private int helpBoardX, helpBoardY;
 
     public PausedRenderer() {
         loadResource();
@@ -32,6 +35,7 @@ public class PausedRenderer {
 
     private void loadResource() {
         pausedBoardImg = ResourceManager.loadImg(pausedBoard);
+        helpBoardImg = ResourceManager.loadImg(helpBoard);
 
         audioImgs[0] = ResourceManager.loadSprite(soundButton, 3, 42, 42);
         audioImgs[1] = ResourceManager.loadSprite(muteButton, 3, 42, 42);
@@ -60,11 +64,21 @@ public class PausedRenderer {
 
         homeBtn = new MenuButton(startX, btnY, normalSize, normalSize, 0, homeImgs);
         resumeBtn = new MenuButton(startX + normalSize + btnGap, btnY, normalSize, normalSize, 0, resumeImgs);
+
+        helpBoardW = (int) (256 * UI_SCALE);
+        helpBoardH = (int) (256 * UI_SCALE);
+        helpBoardX = GAME_WIDTH / 2 - helpBoardW / 2;
+        helpBoardY = GAME_HEIGHT / 2 - helpBoardH / 2;
     }
 
-    public void render(Graphics g, SettingsModel settingsModel) {
+    public void render(Graphics g, SettingsModel settingsModel, boolean showHelp) {
         g.setColor(new Color(0, 0, 0, 150));
         g.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+        if (showHelp) {
+            g.drawImage(helpBoardImg, helpBoardX, helpBoardY, helpBoardW, helpBoardH, null);
+            return;
+        }
 
         g.drawImage(pausedBoardImg, boardX, boardY, boardWidth, boardHeight, null);
         audioButtons[0].setMuted(settingsModel.isMusicMuted());
