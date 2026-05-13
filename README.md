@@ -1,6 +1,6 @@
 # Java Game – 2D ACTION RPG (Java)
 
-Dự án game 2D viết bằng Java, tập trung vào cơ chế điều khiển nhân vật, chiến đấu theo lớp nhân vật, AI quái vật và kiến trúc MVC.  
+Dự án game 2D viết bằng Java, tập trung vào cơ chế điều khiển nhân vật, chiến đấu theo class nhân vật, AI quái vật và kiến trúc MVC.  
 Game chạy theo game loop riêng, render bằng Java Swing và có hệ thống âm thanh, lưu/đọc cấu hình.
 
 ## 🎮 Tổng quan
@@ -21,6 +21,17 @@ Game chạy theo game loop riêng, render bằng Java Swing và có hệ thống
 - Vòng lặp update + render tách biệt
 - Xử lý input, physics, AI theo từng frame
 - Giữ FPS ổn định (cấu hình trong `GameConfig`)
+
+## 📂 Cấu trúc Thư mục Dự án
+```
+src/
+├─ core/        # GameConfig, game loop chính
+├─ controller/  # Input, Physics, AI, State controllers
+├─ model/       # Entity, Map, Settings, State
+├─ view/        # Renderer, UI, HUD, Assets
+├─ util/        # Hằng số, index animation, assets paths
+└─ App.java     # Entry point
+```
 
 ## ⌨️ Hướng dẫn Điều khiển
 | Phím | Hành động |
@@ -54,17 +65,6 @@ java App
 Chi tiết thiết kế hệ thống, sơ đồ lớp và phân tích luồng dữ liệu:  
 🔗 **Báo cáo bài tập lớn**:  
 https://lmsutceduvn-my.sharepoint.com/:f:/g/personal/duc241230709_lms_utc_edu_vn/IgBgsGU5OLtxT5XZiGaK_6HVAQaYKIHqN2TpSOXu0Blxg1E?e=ScaT8M
-
-## 📂 Cấu trúc Thư mục Dự án
-```
-src/
-├─ core/        # GameConfig, game loop chính
-├─ controller/  # Input, Physics, AI, State controllers
-├─ model/       # Entity, Map, Settings, State
-├─ view/        # Renderer, UI, HUD, Assets
-├─ util/        # Hằng số, index animation, assets paths
-└─ App.java     # Entry point
-```
 
 ---
 
