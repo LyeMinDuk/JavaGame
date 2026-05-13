@@ -52,7 +52,7 @@ java App
 
 ## 📄 Tài liệu & Báo cáo
 Chi tiết thiết kế hệ thống, sơ đồ lớp và phân tích luồng dữ liệu:  
-🔗 **Báo cáo đồ án**:  
+🔗 **Báo cáo bài tập lớn**:  
 https://lmsutceduvn-my.sharepoint.com/:f:/g/personal/duc241230709_lms_utc_edu_vn/IgBgsGU5OLtxT5XZiGaK_6HVAQaYKIHqN2TpSOXu0Blxg1E?e=ScaT8M
 
 ## 📂 Cấu trúc Thư mục Dự án
