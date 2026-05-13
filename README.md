@@ -22,30 +22,53 @@ Game chạy theo game loop riêng, render bằng Java Swing và có hệ thống
 - Xử lý input, physics, AI theo từng frame
 - Giữ FPS ổn định (cấu hình trong `GameConfig`)
 
-## 📄 Báo cáo
-Xem báo cáo chi tiết tại:  
-**https://lmsutceduvn-my.sharepoint.com/:f:/g/personal/duc241230709_lms_utc_edu_vn/IgBgsGU5OLtxT5XZiGaK_6HVAQaYKIHqN2TpSOXu0Blxg1E?e=ScaT8M**
+## ⌨️ Hướng dẫn Điều khiển
+| Phím | Hành động |
+|------|-----------|
+| **A / D** | Di chuyển trái / phải |
+| **Space** | Nhảy |
+| **J** | Tấn công thường |
+| **K** | Kỹ năng tối thượng |
+| **L** | Kỹ năng đặc biệt |
+| **P / ESC** | Tạm dừng |
+| **H** | Mở bảng hướng dẫn |
 
-## ▶️ Hướng dẫn chạy
-### Cách 1: Chạy trực tiếp
-Chạy class `App.java`.
+## 🚀 Cài đặt & Chạy Game
 
-### Cách 2: Biên dịch bằng javac
+### ✅ Yêu cầu hệ thống
+- **JDK**: Java 17 trở lên  
+- **IDE khuyên dùng**: IntelliJ IDEA / Eclipse / VS Code  
+
+### ✅ Cách 1: Chạy bằng IDE
+1. Clone repository về máy  
+2. Mở thư mục dự án bằng IDE  
+3. Chạy file `App.java`
+
+### ✅ Cách 2: Chạy bằng Terminal
 ```bash
 javac App.java
 java App
 ```
 
-## 📂 Cấu trúc thư mục
+## 📄 Tài liệu & Báo cáo
+Chi tiết thiết kế hệ thống, sơ đồ lớp và phân tích luồng dữ liệu:  
+🔗 **Báo cáo đồ án**:  
+https://lmsutceduvn-my.sharepoint.com/:f:/g/personal/duc241230709_lms_utc_edu_vn/IgBgsGU5OLtxT5XZiGaK_6HVAQaYKIHqN2TpSOXu0Blxg1E?e=ScaT8M
+
+## 📂 Cấu trúc Thư mục Dự án
 ```
-core/          (game loop, cấu hình)
-controller/    (logic điều khiển)
-model/         (dữ liệu)
-view/          (render, UI)
-util/          (hằng số, index)
+src/
+├─ core/        # GameConfig, game loop chính
+├─ controller/  # Input, Physics, AI, State controllers
+├─ model/       # Entity, Map, Settings, State
+├─ view/        # Renderer, UI, HUD, Assets
+├─ util/        # Hằng số, index animation, assets paths
+└─ App.java     # Entry point
 ```
 
 ---
 
-**Tác giả:** LyeMinDuk  
-**Ngôn ngữ:** Java
+## 👤 Thông tin
+- **Tác giả:** Lê Minh Đức (LyeMinDuk)  
+- **Trường:** ĐH Giao thông Vận tải (UTC) – Khoa CNTT  
+- **Ngôn ngữ:** Java  
